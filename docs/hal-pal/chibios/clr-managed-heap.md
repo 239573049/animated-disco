@@ -1,42 +1,43 @@
-# CLR Managed heap definition
+# CLR 托管堆定义
 
-## About this document
+## 关于本文档
 
-This document describes how the CLR manged heap is defined as a ChibiOS target.
+本文档描述了 CLR 托管堆在 ChibiOS 目标中的定义。
 
-For STM32 based devices:
-The configurations are chained by linker files:
+对于基于 STM32 的设备：
+配置通过链接器文件进行链接：
 
-- the target linker file provided for the nanoCLR in the target board folder, e.g. [STM32F091xC.ld](https://github.com/nanoframework/nf-interpreter/tree/main/targets/ChibiOS/ST_NUCLEO64_F091RC/nanoCLR/STM32F091xC_CLR.ld) and from within calls rules.ld **except** the F7 series which calls rules_clr.ld, rules_code.ld, rules_data.ld and rules_stacks.ld directly.
-- [rules.ld](https://github.com/nanoframework/nf-interpreter/tree/main/targets/ChibiOS/_common/rules.ld) (which is common to all STM32 based ChibiOS targets and calls the next set of linker files)
-- [rules_clr.ld](https://github.com/nanoframework/nf-interpreter/tree/main/targets/ChibiOS/_common/rules_clr.ld), [rules_code.ld](https://github.com/nanoframework/nf-interpreter/tree/main/targets/ChibiOS/_common/rules_code.ld), [rules_data.ld](https://github.com/nanoframework/nf-interpreter/tree/main/targets/ChibiOS/_common/rules_data.ld) and [rules_stacks.ld](https://github.com/nanoframework/nf-interpreter/tree/main/targets/ChibiOS/_common/rules_stacks.ld)
+- nanoCLR 为目标板提供的目标链接器文件，例如 [STM32F091xC.ld](https://github.com/nanoframework/nf-interpreter/tree/main/targets/ChibiOS/ST_NUCLEO64_F091RC/nanoCLR/STM32F091xC_CLR.ld)，在其中调用了 rules.ld **除了** F7 系列，F7 系列直接调用了 rules_clr.ld、rules_code.ld、rules_data.ld 和 rules_stacks.ld。
+- [rules.ld](https://github.com/nanoframework/nf-interpreter/tree/main/targets/ChibiOS/_common/rules.ld)（适用于所有基于 STM32 的 ChibiOS 目标，调用下一组链接器文件）
+- [rules_clr.ld](https://github.com/nanoframework/nf-interpreter/tree/main/targets/ChibiOS/_common/rules_clr.ld)、[rules_code.ld](https://github.com/nanoframework/nf-interpreter/tree/main/targets/ChibiOS/_common/rules_code.ld)、[rules_data.ld](https://github.com/nanoframework/nf-interpreter/tree/main/targets/ChibiOS/_common/rules_data.ld) 和 [rules_stacks.ld](https://github.com/nanoframework/nf-interpreter/tree/main/targets/ChibiOS/_common/rules_stacks.ld)
 
-## Managed heap location and size
+## 托管堆的位置和大小
 
-The CLR managed heap can be located on the target board at any RAM address where space available. Either internal or external.
+CLR 托管堆可以位于目标板上的任何可用内部或外部 RAM 地址处。
 
-It will be placed (considering the RAM region defined) after the region containing the CRT heap (if it's assigned to that same RAM region) and right before the Vector table copy in RAM (if it is assigned to the same RAM region).
+它将被放置在包含 CRT 堆的区域之后（如果将其分配给相同的 RAM 区域），并且在 RAM 中的向量表副本之前（如果将其分配给相同的 RAM 区域）。
 
-This empowers developers to create new target boards with maximum flexibility of where to locate the CLR managed heap and its respective size.
+这使开发人员能够创建具有最大灵活性的新目标板，以确定 CLR 托管堆和相应大小的位置。
 
-### Definition the CLR managed heap location
+### 定义 CLR 托管堆的位置
 
-The location of the CLR managed heap is set in in target linker file provided for nanoCLR in the target boards folder, e.g. [STM32F091xC_CLR.ld](https://github.com/nanoframework/nf-interpreter/tree/main/targets/ChibiOS/ST_NUCLEO64_F091RC/nanoCLR/STM32F091xC_CLR.ld)
+CLR 托管堆的位置在目标板文件夹中为 nanoCLR 提供的目标链接器文件中设置，例如 [STM32F091xC_CLR.ld](https://github.com/nanoframework/nf-interpreter/tree/main/targets/ChibiOS/ST_NUCLEO64_F091RC/nanoCLR/STM32F091xC_CLR.ld)。
 
-For example the line (usually toward the end of the file) will contain something similar to `REGION_ALIAS("CLR_MANAGED_HEAP_RAM", ram0);`. The example stated here defines CLR manged heap location as being set in the _ram0_ region. The RAM regions and respective sizes are defined in the same file. For further information, please check the ChibiOS documentation for details on how to define further RAM regions.
+例如，文件中的一行（通常在文件末尾附近）将类似于 `REGION_ALIAS("CLR_MANAGED_HEAP_RAM", ram0);`。此示例中指定的位置将 CLR 托管堆的位置设置为 _ram0_ 区域。RAM 区域及其相应大小在同一文件中定义。如需进一步了解，请参阅 ChibiOS 文档以获取有关如何定义其他 RAM 区域的详细信息。
 
-### Size of the CLR managed heap
+### CLR 托管堆的大小
 
-The size of the CLR managed heap is automatically adjusted to take all the available RAM space after the CRT heap (if it's assigned to that same RAM region).
+CLR 托管堆的大小会自动调整，以占用 CRT 堆之后的所有可用 RAM 空间（如果将
 
-It maybe be required to adjust the size of the CRT heap. This is set in the CMake file of the target board, e.g. [CMakeLists.txt](https://github.com/nanoframework/nf-interpreter/tree/main/targets/ChibiOS/ST_NUCLEO64_F091RC/CMakeLists.txt).
-Look for the `__crt_heap_size__` definition in a line that contain something similar to `--defsym=__crt_heap_size__=0x800`. In the example stated here the size of CRT heap is being set to 0x800.
+其分配给相同的 RAM 区域）。
 
-When defining the size you need to take into account several factors:
+可能需要调整 CRT 堆的大小。这在目标板的 CMake 文件中进行设置，例如 [CMakeLists.txt](https://github.com/nanoframework/nf-interpreter/tree/main/targets/ChibiOS/ST_NUCLEO64_F091RC/CMakeLists.txt)。在包含类似于 `--defsym=__crt_heap_size__=0x800` 的行中查找 `__crt_heap_size__` 的定义。在此示例中，CRT 堆的大小设置为 0x800。
 
-- the total available size of the region where it's being placed
-- if there are initialized variables assigned to this region how much space they are taking
-- if the CRT heap is located in this region and the size left for it is enough
+在定义大小时，您需要考虑以下几个因素：
 
-The linker is only able to determine whether there is enough room for all of these factors and it will only complain if there isn't. However it can not determine if the CRT heap (just like the CRT heap) is large enough for the running requirements. That is up to the target board developer.
-For a detailed overview on the final memory map you may want to check the _nanoCLR.map_ that will be located in the build folder after a successful build. Look for the regions called `.heap` and `.clr_managed_heap` to see the final addresses where those were placed.
+- 分配托管堆的区域的总可用大小
+- 如果此区域分配给了初始化的变量，它们占用了多少空间
+- 如果 CRT 堆位于此区域中，并且为其剩余的空间足够
+
+链接器只能确定是否有足够的空间满足所有这些因素，并且仅在不足时才会发出警告。但是，它无法确定 CRT 堆（就像 CRT 堆一样）是否足够大以满足运行需求。这由目标板开发人员决定。
+有关最终内存映射的详细概述，您可以查看成功构建后位于构建文件夹中的 _nanoCLR.map_。查找名为 `.heap` 和 `.clr_managed_heap` 的区域，以查看它们被放置的最终地址。

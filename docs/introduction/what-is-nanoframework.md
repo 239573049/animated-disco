@@ -1,16 +1,15 @@
-# What is .NET **nanoFramework**
+# 什么是.NET nanoFramework
 
-.NET **nanoFramework** is a free and [Open Source](https://en.wikipedia.org/wiki/Free_and_open-source_software) platform that enables the writing of managed code applications for constrained [embedded devices](https://en.wikipedia.org/wiki/Embedded_system). It is suitable for many types of projects including IoT sensors, wearables, academic proof of concept, robotics, hobbyist/makers creations or even complex industrial equipment. It makes the development for such platforms easier, faster and less costly by giving embedded developers access to modern technologies and tools used by desktop application developers.
+.NET nanoFramework是一个免费且开源的平台，可以用于编写针对受限嵌入式设备的托管代码应用程序。它适用于多种类型的项目，包括物联网传感器、可穿戴设备、学术概念验证、机器人技术、爱好者/创客创作甚至复杂的工业设备。它通过为嵌入式开发人员提供桌面应用程序开发人员使用的现代技术和工具，使这些平台的开发更加简单、快速和成本更低。
 
-Developers can harness the powerful and familiar [Microsoft Visual Studio IDE](https://www.visualstudio.com/vs/) and their [.NET C#](https://en.wikipedia.org/wiki/C_Sharp_(programming_language)) knowledge to quickly write code without having to worry about the low-level hardware intricacies of a microcontroller. Desktop .NET developers will feel “at home” and are able to use their skills in embedded systems development, enlarging the pool of qualified embedded developers.
+开发人员可以利用强大且熟悉的Microsoft Visual Studio集成开发环境和他们对.NET C#的了解，快速编写代码，无需担心微控制器的底层硬件细节。桌面.NET开发人员将感到“如在家中”，并能够在嵌入式系统开发中运用他们的技能，扩大合格的嵌入式开发人员的队伍。
 
-It includes a reduced version of the .NET [Common Language Runtime](https://en.wikipedia.org/wiki/Common_Language_Runtime) (CLR) and features a subset of the .NET base class libraries along with the most common APIs included in [.NET IoT](https://github.com/dotnet/iot) allowing code reuse from .NET IoT applications, thousands of code examples and open source projects.
-Using Microsoft Visual Studio, a developer can deploy and debug the code directly on real hardware.
+它包括了.NET通用语言运行时（CLR）的精简版本，并配备了.NET基类库的子集，以及包含在.NET IoT中的最常用API，允许从.NET IoT应用程序中重用代码、数以千计的代码示例和开源项目。使用Microsoft Visual Studio，开发人员可以直接在真实硬件上部署和调试代码。
 
-The .NET **nanoFramework** platform picks up where [.NET Micro Framework](https://en.wikipedia.org/wiki/.NET_Micro_Framework) left off and uses some of its building blocks. Many of the original components were completely rewritten, others improved and some simply reused. A lot of code cleansing and improvements took place to make .NET **nanoFramework** fit for the future!
+.NET nanoFramework平台在.NET Micro Framework的基础上进行了扩展，并使用了其中的一些构建模块。许多原始组件被完全重写，其他组件得到改进，还有一些组件被简单地重用。进行了大量的代码清理和改进，使.NET nanoFramework适应未来发展！
 
-Read along and find out [why use nanoFramework?](why-use-nanoframework.md)
+阅读以下内容，了解[为什么使用nanoFramework？](why-use-nanoframework.md)
 
-You can watch this video from the Microsoft [IoT Show](https://aka.ms/iotshow) featuring .NET nanoFramework connected to Azure IoT Hub, measuring a [BMP280 sensors](https://docs.nanoframework.net/devicesdetails/Bmxx80/README.html) and using the unique deep sleep feature from MCU. A real life example with .NET nanoFramework:
+您可以观看来自Microsoft IoT Show的视频，其中展示了.NET nanoFramework连接到Azure IoT Hub，使用BMP280传感器并利用MCU的独特深度睡眠功能的实际示例。这是一个关于.NET nanoFramework的现实生活示例：
 
 [![IoT Show](https://img.youtube.com/vi/TLYqRdmmj5k/0.jpg)](https://youtu.be/TLYqRdmmj5k)

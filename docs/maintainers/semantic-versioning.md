@@ -1,50 +1,50 @@
-# Semantic Versioning
+# 语义化版本控制
 
-.NET **nanoFramework** versioning follows the [Semantic Versioning](http://semver.org/) guidelines.
+.NET **nanoFramework** 的版本控制遵循[语义化版本控制](http://semver.org/)准则。
 
-Semantic versioning is all about releases and our continuous integration infrastructure uses [Nerdbank GitVersioning](https://github.com/AArnott/Nerdbank.GitVersioning) to automatically version the releases as per the configuration of each repository.
+语义化版本控制关注发布版本，我们的持续集成基础设施使用[Nerdbank GitVersioning](https://github.com/AArnott/Nerdbank.GitVersioning)来根据每个代码仓库的配置自动进行版本控制。
 
-.NET **nanoFramework** follows the [GitFlow branching model](http://nvie.com/posts/a-successful-git-branching-model/) which allows more structured releases and versioning.
+.NET **nanoFramework** 遵循[GitFlow分支模型](http://nvie.com/posts/a-successful-git-branching-model/)，该模型允许更结构化的发布和版本控制。
 
-.NET **nanoFramework** has three different workflows which control how the versioning.
+.NET **nanoFramework** 有三种不同的工作流程来控制版本控制。
 
-## Development Builds
+## 开发构建
 
-Builds from the *develop* branch have a suffix of alpha so that they are sorted higher than release builds which provides the team the ability to manually publish development builds to NuGet as pre-releases, if needed.
+从*develop*分支构建的版本会有一个alpha后缀，以便在排序时排在发布构建之上，这样团队可以在需要时手动将开发构建发布为NuGet的预发布版本。
 
-GitVersion is configured in [Continuous Deployment](http://gitversion.readthedocs.io/en/stable/reference/continuous-deployment/) mode which automatically increments the version per commit.
+GitVersion被配置为[持续部署](http://gitversion.readthedocs.io/en/stable/reference/continuous-deployment/)模式，它会根据每次提交自动增加版本号。
 
-## Pull Request Builds
+## 拉取请求构建
 
-Builds from pull requests have a suffix of test$BuildNumber and are not automatically published to NuGet (if they are distributed by NuGet) but the packages - or artifacts - are available for download from AppVeyor which allows the team or anyone interested to test the unit of change without having to merge it into develop.
+从拉取请求构建的版本会有一个test$BuildNumber后缀，并且不会自动发布到NuGet（如果通过NuGet分发），但可以从AppVeyor下载相应的包或工件，以便团队或其他感兴趣的人可以测试该更改的单元而无需将其合并到develop分支中。
 
-## Release Builds
+## 发布构建
 
-Builds from the master branch do not have a suffix and GitVersion is configured in [Continuous Delivery](https://gitversion.net/docs/reference/configuration/) mode. If a commit is tagged, the version in the tag overrides the automatic versioning strategies.
+从主分支（master）构建的版本不会有后缀，并且GitVersion被配置为[持续交付](https://gitversion.net/docs/reference/configuration/)模式。如果某个提交被打上标签，标签中的版本号将覆盖自动版本控制策略。
 
-## Versioning
+## 版本控制
 
-.NET **nanoFramework** follows the following version pattern: MAJOR.MINOR.PATCH[-PREVIEW\ALPHA\RC-BUILDNUMBER].
+.NET **nanoFramework** 遵循以下版本模式：MAJOR.MINOR.PATCH[-PREVIEW\ALPHA\RC-BUILDNUMBER]。
 
-**Major** or **Breaking**:
+**Major** 或 **Breaking**（重大变更）：
 
-* drop/adds support for a platform
-* remove public API
-* introduce incompatible API changes
-* adopt a newer MAJOR version of an existing dependency
-* disable a compatibility quirk off by default
+* 删除/添加对平台的支持
+* 删除公共API
+* 引入不兼容的API更改
+* 采用现有依赖项的新MAJOR版本
+* 默认关闭兼容性修复
 
-**Minor**:
+**Minor**（次要变更）：
 
-* add public API
-* add new behavior
-* add a new feature
-* adopt a newer version of an existing dependency
-* introduces a new dependency
-* add functionality in a backwards-compatible manner
-* any other change (not otherwise captured)
+* 添加公共API
+* 添加新行为
+* 添加新功能
+* 采用现有依赖项的新版本
+* 引入新的依赖项
+* 以向后兼容的方式添加功能
+* 其他任何更改（无法归类到其他类别）
 
-**Patch**:
+**Patch**（补丁）：
 
-* backwards-compatible bug fixes
-* any other minor changes or improvements that are backwards-compatible
+* 向后兼容的错误修复
+* 任何其他向后兼容的较小更改或改进
