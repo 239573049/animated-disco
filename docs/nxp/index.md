@@ -1,4 +1,4 @@
-# NXP specific articles
+# NXP特定文章
 
-- [Flash NXP i.MX RT1060 firmware using mbed virtual disk](flash-nxp-mbed.md)
-- [Troubleshoot device connection](../getting-started-guides/troubleshooting-device-connection.md)
+- [使用mbed虚拟磁盘刷新NXP i.MX RT1060固件](flash-nxp-mbed.md)
+- [故障排除设备连接问题](../getting-started-guides/troubleshooting-device-connection.md)

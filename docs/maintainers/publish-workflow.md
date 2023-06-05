@@ -1,47 +1,47 @@
-# Publish Workflow and Strategy
+# 发布工作流和策略
 
-## About this document
+## 关于本文档
 
-This document describes the workflow and strategy adopted by .NET **nanoFramework** to handle the merging, branching and release publishing.
+本文档描述了.NET **nanoFramework**采用的处理合并、分支和发布的工作流和策略。
 
-## Pull Requests
+## 拉取请求
 
-Pull requests with contributions are **always** merged into _main_ branch.
-On each pull request build the respective NuGet packages are published to nanoFramework [Azure DevOps NuGet feed](https://dev.azure.com/nanoframework/feed/_packaging?_a=feed&feed=sandbox) (if this is a component that uses this distribution channel). By sourcing this NuGet feed someone testing that pull request can reference it straight away without any further hassle.
-There is nothing else to be done as the package identifier and the version are automatically incremented based.
+包含贡献的拉取请求始终合并到 _main_ 分支中。
+在每个拉取请求构建完成后，相应的 NuGet 包会发布到 nanoFramework 的 [Azure DevOps NuGet feed](https://dev.azure.com/nanoframework/feed/_packaging?_a=feed&feed=sandbox)（如果这是一个使用该分发渠道的组件）。通过访问此 NuGet feed，测试拉取请求的人可以立即引用它，无需进一步操作。
+除此之外，无需执行其他操作，因为包的标识和版本会自动增加。
 
-## Development
+## 开发
 
-Once pull requests have been merged into _main_ a new release is automatically generated and published to nanoFramework [Azure DevOps NuGet feed](https://dev.azure.com/nanoframework/feed/_packaging?_a=feed&feed=sandbox) (if this is a component that uses this distribution channel).
-There is nothing else to be done as the package identifier and the version are automatically incremented.
+一旦拉取请求合并到 _main_ 分支，将自动生成并发布一个新版本到 nanoFramework 的 [Azure DevOps NuGet feed](https://dev.azure.com/nanoframework/feed/_packaging?_a=feed&feed=sandbox)（如果这是一个使用该分发渠道的组件）。
+除此之外，无需执行其他操作，因为包的标识和版本会自动增加。
 
-## Versioning
+## 版本管理
 
-When a release contains a breaking change MAJOR version should be increased by one and reset the MINOR back to zero and keep the PATCH at zero. Otherwise just bump the MINOR version by one and keep the PATCH at zero.
+如果发布包含了破坏性变更，主版本号（MAJOR）应该增加一，将次版本号（MINOR）重置为零，并将修订版本号（PATCH）保持为零。否则，只需将次版本号（MINOR）增加一，将修订版本号（PATCH）保持为零。
 
-At this stage the contributor proposing a new release must perform a few administrative tasks. It's the responsibility of the release approver to verify that these tasks have been performed correctly.
+在此阶段，提议发布新版本的贡献者必须执行一些行政任务。发布批准者有责任验证这些任务是否正确执行。
 
-Details on the release preparation can be read from the Nerdbank GitVersioning documentation [here](https://github.com/AArnott/Nerdbank.GitVersioning/blob/master/doc/nbgv-cli.md#preparing-a-release).
+有关发布准备的详细信息可以在 Nerdbank GitVersioning 文档的[这里](https://github.com/AArnott/Nerdbank.GitVersioning/blob/master/doc/nbgv-cli.md#preparing-a-release)中阅读。
 
-If the process for merging individual pull requests was followed perfectly there is not much else to do except verify that all pull requests have assigned a milestone and an appropriate label.
-The label classifies the type of change and it's mandatory because the release notes are automatically generated from this information.
-For the purposes of the automated release notes generation, only the pull requests have to follow this strict label mapping, not the issues. This is because the issue management is centralized in the Home repo (not per repository).
-The pull requests that address an issue already link to that issue thus making easy to trace the changes and the reasoning about those, ultimately self-documenting the changes.
+如果完美地按照合并各个拉取请求的过程进行，除了验证所有拉取请求是否已分配里程碑和适当的标签外，几乎没有其他工作要做。
+标签用于对变更类型进行分类，是必需的，因为发布说明会自动根据此信息生成。
+对于自动生成发布说明的目的，只需拉取请求遵循严格的标签映射即可，无需对问题进行相同的操作。这是因为问题管理集中在 Home 仓库中（而不是每个仓库）。
+解决生成的发布说明文档中的任何问题，请在 GitHub 中为拉取请求分配适当的标签，然后在 Azure DevOps 中重新运行合并提交的构建。
 
-If there are any problems with the generated release notes document, resolve those in GitHub by assigning the appropriate labels to the pull requests and then re-run the build for the merge commit in Azure DevOps.
+## 生产环境
 
-## Production
+此过程始于从 _release-vN.N.N_ 分支向 _main_ 分支发起拉取请求。
 
-The process is kicked off by opening up a pull request from a _release-vN.N.N_ branch to _main_.
+在 Home 仓库中，编辑 vNext 里
 
-In the Home repository, edit the vNext milestone and change it to the version number of this release.
+程碑并将其更改为此发布的版本号。
 
-Once the pull request has been approved use the _merge commit_ option (**not the squash and merge**). This will trigger a new CI build after which a new draft release with be generated along with the release notes. If the validation of these has already been done in the _release-vN.N.N_ step above there should be no need for further corrections.
+一旦批准了拉取请求，请使用“merge commit”选项（**不要使用 squash and merge**）。这将触发新的 CI 构建，之后将生成一个新的草稿式发布和发布说明。如果在上述 _release-vN.N.N_ 步骤中已经验证了它们的有效性，则无需进行进一步更正。
 
-Pressing the publish release button will stamp the repository with a git tag with the release version, overriding any automatic versioning strategies and trigger a new build which will be automatically published to NuGet (if this is a component that uses this distribution channel).
+点击发布发布按钮将使用发布版本给仓库打上一个 git 标签，覆盖任何自动版本控制策略，并触发新的构建，该构建将自动发布到 NuGet（如果这是一个使用该分发渠道的组件）。
 
-After the build for the tag release is completed edit the source/version.json file and bump the `version` field to the vNext version, including the preview tag. Then start a new PR from the _release-vN.N.N_ into the develop branch. This makes any changes in that have been made branch should be deleted.
+在标签发布的构建完成后，编辑 source/version.json 文件，并将 `version` 字段增加到 vNext 版本，包括预览标签。然后从 _release-vN.N.N_ 分支向 develop 分支发起新的 PR。这将删除已做出更改的分支。
 
-After the CI completes _squash and merge_ (**really really squash and merge**) the PR. The _release-vN.N.N_ branch can now be safely be deleted.
+在 CI 完成 _squash and merge_（**确实是 squash and merge**）拉取请求后，_release-vN.N.N_ 分支现在可以安全地删除。
 
-To complete this step create a new vNext milestone in the Home repo.
+完成此步骤后，在 Home 仓库中创建一个新的 vNext 里程碑。

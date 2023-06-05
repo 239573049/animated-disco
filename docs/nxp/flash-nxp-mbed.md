@@ -1,34 +1,33 @@
-# Flash a nanoCLR image/nanoBooter in a NXP MIMXRT1060_EVAL board
+# 在NXP MIMXRT1060_EVAL开发板上刷写nanoCLR镜像/nanoBooter
 
-## How To guide
+## 操作指南
 
-The easiest way to flash nanoBooter and nanoCLR image onto i.MX RT1060 board is through mbed, which provides virtual disk after you connect the board to PC.
+将nanoBooter和nanoCLR镜像刷写到i.MX RT1060开发板上的最简单方法是通过mbed，连接开发板到计算机后，它会提供一个虚拟磁盘。
 
-> NOTE: If you overwritten DAPLink firmware, you will need proper DAPLink firmware for OpenSDA serial and debug adapter that is built into eval board, it provides USB host (IDE, file system and serial terminal).
-You can download it from here: [OpenSDA](https://www.nxp.com/design/microcontrollers-developer-resources/ides-for-kinetis-mcus/opensda-serial-and-debug-adapter:OPENSDA?&tid=vanOpenSDA#MIMXRT1060-EVK). Then follow the procedure described in a link.
+> 注意：如果您覆盖了DAPLink固件，您将需要适合于eval板内置的OpenSDA串行和调试适配器的正确DAPLink固件，它提供了USB主机（IDE、文件系统和串行终端）。您可以从这里下载：[OpenSDA](https://www.nxp.com/design/microcontrollers-developer-resources/ides-for-kinetis-mcus/opensda-serial-and-debug-adapter:OPENSDA?&tid=vanOpenSDA#MIMXRT1060-EVK)。然后按照链接中描述的步骤进行操作。
 
-1. Download the image from .NET **nanoFramework** repository.
-2. Check that **J1** is in middle position (power from micro-usb port) and connect usb cable to **J41** usb.
-3. Removable disk "rt1060-evk" should appear in file manager.
-4. Extract downloaded image and copy nanoFramework image "nanobooter-nanoclr.hex" to removable disk.
+1. 从.NET **nanoFramework**仓库下载镜像。
+2. 检查**J1**是否处于中间位置（从Micro-USB端口供电），并将USB电缆连接到**J41** USB端口。
+3. 文件管理器中应该出现可移动磁盘"rt1060-evk"。
+4. 解压下载的镜像，并将nanoFramework镜像"nanobooter-nanoclr.hex"复制到可移动磁盘中。
 ![rt1060_removable_disk](../../images/nxp/rt1060_disk.png)
-5. Device should automatically program flash and reset itself after short time.
-6. Check if programming was successful by reseting the board while pressing **SW8** button. If a green led starts blinking it means that nanoBooter is working correctly.
-7. Finally reset the board and open Visual Studio. Device should be recognized by Device Explorer nanoFramework plugin.
+5. 设备应自动编程闪存，并在短时间后重置自身。
+6. 按住**SW8**按钮重置开发板，检查编程是否成功。如果绿色LED开始闪烁，表示nanoBooter正常工作。
+7. 最后重置开发板并打开Visual Studio。设备应被设备资源管理器（Device Explorer）nanoFramework插件识别。
 ![rt1060_device_explorer](../../images/nxp/rt1060_device_explorer.jpg)
 
-## FAQ
+## 常见问题解答
 
-- Device is not recognized by Device Explorer.
+- 设备在设备资源管理器中无法被识别。
 
-> Try to restart Visual Studio
-> Check that firmware was properly programmed, try booting to nanoBooter, device should be listed in Devices Explorer
+> 尝试重新启动Visual Studio
+> 检查固件是否正确刷写，尝试启动至nanoBooter，设备应在设备资源管理器中列出。
 
-- In FAIL.txt on removable disk error: "The interface firmware FAILED to reset/halt the target MCU"
+- 在可移动磁盘上的FAIL.txt文件中出现错误："The interface firmware FAILED to reset/halt the target MCU"（接口固件无法重置/停止目标MCU）
 
-> Check that jumpers J47, J48, J49 are present and J44 is not
-> Jumper J1 must be in middle position if your not using external power
+> 检查跳线J47、J48、J49是否存在，而J44是否不存在
+> 如果您没有使用外部电源，跳线J1必须处于中间位置
 
-- Device correctly boots to nanoBooter but is not detected otherwise
+- 设备能够正确启动至nanoBooter，但无法被检测到
 
-> If you flashed nanoBooter.hex and then nanoCLR.hex, programmer erases memory every flashing process.
+> 如果您刷写了nanoBooter.hex，然后刷写了nanoCLR.hex，编程过程中会擦除存储器。

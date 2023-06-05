@@ -1,24 +1,24 @@
-# GitHub workflow procedures
+# GitHub工作流程程序
 
-## About this document
+## 关于本文档
 
-This document describes the GitHub workflow and "procedures" that should be followed by maintainers.
+本文档描述了GitHub工作流程和维护者应遵循的"程序"。
 
-## GitHub labels
+## GitHub标签
 
-We have a set of basic labels that are common to all repos and should be used to communicate and/or flag issues and PRs.
-It's a clear and quick way of understanding the current status of something, help filtering and also triage what's it about.
+我们有一组基本标签，适用于所有存储库，并应用于沟通和/或标记问题和PR。
+这是一种清晰快捷的方式，用于了解某个事物的当前状态，帮助筛选，并对其进行分类。
 
-On PRs they are even used by the change log generator to properly update the change log with bugs, enhancements, breaking changes, etc. That's why it's vey important that all those are properly labeled from the moment they are created.
+在PR中，它们甚至被更改日志生成器用于正确更新更改日志，包括错误修复、增强功能、破坏性更改等。因此，非常重要的是从创建时就正确标记它们。
 
-The Home project has several others that are used to classify the group the issue belongs to (like tools, a specific class library,...). There are also a few that should be used to flag them to the community with a _call for action_ like "good first issue", "trivial", "feeback requested".
+主项目还有其他几个标签，用于对问题所属的组进行分类（例如工具、特定类库等）。还有一些标签应该用于向社区发出"呼吁行动"，例如"好的初始问题"、"琐碎问题"、"请求反馈"。
 
-To summarize it's very important and makes everyone life easier if the labels are used properly.
+总结一下，如果标签使用正确，将会使每个人的工作更轻松。
 
-## GitHub issues
+## GitHub问题
 
-Upon a new issue being raised, it should be properly labeled and, if possible/relevant, a follow up comment should be added. This is useful to show developers that we care, that the project is active and also helps the flow of the next steps, which is someone eventually pickup the issue, reply to it, make additional testing or start working on it.
+在提出新问题时，应正确标记，并在可能/相关的情况下添加后续评论。这有助于向开发者展示我们的关注，项目的活跃性，并促进下一步的流程，即有人最终接手该问题，回复它，进行额外测试或开始解决它。
 
-When a maintainer self-assigns an issue or assigns it to another team member the appropriate flags should be managed. This provides follow up to the community and prevents that several developers invest their time working on the same task, possibly duplicating work and wasting time, which leads to frustration.
+当维护者自行分配问题或将其分配给其他团队成员时，应进行适当的标记管理。这为社区提供了后续跟进，并防止多个开发者在同一任务上投入时间，可能导致工作重复和时间浪费，从而引起沮丧。
 
-As it's made abundantly clear on all repos that GitHub issues should **not** be used to ask questions. For that, developers are encouraged and should use the Discord channels. They are better served there by having a quick reply, reach-out to everyone in the community, have a better experience and it's usually more convenient. Having said that, issues raised to ask questions should be directed to Discord and closed with an appropriate and polite message. The exceptions would be when the user can't use Discord (because of company firewall rules, some regions in the world have access to social network block) or a quick reply does it, which is more efficient.
+正如所有存储库中明确指出的那样，不应使用GitHub问题来提问。对于这种情况，鼓励开发者使用Discord频道。在那里，他们可以获得快速回复，与社区的每个人联系，获得更好的体验，通常更加方便。话虽如此，提出问题的问题应引导到Discord，并附上适当和礼貌的消息进行关闭。例外情况是用户无法使用Discord（因为公司防火墙规则，某些地区无法访问社交网络）或者快速回复已经解决了问题，这更加高效。

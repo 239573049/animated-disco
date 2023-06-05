@@ -1,23 +1,23 @@
-# CD & CI automation
+# CD & CI 自动化
 
-## About this document
+## 关于本文档
 
-This document describes the CD-CI automation by means of Azure Pipelines and GitHub action.
+本文档描述了通过 Azure Pipelines 和 GitHub Action 实现的 CD-CI 自动化。
 
-## Commands that nfbot understands
+## nfbot 可理解的命令
 
-nfbot reacts to commands passed on PR comments for any repository.
-Only members of the organization have permission to send these commands.
-On successful execution of a command, nfbot reacts to the comment with a 👍 for a correct execution or 🚀 if successfully launched an async operation. If case there is an error or problem with the execution it will react with 😕. If the expected conditions aren't meet the reaction is 👀.
+nfbot 对传递给任何存储库的 PR 评论中的命令作出反应。
+只有组织成员有权限发送这些命令。
+成功执行命令后，nfbot 会以👍表示正确执行或以🚀表示成功启动异步操作。如果执行过程中出现错误或问题，它会以😕表示反应。如果未满足预期条件，则反应为👀。
 
-The command syntax is: `@nfbot comand <argument(s)>`.
+命令语法为：`@nfbot comand <argument(s)>`。
 
-Available commands:
+可用命令：
 
-| Command | Argument | Description |
+| 命令 | 参数 | 描述 |
 |:---|:---|:---|
-| updatedependents | - | Update the libraries that depend on this library |
-| updatedependencies | - | Check if there are updated versions of the referenced libraries and update if needed |
-| updatedependencies all| - | Launch a global check for updated versions of the referenced libraries and update if needed in **all** class libraries |
-| startrelease | - | Kick a release candidate workflow for this library. Will fail if there are preview dependencies for the library. |
-| runpipeline | *branch* | Runs the Azure Pipeline for the mentioned branch. If no branch is mentioned runs it for the default branch. |
+| updatedependents | - | 更新依赖于该库的库 |
+| updatedependencies | - | 检查引用库的更新版本，并在需要时进行更新 |
+| updatedependencies all| - | 在**所有**类库中启动全局检查以更新引用库的更新版本 |
+| startrelease | - | 为该库启动发布候选工作流。如果库中存在预览依赖项，则会失败。 |
+| runpipeline | *branch* | 运行所述分支的 Azure Pipeline。如果未提及分支，则在默认分支上运行。 |
