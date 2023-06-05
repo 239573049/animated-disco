@@ -1,56 +1,58 @@
-# How to create an STM32 based community board
+# 如何创建基于STM32的社区开发板
 
-This article will explain what needs to be adjusted to create a community board for STM32 based processors.
+本文将解释如何调整设置以创建基于STM32处理器的社区开发板。
 
-## Start with a similar board
+## 以相似的板子为起点
 
-Find a board that is close to your board. Check both the official boards and the community boards.
+找到一个与您的开发板相似的板子。可以检查官方开发板和社区开发板。
 
-It is important to find the same MCU or a close one. Once done, copy/paste the folder in your cloned [nf-interpreter](https://github.com/nanoframework/nf-interpreter) repo. and rename the folder. Note that it is recommended to create a new branch so you won't mix it up with anything else. You can as well clone the repository in a temporary place just for the occasion. In all cases, make sure you have the latest up to date `main` branch.
+重要的是找到相同的MCU或相近的MCU。完成后，在您克隆的[nf-interpreter](https://github.com/nanoframework/nf-interpreter)存储库中复制/粘贴文件夹，并将文件夹重命名。请注意，建议创建一个新的分支，这样您就不会与其他内容混淆。您也可以将存储库克隆到临时位置，只供此次活动使用。在所有情况下，请确保您拥有最新的`main`分支。
 
-> Tip: keep the folder into the target folder in nf-interpreter the time of your development. You will be able to move it later on to the `nf-Community-Targets` one and do a proper PR.
+> 提示：在开发期间，将文件夹保留在nf-interpreter目标文件夹中。稍后您可以将其移动到`nf-Community-Targets`目录并进行适当的PR。
 
-## Create your project in CMakeUserPresets.json
+## 在CMakeUserPresets.json中创建项目
 
-Create a proper section in your `CMakePresets.json` and `CMakeUserPresets.json`. Reuse the one from the board you're starting. Use the exact same settings as the recommended ones to build it. Just to make sure all is OK, build it with the exact same settings as the board you have cloned. This will ensure you're starting with a clean state.
+在您的`CMakePresets.json`和`CMakeUserPresets.json`中创建一个合适的部分。重用您要开始的板子中的设置。使用与推荐设置完全相同的设置来构建它，以确保一切正常。只需为确保一切正常，使用与克隆的开发板相同的设置进行构建。这将确保您从干净的状态开始。
 
-> Tip: you can use the [dev containers](../building/using-dev-container.md) to avoid having to clone all the source repositories and build in a safe always working environment.
+> 提示：您可以使用[dev containers](../building/using-dev-container.md)来避免克隆所有源代码库并在安全的、始终正常工作的环境中构建。
 
-## Adjust the clock settings
+## 调整时钟设置
 
-This is the very first step and one of the most important one. And this is where things can be a bit tricky. You will need to understand what is the clock source and how it is connected to the MCU. For this you need to make sure you find the schematics of your board.
+这是第一步，也是最重要的一步。这也是可能有些棘手的地方。您需要了解时钟源以及它如何连接到MCU。为此，您需要确保找到开发板的原理图。
 
-> To make the math, install and use [STM32CubeMX](https://www.st.com/en/development-tools/stm32cubemx.html). You will need this software later on for the pin settings.
+> 为了进行计算，请安装并使用[STM32CubeMX](https://www.st.com/en/development-tools/stm32cubemx.html)。您以后还将需要此软件进行引脚设置。
 
-This is the example of using an STM32F411RET MCU:
+这是使用STM32F411RET MCU的示例：
 
-![Processor choice](../../images/stm32-community-processor.jpg)
+![处理器选择](../../images/stm32-community-processor.jpg)
 
-In most of the cases, you'll have to use an external clock. In this case, you'll need to activate the RCC element:
+在大多数情况下，您将需要使用外部时钟。在这种情况下，您需要激活RCC元素：
 
-![External clock](../../images/stm32-community-external-clock.jpg)
+![外部时钟](../../images/stm32-community-external-clock.jpg)
 
-Then it's time to resolve external clock by enabling USB OTG:
+然后是通过启用USB OTG来解决外部时钟：
 
 ![USB OTG](../../images/stm32-community-usb-otg.jpg)
 
-> Note: Those screen captures include already some more elements setup for this project. The more you'll setup elements and the more you'll see in the menu green entrees, warnings and red elements. It will help you to understand if your configuration and the pin setup are correctly done. You should not get any impossible case at all.
+> 注意：这些屏幕截图已经包含了一些为此项目设置的更多元素。您设置的元素越多，您在菜单中就会看到更多的绿色条目、警告和红色元素
 
-The clock adjustment is the most difficult. You need to understand which clock settings to select from the documentation of your board. Here is an example:
+。这将帮助您了解您的配置和引脚设置是否正确。您不应该遇到任何不可能的情况。
 
-![Clock settings](../../images/stm32-community-adjust-clock.jpg)
+时钟调整是最困难的部分。您需要了解从您的开发板文档中选择哪些时钟设置。这是一个示例：
 
-> Tip: The tool offers a resolver but it may not be the best regarding your setup. After a first try, you may have to come back and adjust more of those elements. You may have to do a few trial errors if the documentation or schema is not the best.
+![时钟设置](../../images/stm32-community-adjust-clock.jpg)
 
-## Build it and deploy it
+> 提示：该工具提供了一个解算器，但可能不适合您的设置。首次尝试后，您可能需要返回并调整更多这些元素。如果文档或模式不是最好的，您可能需要进行一些试错。
 
-Once you are at this stage, the best is to adjust the core elements of the clock, build, deploy and check those core part are working.
+## 构建和部署
+
+一旦您到达这个阶段，最好是调整时钟的核心元素，构建、部署并检查这些核心部分是否工作正常。
 
 ### board.h
 
-The file `board\board.h` is one of the most important one. You'll have to adjust quite some elements in this one.
+`board\board.h`文件是最重要的文件之一。您需要调整其中的一些元素。
 
-To start with, the name of your board as well as the frequency and setup elements found in the clock setting. To follow the example, you'll adjust all this:
+首先，调整开发板的名称，以及时钟设置中的频率和其他设置元素。按照示例进行调整：
 
 ```cpp
 /*
@@ -83,9 +85,9 @@ To start with, the name of your board as well as the frequency and setup element
 #endif
 ```
 
-### mcuconf.h in nanoCLR and nanoBooter
+### nanoCLR和nanoBooter中的mcuconf.h
 
-you have then **2 files** to adjust with the exact same settings. `nanoCLR/mcuconf.h` and `nanoBooter/mcuconf.h`. Both need to be adjusted with the second set of constants you've determined in the clock settings. Here is the example of the example project:
+然后，您需要调整两个文件，即`nanoCLR/mcuconf.h`和`nanoBooter/mcuconf.h`，并使用第二组常量进行调整。这些常量是您在时钟设置中确定的设置。以下是示例项目的示例：
 
 ```cpp
 #define STM32_NO_INIT                       FALSE
@@ -109,7 +111,9 @@ you have then **2 files** to adjust with the exact same settings. `nanoCLR/mcuco
 #define STM32_MCO1SEL                       STM32_MCO1SEL_HSE
 #define STM32_MCO1PRE                       STM32_MCO1PRE_DIV1
 #define STM32_MCO2SEL                       STM32_MCO2SEL_SYSCLK
-#define STM32_MCO2PRE                       STM32_MCO2PRE_DIV1
+#define
+
+ STM32_MCO2PRE                       STM32_MCO2PRE_DIV1
 #define STM32_I2SSRC                        STM32_I2SSRC_CKIN
 #define STM32_PLLI2SN_VALUE                 192
 #define STM32_PLLI2SR_VALUE                 2
@@ -118,120 +122,130 @@ you have then **2 files** to adjust with the exact same settings. `nanoCLR/mcuco
 #define STM32_BKPRAM_ENABLE                 FALSE
 ```
 
-Build your target and deploy it. See [how to flash a target using STM 32 Cube Programmer](./flash-cube-programmer.md) (you'll have to install the tool).
+构建目标并部署它。参见[如何使用STM32 Cube Programmer刷写目标](./flash-cube-programmer.md)（您需要安装该工具）。
 
-> Note: even if you get an error message about not being able to start the program, disconnect and reconnect your board, if it does show up in Visual Studio in the Device Explorer nanoFramework extension, it means all went well. Some DFU may have been reflashed compared to the original and may have a weird behavior.
+> 注意：即使您收到关于无法启动程序的错误消息，断开并重新连接开发板，如果它在Visual Studio的设备资源管理器nanoFramework扩展中显示出来，表示一切顺利。与原始板相比，一些DFU可能已被重新刷写，可能会出现奇怪的行为。
 
-If you get a deployment error, try the deployment again.
+如果遇到部署错误，请尝试再次部署。
 
-If the device shows up, it means you are successful, the most complicated part is done!
+如果设备显示出来，这意味着您成功了，最复杂的部分已经完成！
 
-> Note: moving forward the most important file to adjust from both is `nanoCLR/mcuconf.h`. You can add more if you're adding anything into your nanoBooter.
+> 注意：在以后的开发中，从这两个文件中最重要的要调整的是`nanoCLR/mcuconf.h`。如果向nanoBooter添加了任何内容，可以添加更多文件。
 
-## Adjust the default pin behavior and setup all pin behaviors
+## 调整默认引脚行为并设置所有引脚行为
 
-You will now have to adjust the default behavior of the pins when the board is booted up. But also create all the SPI, I2C, UART configurations.
+现在，您需要调整开发板启动时引脚的默认行为。但是还需要创建所有SPI、I2C、UART配置。
 
-We will use the STM32 Cube program installed before. This will help setup your pins, make sure all is coherent and reduces the number of potential errors. All the setup is done thru the `Connectivity` and `Analog` sub menu:
+我们将使用之前安装的STM32 Cube程序。这将帮助设置您的引脚，确保一切一致，并减少潜在的错误。所有的设置都通过`Connectivity`和`Analog`子菜单完成：
 
-![uart, spi, i2c settings](../../images/stm32-community-default-pins.jpg)
+![uart, spi, i2c设置](../../images/stm32-community-default-pins.jpg)
 
 ![analog](../../images/stm32-community-analog.jpg)
 
-Check you board schema and start using the tool to setup the tool.  This is how you MCU will look like with a real configuration:
+检查您的开发板原理图，并开始使用该工具进行设置。这是您的MCU在进行了真实配置后的样子：
 
 ![analog](../../images/stm32-community-processor-setup.jpg)
 
-> Tip: if you start making non possible configuration, you'll know it quickly as you'll get red elements or the non possibility to setup more elements. The screen captures above shows you that IC3 and SPI5 can't be setup any more for example. Which is the case in this board example. If you arrive to a situation when you get an error where you should not, then double check, you may have an issue somewhere!
-> Note: sometimes some pins may have multiple functions. **BUT** you can't use all those functions at the same time. While setting up all the pins, make sure you select the primary function of those pins rather than trying to make all the combinations possible.
+> 提示：如果您开始进行不可能的配置，您会很快知道，因为您会收到红色元素或无法设置更多元素的错误。上面的屏幕截图显示了IC3和SPI5无法进行设置的例子。这是此开发板示例中的情况。如果您遇到了一个错误，而您不应该遇到错误，请仔细检查，可能有问题发生了！
 
-Now, it's time to ask the tool to build the source, click on `Generate Code`, you won't need the SDK so you can answer `No` to the various questions. We only need the generated project to check the Alternate pin configuration.
+现在，是时候要求工具构建源代码了，请单击`Generate Code`，您不需要SDK，所以可以回答“否”来回答各种问题。我们只需要生成的项目来检查交替引脚配置。
 
-Then you need to adjust the `board\board.h` file. Find the pin name and rename them to reflect your board. Here is a real example:
+然后，您需要调整`board\board.h`文件。找到引脚名称并重命名以反映您的开发板。以下是一个真实示例：
 
 ```cpp
 /*
- * IO pins assignments.
+ *
+
+ Board pins assignments.
  */
-#define GPIOA_ADC1_0                0U
-#define GPIOA_PIN1                  1U
-#define GPIOA_ADC1_2                2U
-#define GPIOA_ADC1_3                3U
-#define GPIOA_PIN4                  4U
-#define GPIOA_SPI1_CLK              5U
-#define GPIOA_SD_CMD                6U
-#define GPIOA_SPI1_MOSI             7U
-#define GPIOA_SD_D1                 8U
-#define GPIOA_SD_D2                 9U
-#define GPIOA_UART1_RX              10U
-#define GPIOA_OTG_FS_DM             11U
-#define GPIOA_OTG_FS_DP             12U
-#define GPIOA_LED_RED               13U
-#define GPIOA_LED_GREEN             14U
-#define GPIOA_UART1_TX              15U
+
+#define GPIOA_USART1_TX                 9
+#define GPIOA_USART1_RX                 10
+
+#define GPIOB_PIN_0                     0
+#define GPIOB_PIN_1                     1
+#define GPIOB_PIN_2                     2
+#define GPIOB_PIN_3                     3
+#define GPIOB_PIN_4                     4
+#define GPIOB_PIN_5                     5
+#define GPIOB_PIN_6                     6
+#define GPIOB_PIN_7                     7
+#define GPIOB_I2C1_SCL                  8
+#define GPIOB_I2C1_SDA                  9
+#define GPIOB_PIN_10                    10
+#define GPIOB_PIN_11                    11
+#define GPIOB_PIN_12                    12
+#define GPIOB_PIN_13                    13
+#define GPIOB_SPI2_CLK                  13
+#define GPIOB_PIN_14                    14
+#define GPIOB_SPI2_MISO                 14
+#define GPIOB_PIN_15                    15
+#define GPIOB_SPI2_MOSI                 15
 ```
+> 提示：对使用的所有引脚进行重命名，这有助于查找和减少错误。要进行重命名，请在文件中使用全局替换，引脚的名称出现多次。
 
-> Tip: Rename all the pins you are using, this will help to make is easier to find and reduces mistakes. To rename use global replace in the file, the name of the pin are present multiple times.
-
-Once the rename is done, you will have to adjust the pins initial values. This is done in the various `MODER, OTYPER, OSPEEDR, PUPDR, ODR, AFRL, AFRH` defines. Please make sure to refer to the docs or the generated code if you have a doubt. The below explanation is here just to help.
+一旦重命名完成，您将需要调整引脚的初始值。这是在各种定义 `MODER, OTYPER, OSPEEDR, PUPDR, ODR, AFRL, AFRH` 中完成的。如果您有任何疑问，请确保参考文档或生成的代码。下面的解释仅供参考。
 
 ### MODER
 
-Here are the values to use:
+以下是要使用的值：
 
-- PIN_MODE_ANALOG for any ADC pin.
-- PIN_MODE_OUTPUT for leds and other known output pins.
-- PIN_MODE_ALTERNATE for any SPI, I2C, UART elements.
-- PIN_MODE_INPUT for anything else.
+- 对于任何 ADC 引脚，请使用 PIN_MODE_ANALOG。
+- 对于 LED 和其他已知输出引脚，请使用 PIN_MODE_OUTPUT。
+- 对于任何 SPI、I2C、UART 元素，请使用 PIN_MODE_ALTERNATE。
+- 对于其他任何情况，请使用 PIN_MODE_INPUT。
 
 ### OTYPER
 
-Here are the values to use:
+以下是要使用的值：
 
-- PIN_OTYPE_OPENDRAIN for I2C.
-- PIN_OTYPE_PUSHPULL for anything else.
+- 对于 I2C，请使用 PIN_OTYPE_OPENDRAIN。
+- 对于其他情况，请使用 PIN_OTYPE_PUSHPULL。
 
 ### OSPEEDR
 
-- PIN_OSPEED_MEDIUM for the Leds.
-- PIN_OSPEED_HIGH for anything else.
+- 对于 LED，请使用 PIN_OSPEED_MEDIUM。
+- 对于其他情况，请使用 PIN_OSPEED_HIGH。
 
 ### PUPDR
 
-- PIN_PUPDR_FLOATING for anything that is output or I2C, SPI, UART or defined like clock.
-- PIN_PUPDR_PULLUP for the rest which should be only normal GPIO, non yet defined PWM or equivalent.
+- 对于输出或 I2C、SPI、UART 或类似时钟的任何内容，请使用 PIN_PUPDR_FLOATING。
+- 对于其余的引脚，请使用 PIN_PUPDR_PULLUP，这应该只用于普通 GPIO、尚未定义的 PWM 或等效引脚。
 
 ### ODR
 
-This is the initial state of the pin:
+这是引脚的初始状态：
 
-- PIN_ODR_LOW for leds, ADC and other elements like that.
-- PIN_ODR_HIGH for the rest.
+- 对于 LED、ADC 和类似元素，请使用 PIN_ODR_LOW。
+- 对于其余的情况，请使用 PIN_ODR_HIGH。
 
-> Tip: Any unused pin should be input pull-up high
+> 提示：任何未使用的引脚应为输入上拉高电平。
 
-### AFRL and AFRH
+### AFRL 和 AFRH
 
-This is where you can define the alternate configuration to use. This must be done properly for all the SPI, I2C, UART, SD Card configurations.
+这是您可以定义要使用的替代配置的位置。这必须正确地针对所有 SPI、I2C、UART、SD 卡配置进行设置。
 
-A configuration for a pin will look like that:
+引脚的配置如下所示：
 
 ```cpp
 PIN_AFIO_AF(GPIOA_SPI1_MOSI, 5U)
 ```
 
-In this case, `5U` means alternate 5.
+在这种情况下，`5U` 表示替代 5。
 
-> Tip: In the generated files from STM32 Cube, you will find the alternate with AFx where x is the number
-Here is an example of what you need to adjust:
-> Tip: From the tool, you can get access to your processor datasheet configuration file. This file contains all the possible configuration and alternate as well.
+> 提示：在 STM32 Cube 生成的文件中，您将在 AFx 中找到替代项，其中 x 是数字。
+下面是您需要调整的示例：
 
-Now you have adjusted your pins, you will have to add the proper CPP files relates to the various API.
-As for the original device cloned you have made, copy/paste a file from another device and adjust.
+> 提示：从工具中，您可以访问处理器数据手册配置文件。该文件包含所有可能的配置和替代项。
 
-### The LINE section
+现在您已经调整了引脚，您将需要添加与各种 API 相关的正确 CPP 文件。
+至于您所克隆的原始设备，复制/粘贴另一个设备的文件并进行调整。
 
-The LINE section will create GPIO for internal native level usage. For example if you have an SD Card reader with an insert detection, you'll have to have a line setup for that. Here is an example of setup including the OTG nines and the Leds:
+### LINE 部分
+
+LINE 部分将为内部本机级别使用创建 GPIO。例如，如果您有一个带有插入检测的 SD 卡读卡器，您将需要设置一行用于该目的。以下是一个
+
+包含 OTG 引脚和 LED 的设置示例：
 
 ```cpp
 /*
@@ -248,13 +262,13 @@ The LINE section will create GPIO for internal native level usage. For example i
 
 ## ADC
 
-The file to add or adjust is `target_windows_devices_adc_config.cpp`.
+要添加或调整的文件是 `target_windows_devices_adc_config.cpp`。
 
-For ADC, those are indexed based. You can add as many channels as available, just make sure you document them properly as they won't match the channel number. As you'll see in the example below, the order is not necessary related to the available ADC, it is your own choice.
+对于 ADC，这些是基于索引的。您可以添加尽可能多的通道，只需确保正确记录它们，因为它们将与通道编号不匹配。如下面的示例所示，顺序与可用的 ADC 通道无关，这是您自己的选择。
 
-Also for ADC, for STM32  devices you have 3 additional channels which you can add at the end, those are respectively the board temperature (which is kot accurate in absolute but OK when relative measure is done), the reference voltage at 1.21V and the battery voltage. What you will measure for those is, like for any other channel the raw value. By convention, those 3 additional sensors are always at the end of the first ADC.
+对于 STM32 设备的 ADC，您还可以添加 3 个额外的通道，这些通道分别是板上温度（在绝对温度方面不太准确，但在进行相对测量时可以使用）、1.21V 的参考电压和电池电压。对于这些通道的测量，与任何其他通道一样，您将获得原始值。按照约定，这 3 个额外的传感器始终位于第一个 ADC 的末尾。
 
-The file look like that:
+文件如下所示：
 
 ```cpp
 const NF_PAL_ADC_PORT_PIN_CHANNEL AdcPortPinConfig[] = {
@@ -267,7 +281,7 @@ const NF_PAL_ADC_PORT_PIN_CHANNEL AdcPortPinConfig[] = {
     {1, GPIOA, 5, ADC_CHANNEL_IN5},
     {1, GPIOA, 7, ADC_CHANNEL_IN7},
 
-    // these are the internal sources, available only at ADC1
+    // 这些是内部源，仅在 ADC1 可用
     {1, NULL, 0, ADC_CHANNEL_SENSOR},
     {1, NULL, 0, ADC_CHANNEL_VREFINT},
     {1, NULL, 0, ADC_CHANNEL_VBAT},
@@ -278,21 +292,23 @@ const int AdcChannelCount = ARRAYSIZE(AdcPortPinConfig);
 
 ## SPI
 
-Make sure you add your SPI channels in the file `target_windows_devices_spi_config.cpp`.
+请确保在文件 `target_windows_devices_spi_config.cpp` 中添加 SPI 通道。
 
-Here is how it looks like to add SPI1:
+以下是如何添加 SPI1 的示例：
 
 ```cpp
-// pin configuration for SPI1
-// port for SCK pin is: 5 SPI1_SCLK
-// port for MISO pin is: 4 SPI1_MISO
-// port for MOSI pin is: 7 SPI1_MOSI
+// SPI1 的引脚配置
+// SCK 引脚的端口是：5 SPI1_SCLK
+// MISO 引脚的端口是：4 SPI1_MISO
+// MOSI 引脚的端口是：7 SPI1_MOSI
 
-// GPIO alternate pin function is 5 (see alternate function mapping table in device datasheet)
+// GPIO 替代引脚功能为 5（请参阅设备数据手册中的替代功能映射表）
 SPI_CONFIG_PINS(1, GPIOA, 5, GPIOB, 4, GPIOA, 7, 5)
 ```
 
-You will have as well the `mcuconf.h` files to adjust as well. Find the SPI section and put any channel you want to expose to TRUE:
+您还需要相应地调整 `mcuconf.h` 文件。找到 SPI 部分，并将
+
+要公开的任何通道设置为 TRUE：
 
 ```cpp
 /*
@@ -303,39 +319,39 @@ You will have as well the `mcuconf.h` files to adjust as well. Find the SPI sect
 #define STM32_SPI_USE_SPI3                  FALSE
 ```
 
-If the MCU  you're using is the same as one of the existing board, then the rest of the SPI configuration should be good. Otherwise, please adjust with the documentation.
+如果您使用的 MCU 与现有板上的 MCU 相同，则其余的 SPI 配置应该正确。否则，请根据文档进行调整。
 
 ## I2C
 
-The process is the same as for SPI. The file to add or adjust is `target_windows_devices_i2c_config.cpp`. Here is an example with 2 I2C channels:
+与 SPI 类似，I2C 的过程也是一样的。要添加或调整的文件是 `target_windows_devices_i2c_config.cpp`。以下是一个具有 2 个 I2C 通道的示例：
 
 ```cpp
 //////////
 // I2C1 //
 //////////
 
-// pin configuration for I2C1
-// port for SCL pin is: GPIOB
-// port for SDA pin is: GPIOB
-// SCL pin: is GPIOB_8
-// SDA pin: is GPIOB_9
-// GPIO alternate pin function is 4 (see alternate function mapping table in device datasheet)
+// I2C1 的引脚配置
+// SCL 引脚的端口是：GPIOB
+// SDA 引脚的端口是：GPIOB
+// SCL 引脚是：GPIOB_8
+// SDA 引脚是：GPIOB_9
+// GPIO 替代引脚功能为 4（请参阅设备数据手册中的替代功能映射表）
 I2C_CONFIG_PINS(1, GPIOB, GPIOB, 8, 9, 4)
 
 //////////
 // I2C1 //
 //////////
 
-// pin configuration for I2C1
-// port for SCL pin is: GPIOB
-// port for SDA pin is: GPIOB
-// SCL pin: is GPIOB_10
-// SDA pin: is GPIOB_3
-// GPIO alternate pin function is 9 (see alternate function mapping table in device datasheet)
+// I2C1 的引脚配置
+// SCL 引脚的端口是：GPIOB
+// SDA 引脚的端口是：GPIOB
+// SCL 引脚是：GPIOB_10
+// SDA 引脚是：GPIOB_3
+// GPIO 替代引脚功能为 9（请参阅设备数据手册中的替代功能映射表）
 I2C_CONFIG_PINS(2, GPIOB, GPIOB, 10, 3, 9)
 ```
 
-Make sure as well the channels are TRUE in the `mcuconf.h` files. Here is an example with 2 I2C:
+请确保在 `mcuconf.h` 文件中设置相应的通道为 TRUE。以下是一个具有 2 个 I2C 的示例：
 
 ```cpp
 /*
@@ -348,32 +364,34 @@ Make sure as well the channels are TRUE in the `mcuconf.h` files. Here is an exa
 
 ## UART
 
-The same principle exist for UART. Both `target_windows_devices_serialcommunication_config.h` and `target_windows_devices_serialcommunication_config.cpp` need to be adjusted.
+UART 也是同样的原理。需要调整 `target_windows_devices_serialcommunication_config.h` 和 `target_windows_devices_serialcommunication_config.cpp` 两个文件。
 
-This is how to add UART2 in the header file:
+以下是在头文件中添加 UART2 的示例：
 
 ```cpp
-// enable USART2
+// 启用 USART2
 #define NF_SERIAL_COMM_STM32_UART_USE_USART2   TRUE
 ```
 
-And in the CPP file:
+在 CPP 文件中：
 
 ```cpp
 ///////////
 // UART2 //
 ///////////
 
-// pin configuration for UART2
-// port: GPIOA
-// TX pin: is GPIOA 15
-// RX pin: is GPIOA 10
-// GPIO alternate pin function is 7 (see "Table 9. Alternate function mapping" in STM32F411xC and STM32F411xE datasheet)
+// UART2 的引脚配置
+// 端口：GPIOA
+// TX 引脚：GPIOA 15
+// RX 引脚：GPIOA 10
+// GPIO 替代引脚功能为 7（请参阅 STM32F411xC 和 STM32F411xE 数据手册中的 "Table 9. Alternate function mapping"）
 UART_CONFIG_PINS(2, GPIOA, GPIOA, 2, 3, 7)
 
-// buffers
-// buffers that are R/W by DMA are recommended to be aligned with 32 bytes cache page size boundary
-// because of issues with cache coherency and DMA (this is particularly important with Cortex-M7 because of cache)
+// 缓冲区
+// 建议使用 DMA 读写的缓
+
+冲区应与 32 字节缓存页面大小边界对齐
+// 由于缓存和 DMA 的问题（这在 Cortex-M7 上尤为重要，因为缓存问题），因此缓冲区应该对齐。
 #if defined(__GNUC__)
 __attribute__((aligned (32)))
 #endif
@@ -383,37 +401,37 @@ __attribute__((aligned (32)))
 #endif
 uint8_t Uart2_RxBuffer[UART2_RX_SIZE];
 
-// initialization for UART2
+// UART2 的初始化
 UART_INIT(2, UART2_TX_SIZE, UART2_RX_SIZE)
 
-// un-initialization for UART2
+// UART2 的反初始化
 UART_UNINIT(2)
 ```
 
-The specificity is that you cannot use UART1. All others can be used. Make sure do document this properly for your users.
+特别的是，您不能使用 UART1。其他所有 UART 都可以使用。请确保为您的用户正确地记录此信息。
 
-> Tip: you can add more than 1 additional UART, in most cases for STM32, either UART2 or 6 are used. They'll show up as COM2, COM6 on the managed side.
+> 提示：您可以添加多个额外的 UART，对于大多数 STM32 来说，通常使用 UART2 或 6。它们将显示为托管端上的 COM2、COM6。
 
 ## SD Card
 
-Add or adjust the existing file `target_windows_storage_config.h`. You'll have to add the line detect:
+添加或调整现有文件 `target_windows_storage_config.h`。您将需要添加检测线路：
 
 ```cpp
-// maps the SD Card driver
+// 映射 SD Card 驱动程序
 #define SD_CARD_DRIVER      SDCD1
 
-// maps the SD Card detect GPIO definition (in Target_Windows_Storage.c) to board GPIO line (in board.h)
+// 映射 SD Card 检测 GPIO 定义（在 Target_Windows_Storage.c 中）到板上 GPIO 线路（在 board.h 中）
 #define SDCARD_LINE_DETECT  LINE_SD_DETECT
 
-// includes SPIFFS in storage
+// 在存储中包含 SPIFFS
 #define USE_SPIFFS_FOR_STORAGE  FALSE
 ```
 
-The LINE **must** exist and be properly setup in the board.h file.
+LINE **必须**存在，并在 board.h 文件中正确设置。
 
-Add a file `ff.conf`, copy/paste it from another STM32 board. All the settings in this file should be fine.
+添加一个名为 `ff.conf` 的文件，从其他 STM32 板上复制/粘贴。该文件中的所有设置应该正确。
 
-If the section does not exist, add it in file `nanoCLR\mcuconf.h`:
+如果该部分不存在，请在文件 `nanoCLR\mcuconf.h` 中添加：
 
 ```cpp
 /*
@@ -428,19 +446,19 @@ If the section does not exist, add it in file `nanoCLR\mcuconf.h`:
 #define STM32_SDC_SDIO_DMA_STREAM           STM32_DMA_STREAM_ID(2, 3)
 ```
 
-## adjust your variant accordingly
+## 根据您的变体进行调整
 
-For the various API make sure you have the proper API. You need some special one for the card.
+对于各种 API，请确保使用适当的 API。对于卡片，您需要一些特殊的 API。在删除 `Windows.Devices` 命名空间之前，您需要同时使用 `Windows.Devices` 和 `System.Device` 命名空间。
 
-Before `Windows.Devices` namespaces will be removed you need both the `Windows.Devices` **and** `System.Devive` namespaces.
+> 提示：不要尝试一次调整所有内容，如果这是您第一次使用板子，请小步前进。先添加 SPI，然后添加 I2C，再添加 UART，最后添加 SD 卡。在每次构建后测试镜像，在每个阶段调整任何错误。
 
-> Tip: do not try to adjust everything at the same time, make baby steps if it's your first board. Add SPI then I2C then UART and finish wby the SD Card. Test the image at every build, adjust any error at every stage.
+## 为您的板子创建一个扩展
 
-## Create an extension for your board
+使您的用户能够轻松创建 SPI 设备、I2C 设备或其他任何设备。还为板子上的引脚和
 
-Make it easy for your user to create an SPI device or I2C or anything else. Also create a mapping with the board pin, the names. Make it easy for ADC. Use enums if you want. Place your code in the folder `managed_helpers`. Add a nuspec file. You can find a great example [here](https://github.com/nanoframework/nf-interpreter/blob/develop/targets/ChibiOS/ST_STM32F769I_DISCOVERY/managed_helpers/package.nuspec).
+名称创建映射。为 ADC 使用枚举（如果需要的话）。将您的代码放在 `managed_helpers` 文件夹中。添加一个 nuspec 文件。您可以在[此处](https://github.com/nanoframework/nf-interpreter/blob/develop/targets/ChibiOS/ST_STM32F769I_DISCOVERY/managed_helpers/package.nuspec)找到一个很好的示例。
 
-He is an extract of of function definition for a board extension class:
+以下是用于板子扩展类的函数定义摘录示例：
 
 ```csharp
 namespace nanoFramework.Targets.Community.PybStick2x
@@ -497,11 +515,11 @@ namespace nanoFramework.Targets.Community.PybStick2x
                     return PinNumber('A', 2);
                 case 10:
                     return PinNumber('A', 3);
-                // More code and more cases
+                // 更多代码和更多 cases
             }
         }
 
-        // More functions like this to help
+        // 更多类似这样的函数，以帮助您
     }
 }
 ```

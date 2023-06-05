@@ -1,54 +1,54 @@
-# AssemblyHeader (CLR_RECORD_ASSEMBLY)
+# AssemblyHeader（CLR_RECORD_ASSEMBLY）
 
-The AssemblyHeader structure contains a number of verification markers and CRCs to validate the legitimacy of the assembly at runtime. Additionally, the Assembly header contains the location information for the MetadataTables and BLOB storage areas.
+AssemblyHeader 结构包含一些用于验证运行时程序集合法性的标记和 CRC。此外，Assembly 标头还包含了 MetadataTables 和 BLOB 存储区的位置信息。
 
-The Structure of the AssemblyHeader is as follows:
+AssemblyHeader 的结构如下：
 
-| Name                                            | Type                  | Description  |
+| 名称                                            | 类型                  | 描述  |
 |-------------------------------------------------|-----------------------|------------  |
-| [Marker](#marker)                               | `uint8_t[8]`          | Id marker for an assembly  |
-| [HeaderCRC](#headercrc)                         | `uint32_t`            | CRC32 of the AssemblyHeader structure itself|
-| [AssemblyCRC](#assemblycrc)                     | `uint32_t`            | CRC32 of the complete assembly|
-| [Flags](#flags)                                 | [AssemblyHeaderFlags](#flags) | Flags for the assembly|
-| [NativeMethodsChecksum](#nativemethodschecksum) | `uint32_t`            | Native Method Checksum|
-| [NativeMethodsOffset](#nativemethodsoffset)     | `uint32_t`            | Native Methods Offset|
-| [Version](#version)                             | `VersionInfo`         | Version information data structure for this assembly|
-| [AssemblyName](#assemblyname)                   | `uint16_t`            | String table index for the Assembly's name|
-| [StringTableVersion](#stringtableversion)       | `uint16_t`            | String table version|
-| [StartOfTables](#startoftables)                 | `uint32_t[16]`        | Array of offsets into the PE file for the metadata tables|
-| NumberOfPatchedMethods                          | `uint32_t`            | Number of patched methods|
-| [PaddingOfTables](#paddingoftables)             | `uint8_t[16]`         | amount of alignment padding for each metadata table|
+| [Marker](#marker)                               | `uint8_t[8]`          | 用于表示程序集的标记符号  |
+| [HeaderCRC](#headercrc)                         | `uint32_t`            | AssemblyHeader 结构本身的 CRC32 校验值|
+| [AssemblyCRC](#assemblycrc)                     | `uint32_t`            | 完整程序集的 CRC32 校验值|
+| [Flags](#flags)                                 | [AssemblyHeaderFlags](#flags) | 程序集的标志位|
+| [NativeMethodsChecksum](#nativemethodschecksum) | `uint32_t`            | Native 方法校验和|
+| [NativeMethodsOffset](#nativemethodsoffset)     | `uint32_t`            | Native 方法偏移量|
+| [Version](#version)                             | `VersionInfo`         | 该程序集的版本信息数据结构|
+| [AssemblyName](#assemblyname)                   | `uint16_t`            | 程序集名称在字符串表中的索引|
+| [StringTableVersion](#stringtableversion)       | `uint16_t`            | 字符串表版本|
+| [StartOfTables](#startoftables)                 | `uint32_t[16]`        | 用于存储元数据表在 PE 文件中的偏移量的数组|
+| NumberOfPatchedMethods                          | `uint32_t`            | 修补方法的数量|
+| [PaddingOfTables](#paddingoftables)             | `uint8_t[16]`         | 每个元数据表的对齐填充字节数|
 
-## Field Details
+## 字段详细信息
 
-The following sections describe the individual fields of the AssemblyHeader structure.
+以下部分描述了 AssemblyHeader 结构的各个字段。
 
 ### Marker
 
-The assembly marker is an eight character marker consisting of a string non zero terminated ASCII encoded characters.
-This is used to clearly identify a .NET **nanoFramework** PE file on disk and in memory at runtime. It also indicates the version of this data structure, thus any modifications to this structure in future releases **MUST** use a new marker string.
+程序集标记是由八个字符组成的标记，由非零终止的 ASCII 编码字符组成。它用于明确识别磁盘上和运行时内存中的 .NET **nanoFramework** PE 文件。它还指示了此数据结构的版本，因此将来版本中对此结构的任何修改**必须**使用新的标记字符串。
 
-| Version  | Marker   | Description|
+| 版本  | 标记   | 描述|
 |----------|----------|------------  |
-| 1.0      | 'NFMRK1' | Marker for version 1.0|
-| 2.0      | 'NFMRK2' | Marker for version 2.0 (after adding support for generics)|
+| 1.0      | 'NFMRK1' | 版本 1.0 的标记|
+| 2.0      | 'NFMRK2' | 版本 2.0 的标记（在添加泛型支持后）|
 
 ### HeaderCRC
 
-ANSI X3.66 32 bit CRC for the AssemblyHeader. This is computed assuming the HeaderCRC is 0.
+AssemblyHeader 的 ANSI X3.66 32 位 CRC。假设 HeaderCRC 为 0 进行计算。
 
 ### AssemblyCRC
 
-ANSI X3.66 32 bit CRC for the entire contents of the Assembly PE data starting from [PaddingOfTables](#paddingoftables)
+Assembly PE 数据内容从 [PaddingOfTables](#paddingoftables) 开始的 ANSI X3.66 32 位 CRC。
 
 ### Flags
 
-The flags property are meant to contain a bit flags value. They are not used in .NET **nanoFramework** and were kept for historical reasons and structure compatibility.
+flags 属性用于存储位标志值。在 .NET **nanoFramework** 中不
+
+使用这些标志，仅出于历史原因和结构兼容性而保留。
 
 ### NativeMethodsChecksum
 
-The ***NativeMethodsChecksum*** is a unique value that is matched against the native methods table stored in the CLR firmware to ensure the methods match. The actual algorithm used for computing this checksum are documented in the [NativeMethodsChecksum Algorithm] document. Though, it worth noting that the actual algorithm doesn't matter. Nothing in the runtime will compute this value. The runtime only compares the assembly's value with the one for the native code registered for a given assembly to ensure they match. As long as the tool generating the assembly and the native method stubs header and code files use the same value then the actual algorithm is mostly irrelevant. The most important aspect of the algorithm chosen is that any change to any type or method signature
-of any type with native methods **MUST** generate a distinct checksum value. The current MetadataProcessor algorithm constructs a mangled string name for the native methods (used to generate the stubs), sorts them all and runs a CRC32 across them to get a distinct value. Since the CRC is based on the fully qualified method name and the types of all parameters any change of the signatures will generate a new value - denoting a mismatch.
+***NativeMethodsChecksum*** 是一个唯一值，用于与存储在 CLR 固件中的原生方法表进行匹配，以确保方法匹配。用于计算此校验和的实际算法在 [NativeMethodsChecksum 算法文档] 中有记录。需要注意的是，实际算法并不重要。运行时不会计算此值。运行时只会将程序集的值与为给定程序集注册的原生代码的值进行比较，以确保它们匹配。只要生成程序集的工具和原生方法存根的标头和代码文件使用相同的值，实际算法就基本上无关紧要。选择算法的最重要方面是，对于任何类型或方法签名的更改，**必须**生成不同的校验和值。当前的 MetadataProcessor 算法构建了原生方法的变形字符串名称（用于生成存根），对它们进行排序，并在其中运行 CRC32，以获得一个不同的值。由于 CRC 基于完全限定的方法名称和所有参数的类型，任何签名的更改都将生成一个新值，表示不匹配。
 
 ### NativeMethodsOffset
 
@@ -56,48 +56,50 @@ of any type with native methods **MUST** generate a distinct checksum value. The
 
 ### Version
 
-The ***Version*** field holds the assembly's version number. (as opposed to the version of the AssemblyHeaderStructure itself). This is used by the debugger for version checks at deployment time. The runtime itself doesn't use versions to resolve references, as only one version of an assembly can be loaded at a time. Thus assembly references in the PE format don't include a version.
+***Version*** 字段保存了程序集的版本号（与 AssemblyHeader 结构本身的版本号不同）。调试器在部署时使用该版本号进行版本检查。运行时本身不使用版本来解析引用，因为一次只能加载一个程序集的一个版本。因此，PE 格式中的程序集引用不包含版本信息。
 
 ### AssemblyName
 
-[String Table](StringTable.md) index for the name of the assembly
+程序集名称在 [字符串表](StringTable.md) 中的索引。
 
 ### StringTableVersion
 
-Should be equal to 1
+应为 1。
 
 ### StartOfTables
 
-Fixed array of offsets to the table data for each of the different tables. The entries in this array are offsets from the start of the assembly header itself (e.g. the file seek offset if the PE image is from a file)
+固定的偏移量数组，用于指向不同表的表数据。此数组中的条目是相对于 AssemblyHeader 本身的起始偏移量（如果 PE 映像来自文件，则是文件寻址偏移量）。
 
-| Name                                                         | .NET **nanoFramework** Source Element Name | Description |
+| 名称                                                         | .NET **nanoFramework** 源元素名称 | 描述 |
 |--------------------------------------------------------------|-----------------------------------|-----------|
-| [AssemblyRef](AssemblyRefTableEntry.md)                      | CLR_RECORD_ASSEMBLYREF            | Table of Assembly references|
-| [TypeRef](TypeRefTableEntry.md)                              | CLR_RECORD_TYPEREF                | Reference to a type in another assembly|
-| [FieldRef](FieldRefTableEntry.md)                            | CLR_RECORD_FIELDREF               | Reference to a field of a type in another assembly|
-| [MethodRef](MethodRefTableEntry.md)                          | CLR_RECORD_METHODREF              | Reference to a method of a type in another assembly|
-| [TypeDef](TypeDefTableEntry.md)                              | CLR_RECORD_TYPEDEF                | Type definition for a type in this assembly|
-| [FieldDef](FieldDefTableEntry.md)                            | CLR_RECORD_FIELDDEF               | Field definition for a type in this assembly|
-| [MethodDef](MethodDefTableEntry.md)                          | CLR_RECORD_METHODDEF              | Method definition for a type in this assembly|
-| [GenericParam](GenericParamTableEntry.md)                    | CLR_RECORD_GENERICPARAM           | Generic parameter definition (new in v2.0)|
-| [MethodSpec](MethodSpecTableEntry.md)                        | CLR_RECORD_METHODSPEC             | Method specification (new in v2.0)|
-| [Attributes](AttributeTableEntry.md)                        | CLR_RECORD_ATTRIBUTE              | Attribute types defined in this assembly|
-| [TypeSpec](TypeSpecTableEntry.md)                            | CLR_RECORD_TYPESPEC               | TypeSpecifications (signatures) used in this assembly|
-| [Resources](ResourcesTableEntry.md)                          | CLR_RECORD_RESOURCE               | Resource items in a resource file bound to this assembly|
-| [ResourcesData](ResourcesTableEntry.md)                        | \                           | Blob table data for the resources|
-| [Strings](StringTable.md)                                    | \                           | Blob table data for the strings|
-| [Signatures](SignatureTable.md)                              | \                           | Blob table data for the metadata signatures|
-| [ByteCode](Common-PE-Types-and-Enumerations.md)                                  | \                           | Blob table data for the IL byte code instructions|
-| [ResourcesFiles](ResourcesTableEntry.md)                | CLR_RECORD_RESOURCE_FILE          | Resource files descriptors for resource files bound to this assembly|
-| [EndOfAssembly](Common-PE-Types-and-Enumerations.md)                            | \<N/A>                            | Technically, this is not a table. Instead this entry contains the offset to the end of the assembly, which is useful for finding the next assembly in a DAT region|
+| [AssemblyRef](AssemblyRefTableEntry.md)                      | CLR_RECORD_ASSEMBLYREF            | 程序集引用表|
+| [TypeRef](TypeRefTableEntry.md)                              | CLR_RECORD_TYPEREF                | 引用其他程序集中的类型|
+| [FieldRef](FieldRefTableEntry.md)                            | CLR_RECORD_FIELDREF               | 引用其他程序集中的类型的字段|
+| [MethodRef](MethodRefTableEntry.md)                          | CLR_RECORD_METHODREF              | 引用其他程序集中类型的方法|
+| [TypeDef](TypeDefTableEntry.md)                              | CLR_RECORD_TYPEDEF                | 此程序集中类型的定义|
+| [FieldDef](FieldDefTableEntry.md)                            | CLR_RECORD_FIELDDEF               | 此程序集中类型的字段定义|
+| [MethodDef](MethodDefTableEntry.md)                          | CLR_RECORD_METHODDEF              |
+
+ 此程序集中类型的方法定义|
+| [GenericParam](GenericParamTableEntry.md)                    | CLR_RECORD_GENERICPARAM           | 泛型参数定义（2.0 版本新增）|
+| [MethodSpec](MethodSpecTableEntry.md)                        | CLR_RECORD_METHODSPEC             | 方法规范（2.0 版本新增）|
+| [Attributes](AttributeTableEntry.md)                        | CLR_RECORD_ATTRIBUTE              | 此程序集中定义的属性类型|
+| [TypeSpec](TypeSpecTableEntry.md)                            | CLR_RECORD_TYPESPEC               | 用于此程序集的类型规范（签名）|
+| [Resources](ResourcesTableEntry.md)                          | CLR_RECORD_RESOURCE               | 绑定到此程序集的资源文件中的资源项|
+| [ResourcesData](ResourcesTableEntry.md)                        | \                           | 资源的 Blob 表数据|
+| [Strings](StringTable.md)                                    | \                           | 字符串的 Blob 表数据|
+| [Signatures](SignatureTable.md)                              | \                           | 元数据签名的 Blob 表数据|
+| [ByteCode](Common-PE-Types-and-Enumerations.md)                                  | \                           | IL 字节码指令的 Blob 表数据|
+| [ResourcesFiles](ResourcesTableEntry.md)                | CLR_RECORD_RESOURCE_FILE          | 绑定到此程序集的资源文件的资源文件描述符|
+| [EndOfAssembly](Common-PE-Types-and-Enumerations.md)                            | \<N/A>                            | 从技术上讲，这不是一个表。而是此条目包含了程序集末尾的偏移量，用于找到 DAT 区域中的下一个程序集|
 
 ### NumberOfPatchedMethods
 
-Should be equal to 0. Not supported in .NET nanoFramework
+应为 0。在 .NET nanoFramework 中不支持。
 
 ### PaddingOfTables
 
-For every table, a number of bytes that were padded to the end of the table to align the next table to a 32bit boundary. The start of each table is aligned to a 32bit boundary, and ends at a 32bit boundary.
-Some of these tables will, therefore, have no padding, and all will have values in the range [0-3]. This isn't the most compact form to hold this information, but it only costs 16 bytes/assembly. Trying to only align some of the tables is just much more hassle than it's worth. This field itself must also be aligned on a 32 bit boundary. This padding is used to compute the size of a given table (including the blob data) using the following formula:
+对于每个表，填充到表末尾以使下一个表对齐到 32 位边界的字节数。每个表的起始位置对齐到 32 位边界，并在 32 位边界结束。
+因此，其中一些表将不需要填充，所有表的值都在 [0-3] 范围内。这不是保存此信息的最紧凑形式，但每个程序集只需额外 16 字节。只对其中的一些表进行对齐比较麻烦，不值得。此字段本身也必须对齐到 32 位边界。这个填充用于使用以下公式计算给定表的大小（包括 Blob 数据）：
 
-`TableSize = StartOfTables[ tableindex + 1 ] - StartOfTables[ tableindex ] - PaddingOfTables[ tableindex ]`
+`TableSize = StartOfTables[tableindex + 1] - StartOfTables[tableindex] - PaddingOfTables[tableindex]`

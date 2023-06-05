@@ -1,8 +1,8 @@
 # MethodSpecTableEntry (CLR_RECORD_METHODSPEC)
 
-The MethodSpec Table (new in v2.0) consists of the following columns:
+MethodSpec 表（v2.0 中新增）包含以下列：
 
-| Name          | Type                | Description  |
-|---------------|---------------------|------------  |
-| Method        | MethodDefOrRef      | Index into the [MethodDef table](MethodDefTableEntry.md) or [MemberRef table](MethodRefTableEntry.md), specifying to which generic method this row refers; that is, which generic method this row is an instantiation of; more precisely, a MethodDefOrRef.|
-| Instantiation | SignatureTableIndex | Index into [signature table](SignatureTable.md) holding the signature of this instantiation|
+| 名称           | 类型                   | 描述                                                          |
+|---------------|---------------------|------------                                                  |
+| Method        | MethodDefOrRef      | 索引指向 [MethodDef 表](MethodDefTableEntry.md) 或 [MemberRef 表](MethodRefTableEntry.md)，指定该行引用的泛型方法；也就是说，该行是哪个泛型方法的实例化；更准确地说，是一个 MethodDefOrRef。|
+| Instantiation | SignatureTableIndex | 索引指向 [signature 表](SignatureTable.md)，其中存储了该实例化的签名。|

@@ -1,9 +1,9 @@
-# TypeRefTableEntry (CLR_RECORD_TYPEREF)
+# TypeRefTableEntry（CLR_RECORD_TYPEREF）
 
-The TypeRef Table consists of the following columns:
+TypeRef表包含以下列：
 
-| Name      | Type                 | Description  |
-|-----------|----------------------|------------  |
-| Name      | StringTableIndex     | Index into [string table](StringTable.md) for the name of the type|
-| Namespace | StringTableIndex     | Index into [string table](StringTable.md) for the namespace|
-| Scope     | TypeRefOrAssemblyRef | Binary token for either the [TypeRef table](TypeRefTableEntry.md) or the  [AssemblyRef table](AssemblyRefTableEntry.md)|
+| 名称 | 类型 | 描述 |
+| --- | --- | --- |
+| Name | StringTableIndex | 类型名称在[string table](StringTable.md)中的索引 |
+| Namespace | StringTableIndex | 命名空间在[string table](StringTable.md)中的索引 |
+| Scope | TypeRefOrAssemblyRef | 二进制标记，指向[TypeRef表](TypeRefTableEntry.md)或[AssemblyRef表](AssemblyRefTableEntry.md)之一 |

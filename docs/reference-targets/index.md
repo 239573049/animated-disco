@@ -1,32 +1,32 @@
-# Reference target boards
+# 参考目标板
 
-We provide ready build firmware images for several reference target boards. These can be used for either initial testing and start feeling how cool is to work with .NET **nanoFramework** or as the base for system designers to develop their own custom boards and firmware.
+我们为几个参考目标板提供了现成的固件映像。这些映像可以用于初始测试，让您感受一下使用.NET **nanoFramework**的酷炫之处，也可以作为系统设计师开发自己的定制板和固件的基础。
 
-## Espressif ESP32 series
+## Espressif ESP32 系列
 
-- [Espressif ESP32 series](esp32.md)
-- [Espressif ESP32-S2 series](esp32-s2.md)
-- [Espressif ESP32-C3 series](esp32-c3.md)
+- [Espressif ESP32 系列](esp32.md)
+- [Espressif ESP32-S2 系列](esp32-s2.md)
+- [Espressif ESP32-C3 系列](esp32-c3.md)
 
-## OrgPal boards
+## OrgPal 板卡
 
 - [OrgPal PalThree](orgpal-palthree.md)
 
-## STMicroelectronics boards
+## STMicroelectronics 板卡
 
 - [NUCLEO64_F091RC](st-nucleo64-f091rc.md)
 - [STM32F429I_DISCOVERY](stm32f429i-discovery.md)
 - [STM32F769I_DISCOVERY](stm32f769i-discovery.md)
 
-## TI SimpleLink boards
+## TI SimpleLink 板卡
 
 - [TI CC1352R1_LAUNCHXL](ti-cc1352r1-launchxl.md)
 - [TI CC3220SF_LAUNCHXL](ti-cc3220sf-launchxl.md)
 
-## NXP boards
+## NXP 板卡
 
 - [NXP i.MX_RT1060_EVK](mimxrt-1060-evk.md)
 
-## Community target boards
+## 社区目标板
 
-There is a GitHub repository that holds target boards provided by community members. Check it [here](https://github.com/nanoframework/nf-Community-Targets).
+有一个 GitHub 存储库，其中包含社区成员提供的目标板。在[这里](https://github.com/nanoframework/nf-Community-Targets)查看。

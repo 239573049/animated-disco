@@ -1,9 +1,9 @@
-# FieldRefTableEntry (CLR_RECORD_FIELDREF)
+# FieldRefTableEntry（CLR_RECORD_FIELDREF）
 
-The FieldRef Table consists of the following columns:
+FieldRef 表包含以下列：
 
-| Name      | Type                 | Description  |
+| 名称       | 类型                  | 描述            |
 |-----------|----------------------|------------  |
-| Name      | StringTableIndex     | Index into [string table](StringTable.md) for the name of the type|
-| Owner | TypeRefTableIndex    | Index into [TypeRef table](TypeRefTableEntry.md) for the type containing this field|
-| Sig       | SigTableIndex        | Index into [signature table](SignatureTable.md) describing the type of this field|
+| Name      | StringTableIndex     | 指向[字符串表](StringTable.md)中类型名称的索引  |
+| Owner     | TypeRefTableIndex    | 指向包含此字段的类型的[TypeRef 表](TypeRefTableEntry.md)中的索引  |
+| Sig       | SigTableIndex        | 指向描述此字段类型的[签名表](SignatureTable.md)中的索引  |

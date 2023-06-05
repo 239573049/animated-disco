@@ -1,29 +1,29 @@
-# MethodDefTableEntry (CLR_RECORD_METHODDEF)
+# MethodDefTableEntry（CLR_RECORD_METHODDEF）
 
-The MethodRef table contains entries with the following structure
+MethodRef 表包含以下结构的条目
 
-| Name | Type | Description  |
+| 名称 | 类型 | 描述 |
 |-------------------|------------------|------------  |
-| Name | StringTableIndex | Index into [String table](StringTable.md) for the name of the method|
-| RVA | MetadataOffset | Offset into the IL byte code blob table for the opcodes of the method|
-| Flags | MethodDefFlags | Flags to indicate intrinsic attributes and semantics of the method|
-| RetVal | DataType | DataType of the return value for the method|
-| ArgumentsCount | uint8_t | Count of arguments to the method|
-| LocalsCount | uint8_t | Count of local variables for the method|
-| LengthEvalStack | uint8_t | Length of the evaluation stack for the method|
-| Locals | SigTableIndex | Index into [Signature table](SignatureTable.md) to describe the locals for the method|
-| FirstGenericParam | GenericParamTableIndex | Index into [GenericParam table](GenericParamTableEntry.md) for the first generic parameter of the method|
-| GenericParamCount | uint8_t | Count of generic parameters for the method|
-| Signature | SigTableIndex | Index into [Signature table](SignatureTable.md) that describes the method itself|
+| Name | StringTableIndex | 方法名称在 [字符串表](StringTable.md) 中的索引 |
+| RVA | MetadataOffset | 方法的 IL 字节码表中操作码的偏移量 |
+| Flags | MethodDefFlags | 标志，指示方法的内在属性和语义 |
+| RetVal | DataType | 方法的返回值的数据类型 |
+| ArgumentsCount | uint8_t | 方法的参数数量 |
+| LocalsCount | uint8_t | 方法的局部变量数量 |
+| LengthEvalStack | uint8_t | 方法的评估堆栈长度 |
+| Locals | SigTableIndex | 描述方法的局部变量的 [签名表](SignatureTable.md) 中的索引 |
+| FirstGenericParam | GenericParamTableIndex | 方法的第一个泛型参数在 [GenericParam 表](GenericParamTableEntry.md) 中的索引 |
+| GenericParamCount | uint8_t | 方法的泛型参数数量 |
+| Signature | SigTableIndex | 描述方法本身的 [签名表](SignatureTable.md) 中的索引 |
 
-## Signature Table Usage
+## Signature 表的使用
 
-The method Def has multiple references to the signature table each describes some aspect of the method in distinct ways. This section describes the sequence of entries in the signature and their meanings for a method definition.
+方法定义中的方法 Def 对签名表有多个引用，每个引用以不同的方式描述方法的某个方面。本节描述了签名的条目顺序及其在方法定义中的含义。
 
-### Locals Signature Table
+### Locals Signature 表
 
-(TODO: Define allowed sequence chains for local signatures. ECMA uses diagrams for this - consider using SVG here)
+（TODO：定义局部签名的允许序列链。ECMA 使用图表进行说明-考虑在此处使用 SVG）
 
-### Method Signature
+### 方法签名
 
-(TODO: Define allowed sequence chains for the method's signature. ECMA uses diagrams for this - consider using SVG here)
+（TODO：定义方法签名的允许序列链。ECMA 使用图表进行说明-考虑在此处使用 SVG）

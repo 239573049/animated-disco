@@ -1,16 +1,16 @@
-# Application deployment
+# 应用程序部署
 
-## About this document
+## 关于本文档
 
-This document describes how a managed .NET **nanoFramework** application is deployed to a target device.
+本文档描述了如何将托管的.NET **nanoFramework**应用程序部署到目标设备上。
 
-## Deployment preparation
+## 部署准备
 
-The pre-requisites for deploying a managed .NET **nanoFramework** application to a target device are very simple: a collection with the PE files for the target application and the referenced assemblies needs to be compiled. This collection of PE files is a blob with the binary contents of those files.
+将托管的.NET **nanoFramework**应用程序部署到目标设备的先决条件非常简单：需要编译一个包含目标应用程序和引用程序集的PE文件集合。这个PE文件集合是一个包含这些文件二进制内容的blob。
 
-## Deployment
+## 部署
 
-The deployment stage consists on erasing the required deployment blocks on the device (FLASH sectors) and programming them with the blob containing the binary versions of the PE files.
+部署阶段包括在设备上擦除所需的部署块（FLASH扇区）并使用包含PE文件二进制版本的blob对它们进行编程。
 
-.NET **nanoFramework** follows a simplified and high level approach to this. It's up to the programming application to manage the device memory, meaning that it will tell the device exactly where and what is going into the memory.
-Also there is no "reuse" of what might be already deployed on the device. All the PE files are always deployed. This has the advantage of not requiring the extra steps of reading back what's in the device, checking the exact versions and deciding if a certain PE file will fit on a flash block. The downside is that sometimes this causes unnecessary flash erase and write cycles. Considering that a typical modern SoC flash endurance limit is in the range of 100k to 1M cycles this is negligible and acceptable for a device used for development purposes.
+.NET **nanoFramework**采用了一种简化和高级的方法。由编程应用程序来管理设备内存，这意味着它将告诉设备内存中要放置什么以及放置在哪里。
+此外，没有“重用”可能已经部署在设备上的内容。所有PE文件都始终被部署。这样做的好处是不需要额外的步骤来读取设备中的内容，检查确切的版本并决定某个PE文件是否适合闪存块。缺点是有时会导致不必要的闪存擦除和写入循环。考虑到典型现代SoC闪存耐久性极限在100k到1M个周期之间，这对于用于开发目的的设备来说是可以忽略和可接受的。

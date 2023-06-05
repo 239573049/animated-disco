@@ -1,11 +1,11 @@
 # TypeSpecTableEntry (CLR_RECORD_TYPESPEC)
 
-The TypeSpec table is used to describe composite types, like an array.
+TypeSpec表用于描述复合类型，例如数组。
 
-| Name | Type                 | Description  |
-|------|----------------------|------------  |
-| Sig  | SigTableIndex        | Index into [signature table](SignatureTable.md) for the TypeSpec|
+| 名称 | 类型 | 描述 |
+|------|------|------|
+| Sig  | SigTableIndex | TypeSpec的[签名表](SignatureTable.md)中的索引 |
 
-## Signature Table Usage
+## 签名表用法
 
-(TODO: Define valid signature table sequences for a TypeSpec)
+（待办事项：定义TypeSpec的有效签名表序列）

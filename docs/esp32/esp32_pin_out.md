@@ -1,3 +1,5 @@
+# ESP32引脚布局
+ 
 ESP32引脚布局因物理硬件而异。通用的是GPIO编号。因此，请参考您特定板子的文档以找出物理关系。
 
 您可以在[此文件](https://github.com/nanoframework/nf-interpreter/blob/main/targets/ESP32/_common/DeviceMapping_common.cpp)中找到默认映射的所有详细信息。

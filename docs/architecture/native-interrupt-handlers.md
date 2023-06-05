@@ -1,9 +1,9 @@
-# Thread execution
+# 线程执行
 
-## About this document
+## 关于本文档
 
-This document describes how thread execution works with the .NET **nanoFramework** CLR.
+本文档描述了在.NET **nanoFramework** CLR中线程执行的工作原理。
 
-## Native interrupt handlers
+## 本机中断处理程序
 
-The functions implementing interrupt handlers for native code need to be _wrapped_ by the macros `NATIVE_INTERRUPT_START` and `NATIVE_INTERRUPT_END` that take care of setting/resetting the appropriate `System_State` flags.
+用于本机代码中断处理程序的函数需要由宏`NATIVE_INTERRUPT_START`和`NATIVE_INTERRUPT_END`进行“包装”，以负责设置/重置适当的`System_State`标志。

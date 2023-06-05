@@ -1,5 +1,5 @@
-# TI specific articles
+# TI专用文章
 
-- [How To flash nanoCLR in CC13x2 and CC26x2 boards](flash-nanoclr-cc13x2_26x2.md)
-- [How To flash nanoCLR in CC32xx board](flash-nanoclr-cc32xx.md)
-- [Troubleshoot device connection](../getting-started-guides/troubleshooting-device-connection.md)
+- [如何在CC13x2和CC26x2板上刷写nanoCLR固件](flash-nanoclr-cc13x2_26x2.md)
+- [如何在CC32xx板上刷写nanoCLR固件](flash-nanoclr-cc32xx.md)
+- [故障排除设备连接问题](../getting-started-guides/troubleshooting-device-connection.md)

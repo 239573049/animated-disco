@@ -1,56 +1,56 @@
 # TypeDefTableEntry (CLR_RECORD_TYPEDEF)
 
-The MethodRef table contains entries with the following structure:
+MethodRef表包含以下结构的条目：
 
-| Name | Type | Description  |
+| 名称 | 类型 | 描述 |
 |---------------------|---------------------|------------  |
-| Name                | StringTableIndex | Index into string table with the name of the type|
-| NameSpace           | StringTableIndex | Index into string table with the name of the namespace containing the type|
-| Extends             | TypeDefOrRef | Index into the [TypeDef table](TypeDefTableEntry.md), [TypeRef table](TypeRefTableEntry.md), or [TypeSpec table](TypeSpecTableEntry.md) tables, more precisely, a TypeDefOrRef|
-| EnclosingType       | TypeDefOrRef | Index into the [TypeDef table](TypeDefTableEntry.md), more precisely, a TypeDefOrRef if this is a nested type.|
-| Interfaces          | SignatureTableIndex | Index into signature blob table for the set of interfaces implemented by this type|
-| FirstMethod         | MethodDefTableIndex | Index into [MethodDef table](MethodDefTableEntry.md) for the first method of the type|
-| VirtualMethodCount  | uint8_t | Count of virtual methods in the type|
-| InstanceMethodCount | uint8_t | Count of instance methods in the type|
-| StaticMethodCount   | uint8_t | Count of static methods in the type|
-| DataType            | DataType | Data type identity for the type|
-| FirstStaticField    | FieldDefTableIndex | Index into [FieldDef](FieldDefTableEntry.md) for the first static field of the type|
-| FirstInstanceField  | FieldDefTableIndex | Index into [FieldDef](FieldDefTableEntry.md) for the first instance field of the type|
-| StaticFieldsCount   | uint8_t | Count of static fields in the type|
-| InstanceFieldsCount | uint8_t | Count of instance fields for the type|
-| FirstGenericParam   | GenericParamTableIndex | Index into [GenericParam table](GenericParamTableEntry.md) for the first generic parameter for the type|
-| GenericParamCount   | uint8_t | Count of generic parameters for the type|
-| Flags               | [TypeDefFlags](#typedefflags) | Flags defining intrinsic attributes and access modifiers for the type|
+| Name                | StringTableIndex | 类型名称在字符串表中的索引 |
+| NameSpace           | StringTableIndex | 包含该类型的命名空间在字符串表中的索引 |
+| Extends             | TypeDefOrRef | 指向[TypeDef表](TypeDefTableEntry.md)、[TypeRef表](TypeRefTableEntry.md)或[TypeSpec表](TypeSpecTableEntry.md)中的索引，更准确地说，是TypeDefOrRef |
+| EnclosingType       | TypeDefOrRef | 指向[TypeDef表](TypeDefTableEntry.md)中的索引，如果这是一个嵌套类型，则更准确地说是TypeDefOrRef。|
+| Interfaces          | SignatureTableIndex | 指向实现该类型的接口集的签名blob表中的索引 |
+| FirstMethod         | MethodDefTableIndex | 指向[MethodDef表](MethodDefTableEntry.md)中该类型的第一个方法的索引 |
+| VirtualMethodCount  | uint8_t | 该类型中虚方法的数量 |
+| InstanceMethodCount | uint8_t | 该类型中实例方法的数量 |
+| StaticMethodCount   | uint8_t | 该类型中静态方法的数量 |
+| DataType            | DataType | 该类型的数据类型标识 |
+| FirstStaticField    | FieldDefTableIndex | 指向[FieldDef表](FieldDefTableEntry.md)中该类型的第一个静态字段的索引 |
+| FirstInstanceField  | FieldDefTableIndex | 指向[FieldDef表](FieldDefTableEntry.md)中该类型的第一个实例字段的索引 |
+| StaticFieldsCount   | uint8_t | 该类型中静态字段的数量 |
+| InstanceFieldsCount | uint8_t | 该类型中实例字段的数量 |
+| FirstGenericParam   | GenericParamTableIndex | 指向[GenericParam表](GenericParamTableEntry.md)中该类型的第一个泛型参数的索引 |
+| GenericParamCount   | uint8_t | 该类型的泛型参数数量 |
+| Flags               | [TypeDefFlags](#typedefflags) | 定义该类型的内在属性和访问修饰符的标志 |
 
 ## TypeDefFlags
 
-The TypeDefFlags enumeration provides a set of flag values for various intrinsic attributes and accessibility traits of a type definition.
+TypeDefFlags枚举提供了一组标志值，用于类型定义的各种内在属性和可访问性特征。
 
-| Name               | Value  | Description  |
+| 名称               | 值  | 描述  |
 |--------------------|--------|------------|
-|               None | 0      | No special attributes or semantics|
-|          ScopeMask | 0x0007 | Mask to extract the accessibility scope values|
-|          NotPublic | 0x0000 | Class is not public scope.|
-|             Public | 0x0001 | Class is public scope.|
-|       NestedPublic | 0x0002 | Class is nested with public visibility.|
-|      NestedPrivate | 0x0003 | Class is nested with private visibility.|
-|       NestedFamily | 0x0004 | Class is nested with family visibility.|
-|     NestedAssembly | 0x0005 | Class is nested with assembly visibility.|
-|  NestedFamANDAssem | 0x0006 | Class is nested with family and assembly visibility.|
-|   NestedFamORAssem | 0x0007 | Class is nested with family or assembly visibility.|
-|       Serializable | 0x0008 | Type is serializable|
-|      SemanticsMask | 0x0030 | Mask to extract the bits pertaining to type semantics|
-|              Class | 0x0000 | Class Semantics (in particular the value of this field is that bits 4 and 5 are 0)|
-|          ValueType | 0x0010 | Value type semantics|
-|          Interface | 0x0020 | Interface semantics|
-|               Enum | 0x0030 | Enum semantics|
-|           Abstract | 0x0040 | Type is abstract|
-|             Sealed | 0x0080 | Type is sealed|
-|        SpecialName | 0x0100 | Type is a well known special name|
-|           Delegate | 0x0200 | Type is a delegate|
-|  MulticastDelegate | 0x0400 | Type is a multicast delegate|
-|            Patched | 0x0800 | (TODO)|
-|    BeforeFieldInit | 0x1000 | (TODO)|
-|        HasSecurity | 0x2000 | (TODO)|
-|       HasFinalizer | 0x4000 | (TODO)|
-|      HasAttributes | 0x8000 | (TODO)|
+|               None | 0      | 没有特殊属性或语义|
+|          ScopeMask | 0x0007 | 用于提取可访问性范围值的掩码|
+|          NotPublic | 0x0000 | 类不是公共范围。|
+|             Public | 0x0001 | 类是公共范围。|
+|       NestedPublic | 0x0002 | 类是具有公共可见性的嵌套类。|
+|      NestedPrivate | 0x0003 | 类是具有私有可见性的嵌套类。|
+|       NestedFamily | 0x0004 | 类是具有家族可见性的嵌套类。|
+|     NestedAssembly | 0x0005 | 类是具有程序集可见性的嵌套类。|
+|  NestedFamANDAssem | 0x0006 | 类是具有家族和程序集可见性的嵌套类。|
+|   NestedFamORAssem | 0x0007 | 类是具有家族或程序集可见性的嵌套类。|
+|       Serializable | 0x0008 | 类型是可序列化的|
+|      SemanticsMask | 0x0030 | 用于提取与类型语义相关的位的掩码|
+|              Class | 0x0000 | 类语义（特别是该字段的值为4和5位为0）|
+|          ValueType | 0x0010 | 值类型语义|
+|          Interface | 0x0020 | 接口语义|
+|               Enum | 0x0030 | 枚举语义|
+|           Abstract | 0x0040 | 类型是抽象的|
+|             Sealed | 0x0080 | 类型是密封的|
+|        SpecialName | 0x0100 | 类型是一个众所周知的特殊名称|
+|           Delegate | 0x0200 | 类型是委托|
+|  MulticastDelegate | 0x0400 | 类型是多路广播委托|
+|            Patched | 0x0800 | （待办事项）|
+|    BeforeFieldInit | 0x1000 | （待办事项）|
+|        HasSecurity | 0x2000 | （待办事项）|
+|       HasFinalizer | 0x4000 | （待办事项）|
+|      HasAttributes | 0x8000 | （待办事项）|

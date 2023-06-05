@@ -1,12 +1,12 @@
-﻿## Class Libraries
+﻿## 类库
 
-### About this document
+### 关于本文档
 
-This document outlines the design and organization of the .NET **nanoFramework** Class Libraries, providing insight into the decision-making process behind their creation and instructions on how to add a new Class Library. The examples below are related to ChibiOS, which currently serves as the reference implementation for .NET **nanoFramework**.
+本文档概述了.NET **nanoFramework**类库的设计和组织，提供了它们创建背后的决策过程的见解，并提供了如何添加新类库的说明。下面的示例与ChibiOS相关，它目前是.NET **nanoFramework**的参考实现。
 
-### Libraries
+### 类库
 
-Below is a list of the existing libraries, along with their respective NuGet packages and CMake enable options:
+以下是现有类库的列表，以及它们各自的NuGet包和CMake启用选项：
 
 | Class Library | Version | CMake Option |
 | --- | --- | --- |
@@ -55,7 +55,7 @@ Below is a list of the existing libraries, along with their respective NuGet pac
 | System.Text.RegularExpressions | [![NuGet](https://img.shields.io/nuget/v/nanoFramework.System.Text.RegularExpressions.svg?label=NuGet&style=flat&logo=nuget)](https://www.nuget.org/packages/nanoFramework.System.Text.RegularExpressions/) | No native code |
 | System.Threading | [![NuGet](https://img.shields.io/nuget/v/nanoFramework.System.Threading.svg?label=NuGet&style=flat&logo=nuget)](https://www.nuget.org/packages/nanoFramework.System.Threading/) | No native code |
 
-## Other libraries
+## 其他库
 
 | Class Library | Version |
 | --- | --- |
@@ -64,14 +64,14 @@ Below is a list of the existing libraries, along with their respective NuGet pac
 | nanoFramework.Aws.IoTCore.Devices | [![NuGet](https://img.shields.io/nuget/v/nanoFramework.Aws.IoTCore.Devices.svg?label=NuGet&style=flat&logo=nuget)](https://www.nuget.org/packages/nanoFramework.Aws.IoTCore.Devices/) |
 | nanoFramework.Logging | [![NuGet](https://img.shields.io/nuget/v/nanoFramework.Logging.svg?label=NuGet&style=flat&logo=nuget)](https://www.nuget.org/packages/nanoFramework.Logging/) |
 
-The above table displays the latest versions of various nanoFramework packages available on NuGet. These include AMQP Net Lite (micro), nanoFramework.Azure.Devices, nanoFramework.Aws.IoTCore.Devices, and nanoFramework.Logging. You can click on the NuGet icon to access the respective package on the NuGet website.| nanoFramework.Json | [![NuGet](https://img.shields.io/nuget/v/nanoFramework.Json.svg?label=NuGet&style=flat&logo=nuget)](https://www.nuget.org/packages/nanoFramework.Json/) |
+上表显示了NuGet上可用的各种纳米框架包的最新版本。其中包括AMQP Net Lite (micro)、nanoFramework.Azure.Devices。设备,nanoFramework.Aws.IoTCore.Devices和nanoFramework.Logging。您可以在NuGet网站上单击NuGet图标进入相应的软件包。| nanoFramework.Json | [![NuGet](https://img.shields.io/nuget/v/nanoFramework.Json.svg?label=NuGet&style=flat&logo=nuget)](https://www.nuget.org/packages/nanoFramework.Json/) |
 | nanoFramework.m2mqtt | [![NuGet](https://img.shields.io/nuget/v/nanoFramework.m2mqtt.svg?label=NuGet&style=flat&logo=nuget)](https://www.nuget.org/packages/nanoFramework.m2mqtt/) |
 | nanoFramework.SignalR.Client | [![NuGet](https://img.shields.io/nuget/v/nanoFramework.SignalR.Client.svg?label=NuGet&style=flat&logo=nuget)](https://www.nuget.org/packages/nanoFramework.SignalR.Client/) |
 | nanoFramework.TestFramework | [![NuGet](https://img.shields.io/nuget/v/nanoFramework.TestFramework.svg?label=NuGet&style=flat&logo=nuget)](https://www.nuget.org/packages/nanoFramework.TestFramework/) |
 | nanoFramework.WebServer | [![NuGet](https://img.shields.io/nuget/v/nanoFramework.WebServer.svg?label=NuGet&style=flat&logo=nuget)](https://www.nuget.org/packages/nanoFramework.WebServer/) || nanoFramework.DependencyInjection | [![NuGet](https://img.shields.io/nuget/v/nanoFramework.DependencyInjection.svg?label=NuGet&style=flat&logo=nuget)](https://www.nuget.org/packages/nanoFramework.DependencyInjection/) |
 | nanoFramework.Hosting | [![NuGet](https://img.shields.io/nuget/v/nanoFramework.Hosting.svg?label=NuGet&style=flat&logo=nuget)](https://www.nuget.org/packages/nanoFramework.Hosting/) |
 
-## Libraries for Board Support Packages
+## 支持板级支持包的库
 
 | Class Library | Version |
 | --- | --- |
@@ -84,35 +84,35 @@ The above table displays the latest versions of various nanoFramework packages a
 
 ## Distribution Strategy
 
-To simplify the distribution and updating of class libraries, we have opted to use NuGet. This approach offers the added benefit of managing dependencies, versions, and other related tasks.
+为了简化类库的发布和更新，我们选择使用NuGet。这种方法还提供了管理依赖项、版本和其他相关任务的额外好处。
 
-For each class library, a corresponding NuGet package is available, which includes the assembly and documentation files. The NuGet package ensures that the required dependencies and correct versions are added to a managed (C#) project, thereby making the developer's life much easier.
+对于每个类库，都有一个相应的NuGet包，其中包括程序集和文档文件。NuGet包确保将所需的依赖项和正确的版本添加到托管(c#)项目中，从而使开发人员的工作更加轻松。
 
-## Adding a New Class Library
+## 添加一个新的类库
+要将新的类库添加到.NET **nanoFramework**目标映像中，请按照以下步骤进行操作。要添加System.Device.Gpio库，请执行以下步骤：
 
-To add a new class library to a .NET **nanoFramework** target image, follow the procedure below.To add the System.Device.Gpio library, follow these steps:
+1. 打开Visual Studio并创建一个针对.NET nanoFramework的C#类库新项目。您可以在[此处](https://github.com/nanoframework/System.Device.Gpio)找到此库的源代码。
 
-1. Open Visual Studio and create a new project for a C# Class library targeting .NET nanoFramework. You can find the source code for this library [here](https://github.com/nanoframework/System.Device.Gpio).
+2. 在项目中实现所有必要的方法、枚举和属性。建议您在代码中添加XML注释，并在项目属性中启用自动生成文档。
 
-2. Implement all the necessary methods, enums, and properties in the project. It is recommended that you add XML comments to your code and enable automated documentation generation in the project properties.
+3. 添加NuGet打包项目以分发托管程序集和文档。此外，您可以创建第二个NuGet包，其中包括所有构建工件、生成的存根、转储文件和其他必要的文件，以进行后续项目或构建步骤的自动化测试和分发。
 
-3. Add a NuGet packaging project to distribute the managed assembly and documentation. Additionally, you can create a second NuGet package that includes all build artifacts, generated stubs, dump files, and other necessary files for automated testing and distribution of follow-up projects or build steps.
+4. 成功构建托管项目后，应在相应文件夹中可用带有存根的骨架。因为.NET nanoFramework旨在独立于目标，所以类库的本机实现可以分为两部分：- `src`文件夹包含声明和公共代码位（始终存在）。这是存根应位于的位置：
+  - 公共[System.Device.Gpio](https://github.com/nanoframework/nf-interpreter/tree/main/src/System.Device.Gpio)。
+- 特定的实现位是平台相关的，并驻留在每个平台的RTOS文件夹中：
+  - ChibiOS [System.Device.Gpio](https://github.com/nanoframework/nf-interpreter/tree/main/targets/ChibiOS/_nanoCLR/System.Device.Gpio)。
+  - ESP32 FreeRTOS [System.Device.Gpio](https://github.com/nanoframework/nf-interpreter/tree/main/targets/ESP32/_nanoCLR/System.Device.Gpio)。
+  - TI-RTOS [System.Device.Gpio](https://github.com/nanoframework/nf-interpreter/tree/main/targets/TI_SimpleLink/_nanoCLR/System.Device.Gpio)。
+  将CMake作为模块合并到模块文件夹[此处](https://github.com/nanoframework/nf-interpreter/tree/develop/CMake/Modules)中。模块的名称应与程序集名称相对应（Find**System.Device.Gpio**.cmake）。请遵循CMake的命名约定：以_Find_开头，后跟模块名称和_cmake_扩展名。System.Device.Gpio模块的CMake可以在[此处](https://github.com/nanoframework/nf-interpreter/blob/main/CMake/Modules/FindSystem.Device.Gpio.cmake)找到。
 
-4. After successfully building the managed project, the skeleton with the stubs should be available in the respective folder. Because .NET nanoFramework aims to be target-independent, the native implementation of a class library can be split into two parts:- The `src` folder contains the declaration and common code bits (which are always present). This is where the stubs should be located:
-  - The common [System.Device.Gpio](https://github.com/nanoframework/nf-interpreter/tree/main/src/System.Device.Gpio).
-- The specific implementation bits that are platform dependent and reside within each platform's RTOS folder:
-  - ChibiOS [System.Device.Gpio](https://github.com/nanoframework/nf-interpreter/tree/main/targets/ChibiOS/_nanoCLR/System.Device.Gpio).
-  - ESP32 FreeRTOS [System.Device.Gpio](https://github.com/nanoframework/nf-interpreter/tree/main/targets/ESP32/_nanoCLR/System.Device.Gpio).
-  - TI-RTOS [System.Device.Gpio](https://github.com/nanoframework/nf-interpreter/tree/main/targets/TI_SimpleLink/_nanoCLR/System.Device.Gpio).1. Incorporate CMake as a module into the modules folder [here](https://github.com/nanoframework/nf-interpreter/tree/develop/CMake/Modules). The module's name should correspond to the assembly name (Find**System.Device.Gpio**.cmake). Please adhere to CMake's naming conventions: begin with _Find_, followed by the module name, and the _cmake_ extension. The CMake for the System.Device.Gpio module can be found [here](https://github.com/nanoframework/nf-interpreter/blob/main/CMake/Modules/FindSystem.Device.Gpio.cmake).
+2. 在CMake的[FindNF_NativeAssemblies.cmake](https://github.com/nanoframework/nf-interpreter/blob/main/CMake/Modules/FindNF_NativeAssemblies.cmake)中，引入一个API选项。选项名称必须遵循API_**命名空间**的模式。System.Device.Gpio的选项是API_System.Device.Gpio。
 
-2. Within the CMake [FindNF_NativeAssemblies.cmake](https://github.com/nanoframework/nf-interpreter/blob/main/CMake/Modules/FindNF_NativeAssemblies.cmake), introduce an option for the API. The option name must follow the pattern API_**namespace**. The option for System.Device.Gpio is API_System.Device.Gpio.
+3. 在CMake [NF_NativeAssemblies.cmake](https://github.com/nanoframework/nf-interpreter/blob/main/CMake/Modules/FindNF_NativeAssemblies.cmake)中，找到“当添加一个新的API时，在下面添加相应的块”，并为API添加一个块。只需复制并粘贴一个现有的块，将名称空间替换为要添加的名称空间。修改CMake预设文件(或多个文件，如果要将其添加到多个目标中)，例如ST_STM32F769I_DISCOVERY[位于这里](https://github.com/nanoframework/nf-interpreter/blob/main/targets/ChibiOS/ST_STM32F769I_DISCOVERY/CMakePresets.json)，以包含相应的选项。要启用System.Device.Gpio示例，请在_cacheVariables_集合中插入以下条目:Gpio": "ON"。
 
-3. In the CMake [NF_NativeAssemblies.cmake](https://github.com/nanoframework/nf-interpreter/blob/main/CMake/Modules/FindNF_NativeAssemblies.cmake), locate the text `WHEN ADDING A NEW API add the corresponding block below` and append a block for the API. Simply copy and paste an existing block, replacing the namespace with the one you are adding.1. Revise the CMake presets file (or files, if this is to be added to multiple targets), such as for the ST_STM32F769I_DISCOVERY [located here](https://github.com/nanoframework/nf-interpreter/blob/main/targets/ChibiOS/ST_STM32F769I_DISCOVERY/CMakePresets.json), to incorporate the corresponding option. To enable the System.Device.Gpio example, insert the following entry into the _cacheVariables_ collection: "API_System.Device.Gpio" : "ON".
+4. 在CMake NF_NativeAssemblies.cmake中，找到文本“WHEN ADDING A NEW API add the corresponding block below”，并为API添加一个块。只需复制并粘贴现有块，将命名空间替换为要添加的命名空间。如果API需要在目标HAL/PAL中激活硬件或SoC外设，则需要对相应文件进行必要的修改。在ChibiOS中的System.Device.Gpio的情况下，不需要激活，因为GPIO子系统始终处于启用状态。相反，对于System.Device.Spi，必须在_halconf.h_文件中启用SPI子系统，并且在驱动程序级别上，必须单独启用SPI外设在_mcuconf.h_中（例如#define STM32_SPI_USE_SPI1 TRUE）。为了简化API及其相关硬件的整体配置，API选项（API_System.Device.Gpio）可以扩展为自动激活HAL子系统，如果适用的话。此功能在System.Device.Spi API中可用。CMake选项反映在通用的CMakeLists.txt中，并可用于CMake和头文件中。此镜像属性称为HAL_USE_SPI_OPTION，定义在此处，而不是通常的单独_halconf.h_文件中。要启用此功能，必须将CMake属性添加到平台的CMake模板文件target_platform.h.in中。
 
-2. If the API necessitates the activation of hardware or SoC peripherals in the target HAL/PAL, make the necessary modifications to the appropriate files. In the case of System.Device.Gpio in ChibiOS, no activation is required since the GPIO subsystem is always enabled. Conversely, for System.Device.Spi, the SPI subsystem must be enabled in the _halconf.h_ file and, at the driver level, the SPI peripherals must be individually enabled in _mcuconf.h_ (e.g. `#define STM32_SPI_USE_SPI1 TRUE`).To simplify the overall configuration of an API and its related hardware, the API option (API_System.Device.Gpio) can be expanded to automatically activate the HAL subsystem, if it is appropriate. This feature is available in the System.Device.Spi API. The CMake option is reflected in the general [CMakeLists.txt](https://github.com/nanoframework/nf-interpreter/blob/main/CMakeLists.txt) and can be used in CMakes and headers. This mirrored property is called `HAL_USE_SPI_OPTION`. It is defined here, rather than in the individual _halconf.h_ files as usual. To enable this feature, the CMake property must be added to the CMake template file of the platform [target_platform.h.in](https://github.com/nanoframework/nf-interpreter/blob/main/targets/ChibiOS/_nanoCLR/target_platform.h.in).
+5. 当添加或启用新的API时，根据驱动程序和库的编码方式，可能会向BSS RAM区添加静态变量。由于这些变量所需的额外空间，托管堆的大小可能需要相应调整。要做到这一点，请在目标的通用CMakeLists.txt中找到__clr_managed_heap_size__，并根据需要减小该值。某些API依赖于其他API，例如System.Device.Gpio的情况，需要nanoFramework.Runtime.Events为更改的引脚值生成中断。为了实现这一点，必须在主要的CMakeLists.txt中启用所需的API选项，就像在CMake命令行上启用选项一样。在依赖API的if子句中搜索API_nanoFramework.Runtime.Events，以验证是否已启用该选项。
 
-2. When adding or enabling new APIs, static variables may be added to the BSS RAM area, depending on how the drivers and library are coded. Due to the additional space required by these variables, the size of the Managed Heap may need to be adjusted accordingly. To do this, locate `__clr_managed_heap_size__` in the general CMakeLists.txt of the target and decrease the value as needed.1. Certain APIs are dependent on others, such as the case with System.Device.Gpio, which necessitates nanoFramework.Runtime.Events to generate interrupts for altered pin values. To achieve this, the option to incorporate the required API(s) must be enabled in the primary [CMakeLists.txt](https://github.com/nanoframework/nf-interpreter/blob/main/CMakeLists.txt) within the if clause of the dependent API, as if the option was enabled at the CMake command line. Verify this by searching for `API_nanoFramework.Runtime.Events` within the `if(API_System.Device.Gpio)`.
+## 如何将类库集成到构建中
 
-## How to integrate a class library into the build
-
-To integrate a class library into the build for a target image, you must append an option for the API to the CMake. For instance, in the case of System.Device.Gpio, the option would be `-DAPI_System.Device.Gpio=ON`.
+要将类库集成到目标镜像的构建中，您必须将API选项附加到CMake中。例如，在System.Device.Gpio的情况下，选项将是`-DAPI_System.Device.Gpio=ON`。

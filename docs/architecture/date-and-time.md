@@ -1,34 +1,34 @@
-# Date and Time
+# 日期和时间
 
-## About this document
+## 关于本文档
 
-This document describes how .NET **nanoFramework** handles Date & Time and the available option regarding this matter.
+本文档描述了.NET **nanoFramework**如何处理日期和时间以及相关选项。
 
-## UTC and local time
+## UTC和本地时间
 
-Time (and date) is fundamental for the inner works of .NET **nanoFramework**. But an application running on top of it can make use of it, or not, thus making relevant the discussion and evaluation of the related features and associated code.
-Because .NET **nanoFramework** runs on constrained resources platforms inclusion of features that increase both RAM and FLASH usage has to be considered and evaluated.
+时间（和日期）对于.NET **nanoFramework**的内部工作非常重要。但是，运行在其之上的应用程序可以使用它，也可以不使用它，因此相关功能和相关代码的讨论和评估变得重要。
+由于.NET **nanoFramework**运行在资源受限的平台上，必须考虑和评估增加RAM和FLASH使用量的功能的包含。
 
-[`DateTime`](https://msdn.microsoft.com/en-us/library/system.datetime(v=vs.110).aspx) supports the use of Local and UTC times by its [`DateTime.Kind`](https://msdn.microsoft.com/en-us/library/system.datetime.kind(v=vs.110).aspx) property. Supporting this requires adding several _blocks_ such as: an API for setting the platform timezone, handling the huge number of available timezones, managing the daylight savings changes, manage conversion to/from the different kinds, etc.
+[`DateTime`](https://msdn.microsoft.com/en-us/library/system.datetime(v=vs.110).aspx)通过其[`DateTime.Kind`](https://msdn.microsoft.com/en-us/library/system.datetime.kind(v=vs.110).aspx)属性支持使用本地和UTC时间。支持这一点需要添加多个“块”，例如：用于设置平台时区的API，处理大量可用的时区，管理夏令时更改，管理不同种类之间的转换等。
 
-Considering all the above, .NET **nanoFramework** addresses this matter providing the _absolute minimal viable_ options.
-There is support for `DateTime` (obviously) but all DateTime are considered UTC. There is no support for `DateTime.Kind.Local`, setting timezone or converting to/from the different kinds.
-If an application requires this, it has to implement it at its own level.
+考虑到上述所有因素，.NET **nanoFramework**提供了“绝对最小可行”选项来解决这个问题。
+支持`DateTime`（显然）但所有`DateTime`都被视为UTC。不支持`DateTime.Kind.Local`，设置时区或转换为/从不同种类。
+如果应用程序需要此功能，则必须在其自己的级别上实现它。
 
-## Time source
+## 时间源
 
-The _time base_ source is, by default, the `SysTick` available in the CMSIS RTOS API.
-This is the _source_ of the time when a `DateTime` object is instantiated.
+默认情况下，时间基础源是CMSIS RTOS API中可用的`SysTick`。
+这是实例化`DateTime`对象时的时间“来源”。
 
-Because almost all hardware platforms capable of running .NET **nanoFramework** include an hardware [RTC](https://en.wikipedia.org/wiki/Real-time_clock) this peripheral can be used as the _source_ for time objects.
-Note that for all other internals of .NET **nanoFramework** the CMSIS RTOS API `SysTick` keeps being used as the time base.
+由于几乎所有能够运行.NET **nanoFramework**的硬件平台都包括硬件[RTC](https://en.wikipedia.org/wiki/Real-time_clock)，因此可以将此外设用作时间对象的“来源”。
+请注意，对于.NET **nanoFramework**的所有其他内部，CMSIS RTOS API `SysTick`仍然被用作时间基础。
 
-This option is exposed to the board designer by the `NF_FEATURE_RTC` configuration option. Setting it to `ON` when calling CMake brings in the RTC subsystem and all the calls to `DateTime` make use of the time base provided by this peripheral.  
+通过`NF_FEATURE_RTC`配置选项，该选项暴露给板设计者。在调用CMake时将其设置为`ON`会引入RTC子系统，并且所有对`DateTime`的调用都使用此外设提供的时间基础。
 
-## RTC and hardware
+## RTC和硬件
 
-Leveraging the RTC hardware peripheral allows several interesting/valuable features:
+利用RTC硬件外设可以实现几个有趣/有价值的功能：
 
-- more accurate timekeeping (when compared with a regular timer);
-- possibility for timekeeping in sleep/deep sleep modes;
-- setting alarms to wake-up the system at a future time;
+- 更准确的时间保持（与常规计时器相比）；
+- 在睡眠/深度睡眠模式下进行时间保持；
+- 设置闹钟以在未来某个时间唤醒系统。

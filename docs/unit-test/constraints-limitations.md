@@ -1,3 +1,5 @@
+# nanoFramework.TestPlatform
+
 目前，nanoFramework.TestPlatform框架存在一些限制，主要包括：
 
 - 包含所有测试的程序集名称必须为“NFUnitTest”。这是我们正在努力消除的限制。您可以拥有尽可能多的类和测试项目。但是，到目前为止，您需要将程序集命名为“NFUnitTest”。单元测试项目模板已经设置好了，如果从模板开始，您不需要更改任何内容。

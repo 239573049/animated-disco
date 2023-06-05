@@ -1,89 +1,92 @@
-# Philosophy
+# 基本原理
 
-The PE File format is expressed in terms of a number of common types. In code these are generally realized as an enumeration, typedef or type alias of some sort o help ensure both clarity of code and correctness of use. This additional clarity and type safety is preferred over use of raw primitive types directly as they onvey no real meaning beyond their basic ranges making correct use of the code less obvious and more error prone.
+PE文件格式以多种常见类型的形式表示。在代码中，通常将它们实现为枚举、typedef或某种类型别名，以确保代码的清晰性和正确性。与直接使用原始基本类型相比，这种额外的清晰性和类型安全性更受青睐，因为它们除了基本范围之外没有实际意义，使得代码的正确使用不太明显且更容易出错。
 
-## Table Index
+## 表索引
 
-Many PE data structures store Index into a particular table index as a field. This table defines the type names used to store the index and which table it is Index into.
+许多PE数据结构将某个表索引存储为字段。该表定义了用于存储索引的类型名称以及索引所指向的表。
 
-|Name                             | underlying type         | Description|
+|名称                             | 基础类型               | 描述|
 |---------------------------------|-------------------------|------------|
-|StringTableIndex                 | unsigned 16 bit integer | Index into the string table (see: [StringTables](StringTable.md)) for more details)|
-|TypeDefTableIndex                | unsigned 16 bit integer | Index into the type definition table|
-|TypeRefTableIndex                | unsigned 16 bit integer | Index into the type reference table|
-|FieldDefTableIndex               | unsigned 16 bit integer | Index into the field definition table|
-|MethodDefTableIndex              | unsigned 16 bit integer | Index into the method definition table|
-|SigTableIndex                    | unsigned 16 bit integer | Index into the signature table (see: [SignatureBlobs](SignatureTable.md) for more details)|
-|GenericParamTableIndex           | unsigned 8 bit integer | Index into the generic params table (OK to use 1 byte index because we won't support more than 255 generic parameters)|
-|MethodSpecTableIndex             | unsigned 16 bit integer | Index into the method specification table|
+|StringTableIndex                 | 无符号16位整数 | 指向字符串表的索引（有关详细信息，请参见：[StringTables](StringTable.md)）|
+|TypeDefTableIndex                | 无符号16位整数 | 指向类型定义表的索引|
+|TypeRefTableIndex                | 无符号16位整数 | 指向类型引用表的索引|
+|FieldDefTableIndex               | 无符号16位整数 | 指向字段定义表的索引|
+|MethodDefTableIndex              | 无符号16位整数 | 指向方法定义表的索引|
+|SigTableIndex                    | 无符号16位整数 | 指向签名表的索引（有关详细信息，请参见：[SignatureBlobs](SignatureTable.md)）|
+|GenericParamTableIndex           | 无符号8位整数 | 指向通用参数表的索引（可以使用1字节索引，因为我们不支持超过255个通用参数）|
+|MethodSpecTableIndex             | 无符号16位整数 | 指向方法规范表的索引|
 
-## EmptyIndex Constant
+## EmptyIndex常量
 
-Since Index values are used to access members of a table and since (in C, C++, and many other languages) tables are indexed with the first element as index == 0 the value 0 is not useable as a constant to indicate "none" or "null". Thus a dedicated value is used for .NET **nanoFramework** metadata tables. Any index with the value 0xFFFF is considered the EmptyIndex and this is normally defined as a manifest constant for the entire code base to test against.
+由于索引值用于访问表的成员，并且（在C、C++和许多其他语言中）表的索引以索引== 0的第一个元素为索引，值0不能用作指示“无”或“空”的常量。因此，在.NET **nanoFramework**元数据表中使用了专用值。具有值0xFFFF的任何索引均被视为EmptyIndex，并且通常将其定义为整个代码库的清晰常量进行测试。
 
-## Table Kind
+## 表类型
 
-The CLR_TABLESENUM enumeration identifies a specific table in the assembly metadata.
+CLR_TABLESENUM枚举标识程序集元数据中的特定表。
 
-|Name                   | Value  | Description|
-|-----------------------|--------|--------------|
-|AssemblyRef            | 0x0000 | Assembly reference table|
-|TypeRef                | 0x0001 | Type Reference Table|
-|FieldRef               | 0x0002 | Field Reference table|
-|MethodRef              | 0x0003 | Method Reference Table|
-|TypeDef                | 0x0004 | Type Definition Table|
-|FieldDef               | 0x0005 | Field Definition Table|
-|MethodDef              | 0x0006 | Method Definition Table|
-|GenericParam           | 0x0007 | Generic Parameters Table|
-|MethodSpec             | 0x0008 | Method Specification Table|
-|Attributes             | 0x0009 | Attribute Table|
-|TypeSpec               | 0x000A | Type Specification Table|
-|Resources              | 0x000B | Resources Table|
-|ResourcesData          | 0x000C | Resource Data Blob Table|
-|Strings                | 0x000D | String Blob table|
-|Signatures             | 0x000E | Signature Blob table|
-|ByteCode               | 0x000F | IL Byte Code Stream Blob Table|
-|ResourcesFiles         | 0x0010 | Resource Files Table|
-|EndOfAssembly          | 0x0011 | End of Assembly Table (Used to quickly find the end of the assembly when scanning assemblies)|
-|Max                    | 0x0012 | End of enumeration valid enumeration values must be **_less_** than this value|
+|名称                   | 值  | 描述|
+|-----------------------|----|--------------|
+|AssemblyRef            | 0x0000 | 程序集引用表|
+|TypeRef                | 0x0001 | 类型引用表|
+|FieldRef               | 0x0002 | 字段引用表|
+|MethodRef              | 0x0003 | 方法引用表|
+|TypeDef                | 0x0004 | 类型定义表|
+|FieldDef               | 0x0005 | 字段定义
 
-## Miscellaneous Types
+表|
+|MethodDef              | 0x0006 | 方法定义表|
+|GenericParam           | 0x0007 | 通用参数表|
+|MethodSpec             | 0x0008 | 方法规范表|
+|Attributes             | 0x0009 | 属性表|
+|TypeSpec               | 0x000A | 类型规范表|
+|Resources              | 0x000B | 资源表|
+|ResourcesData          | 0x000C | 资源数据Blob表|
+|Strings                | 0x000D | 字符串Blob表|
+|Signatures             | 0x000E | 签名Blob表|
+|ByteCode               | 0x000F | IL字节码流Blob表|
+|ResourcesFiles         | 0x0010 | 资源文件表|
+|EndOfAssembly          | 0x0011 | 程序集结束表（用于快速查找程序集的结束位置）|
+|Max                    | 0x0012 | 枚举结束值，有效的枚举值必须小于此值|
 
-|Name                | underlying type         | Description|
+## 其他类型
+
+|名称                | 基础类型               | 描述|
 |--------------------|-------------------------|------------|
-|MetadataOffset      | unsigned 16 bit integer | Offset from the start of the IL instruction stream blob data|
-|MetadataPtr         | pointer to a const byte | Pointer to the interior of the IL instruction stream blob data|
+|MetadataOffset      | 无符号16位整数 | 从IL指令流Blob数据的起始位置偏移|
+|MetadataPtr         | 指向const byte的指针 | 指向IL指令流Blob数据内部的指针|
 
-## Tokens
+## 标记
 
-Many instructions in IL and fields of data structures contain a token. Tokens in IL Metadata reference some other piece of metadata in the assembly. Tokens contain the table the token refers to along with Index into the table into a single primitive integral value. In .NET **nanoFramework** PE files there are two kinds of tokens MetadataToken and a more compact BinaryToken.
+IL中的许多指令和数据结构的字段包含标记。IL Metadata中的标记引用程序集中的其他元数据。标记将标记引用的表和索引合并为单个原始整数值。在.NET **nanoFramework** PE文件中，有两种类型的标记：MetadataToken和更紧凑的BinaryToken。
 
 ### Metadata Token
 
-A metadata token is an unsigned 32 bit value where the Most significant byte is the table kind and the least significant 16 bits are the table index (In .NET **nanoFramework** PE format a table index is 16bits only thus there are 8 bits of unused data in a MetadataToken)
+元数据标记是一个无符号32位值，其中最高字节是表类型，最低的16位是表索引（在.NET **nanoFramework** PE格式中，表索引仅为16位，因此在MetadataToken中有8位未使用的数据）。
 
 ### Binary Token
 
-A Binary Token is a compact form of representing Index to one or more tables. .NET **nanoFramework** follows the convention specified by ECMA-335 (I I.24.2.66) for _coded index_ where the least significant bits are used to determine which of the possible tables and the remaining bits provide the index of the table entry.
-Except for a few tags that, because of legacy code, use the most significant bits. Because of it's small size only the 2 bytes version is used. The following table provides the type name aliases for the various combinations of tables used in .NET **nanoFramework** PE metadata.
+Binary Token是一种紧凑表示对一个或多个表的索引的形式。.NET **nanoFramework**遵循ECMA-335规范（I I.24.2.66）中的_coded index_约定，其中最低有效位用于确定可能的表中的哪个，其余位提供表条目的索引。除了因遗留代码而使用最高有效位的几个标记之外，由于其大小较小，只使用2字节版本。下表提供了在.NET **nanoFramework** PE元数据中使用的各种表组合的类型名称别名。
 
-|TypeRefOrAssemblyRef: (1 bit to encode tag) | Tag|
+|TypeRefOrAssemblyRef:（1位用于编码标记） | 标记|
 |--------------------------------------------|-----|
 |AssemblyRef | 0|
 |TypeRef     | 1|
 
-|TypeDefOrRef: (2 bits to encode tag) | Tag|
+|TypeDefOrRef:（2位用于编码标记） | 标记|
 |-------------------------------------|-----|
 |TypeDef  | 0|
 |TypeRef  | 1|
 |TypeSpec | 2|
 
-|MethodDefOrRef: (1 bit to encode tag) | Tag|
+|MethodDef
+
+OrRef:（1位用于编码标记） | 标记|
 |--------------------------------------|-----|
 |MethodDef | 0|
 |MemberRef | 1|
 
-|MemberRefParent: (3 bits to encode tag) | Tag|
+|MemberRefParent:（3位用于编码标记） | 标记|
 |-------------------------------------|-----|
 |TypeDef   | 0|
 |TypeRef   | 1|
@@ -91,56 +94,56 @@ Except for a few tags that, because of legacy code, use the most significant bit
 |MethodDef | 3|
 |TypeSpec  | 4|
 
-|TypeOrMethodDef: (1 bit to encode tag) | Tag|
+|TypeOrMethodDef:（1位用于编码标记） | 标记|
 |---------------------------------------|-----|
 |TypeDef   | 0|
 |MethodDef | 1|
 
-|FieldRefOrFieldDef: (1 bit to encode tag) | Tag|
+|FieldRefOrFieldDef:（1位用于编码标记） | 标记|
 |------------------------------------------|-----|
 |FieldDef | 0|
 |FieldRef | 1|
 
 ## VersionInfo
 
-Many .NET **nanoFramework** PE data structures include a version. The versions, when presented for readability are typically represented as a quad of 4 integer values separated by a '.' (i.e. 1.2.3.4) the following table defines the Version info structure used in the PE file to represent a version.
+许多.NET **nanoFramework** PE数据结构包含一个版本信息。版本通常以可读性的方式表示为由点分隔的4个整数值的四重数（例如1.2.3.4）。以下表定义了PE文件中用于表示版本的Version info结构。
 
-|Name     | Type                    | Description|
+|名称     | 类型                    | 描述|
 |---------|-------------------------|------------|
-|Major    | unsigned 16 bit integer | Major component of the common version quad|
-|Minor    | unsigned 16 bit integer | Minor component of the common version quad|
-|Build    | unsigned 16 bit integer | Build component of the common version quad|
-|Revision | unsigned 16 bit integer | Revision component of the common version quad|
+|Major    | 无符号16位整数 | 共同版本四重数的主要组件|
+|Minor    | 无符号16位整数 | 共同版本四重数的次要组件|
+|Build    | 无符号16位整数 | 共同版本四重数的构建组件|
+|Revision | 无符号16位整数 | 共同版本四重数的修订组件|
 
 ## DataType
 
-The `DataType` enumeration corresponds to the ECMA-335 ELEMENT_TYPE_xxxx, however the
-actual numeric values are not the same as the interpreter uses only a reduced
-sub-set of the standard values.
+`DataType`枚举对应于ECMA-335 ELEMENT_TYPE_xxxx，但实际数值与解释器使用的标准值不同，只使用了减少的子集。
 
-|Name        | Description|
+|名称        | 描述|
 |------------|------------|
-|Void        | 0 byte void value|
-|Boolean     | 1 byte boolean value|
-|I1          | 8 bit signed integer|
-|U1          | 8 bit unsigned integer|
-|CHAR        | 16 bit UTF-16 character|
-|I2          | 16 bit signed integer|
-|U2          | 16 bit unsigned integer|
-|I4          | 32 bit signed integer|
-|U4          | 32 bit unsigned integer|
-|R4          | 32 bit IEEE-754 floating point value|
-|I8          | 64 bit signed integer|
-|U8          | 64 bit unsigned integer|
-|R8          | 64 bit IEEE-754 floating point value|
-|DateTime    | 8 bytes - Shortcut for System.DateTime|
-|TimeSpan    | 8 bytes - Shortcut for System.TimeSpan|
-|String      | 4 bytes - short cut for reference to System.String|
-|Object      | 4 bytes - Shortcut for reference to System.Object|
+|Void        | 0字节的void值|
+|Boolean     | 1字节的布尔值|
+|I1          | 8位有符号整数|
+|U1          | 8位无符号整数|
+|CHAR        | 16位UTF-16字符|
+|I2          | 16位有符号整数|
+|U2          | 16位无符号整数|
+|I4          | 32位有符号整数|
+|U4          | 32位无符号整数|
+|R4          | 32位IEEE-754浮点数|
+|I8          | 64位有符号整数|
+|U8          | 64位无符号整数|
+|R8          | 64位IEEE-754浮点数|
+|DateTime    | 8字节 - System.DateTime的快捷方式|
+|TimeSpan    | 8字节 - System.TimeSpan的快捷方式|
+|String      | 4字节 - 对System.String的引用的快捷方式|
+|Object      | 4字节 - 对System.Object的引用的快捷方式|
 |Class       | CLASS `<class Token>`|
 |ValueType   | VALUETYPE `<class Token>`|
-|SZArray     | Shortcut for single dimension zero lower bound array SZARRAY `<type>`|
+|SZArray     | 单维零下界数组的快捷方式 SZARRAY `<type>`|
 |ByRef       | BYREF `<type>`|
-|Var         | VAR Generic parameter in a generic type definition, represented as number (new in v2.0)|
-|GenericInst | GENERICINST Generic type instantiation (new in v2.0)|
-|MVar        | MVAR Generic parameter in a generic method definition, represented as number (new in v2.0)|
+|Var        
+
+ | VAR泛型类型定义中的泛型参数，表示为数字（v2.0中新增）|
+|GenericInst | GENERICINST泛型类型实例化（v2.0中新增）|
+|MVar        | MVAR泛型方法定义中的泛型参数，表示为数字（v2.0中新增）|

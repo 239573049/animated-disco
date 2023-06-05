@@ -1,20 +1,20 @@
-# Running Unit Tests on .NET **nanoFramework**
+# 在.NET nanoFramework上运行单元测试
 
-You first need to setup your .NET **nanoFramework** Unit Test project. For this, you have 2 options, either you create a `NFUnitTest` project from Visual Studio, either you add a the nanoFramework.TestFramework NuGet to your class library project.
+首先，您需要设置您的.NET nanoFramework单元测试项目。您有两个选项，可以从Visual Studio创建一个`NFUnitTest`项目，或者将nanoFramework.TestFramework NuGet添加到您的类库项目中。
 
-## Setting up through Visual Studio project template
+## 通过Visual Studio项目模板进行设置
 
-You can as well simply create a new Visual Studio NFUnitTest project that will already contains all the needed elements.
+您也可以简单地创建一个新的Visual Studio NFUnitTest项目，该项目已经包含了所有所需的元素。
 
-![test VS project](../../images/test-project-template.png)
+![test VS项目](../../images/test-project-template.png)
 
-### Setting up Unit Test through NuGet
+### 通过NuGet设置单元测试
 
-The .NET **nanoFramework** Unit Test platform is available thru a NuGet and comes with all the needed element. The only thing you need to do it to add it to your .NET **nanoFramework** project:
+.NET nanoFramework单元测试平台可通过NuGet获得，并且已经包含了所有所需的元素。您只需将其添加到您的.NET nanoFramework项目中：
 
-![add test NuGet](../../images/test-nuget-test-framework.jpg)
+![添加测试NuGet](../../images/test-nuget-test-framework.jpg)
 
-Make sure you have in the main directory of your sln file or in the same directory as your nfproj a `.runsettings` and the minium elements you need are:
+请确保在sln文件的主目录或与nfproj文件相同的目录中有一个`.runsettings`文件，您需要的最小元素如下：
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -33,56 +33,58 @@ Make sure you have in the main directory of your sln file or in the same directo
 </RunSettings>
 ```
 
-The most important part is the `<TargetFrameworkVersion>Framework40</TargetFrameworkVersion>` as this is what trigger the discovery of the tests.
+最重要的部分是`<TargetFrameworkVersion>Framework40</TargetFrameworkVersion>`，因为这将触发对测试的发现。
 
-## Discover the tests
+## 发现测试
 
-Once you'll build your project, the tests will be discovered automatically:
+一旦构建项目，测试将自动被发现：
 
-![test discover](../../images/test-discovered.jpg)
+![发现测试](../../images/test-discovered.jpg)
 
-This is automatic and you just need to build. If any issue, you can try the `Rebuild` option, it will force a rediscovery of the tests.
+这是自动完成的，您只需要构建即可。如果出现任何问题，您可以尝试`重新生成`选项，它将强制重新发现测试。
 
-## Running the tests on a real hardware
+## 在真实硬件上运行测试
 
-You'll have to adjust the `.runsettings` file entry `IsRealHardware` to true:
+您需要将`.runsettings`文件中的`IsRealHardware`条目调整为true：
 
 ```xml
 <IsRealHardware>True</IsRealHardware>
 ```
 
-Once you'll run the rests, they will be deployed into the device attached to your machine.
+一旦运行测试，它们将被部署到连接到您机器的设备上。
 
-## Running the tests
+## 运行测试
 
-Simply press the play button for all the tests or just the test you want to run. In case of success, you'll see something like this:
+只需按下播放按钮即可运行所有测试或者只运行您想要的测试。如果成功，您将看到类似于以下内容：
 
-![test success](../../images/test-success.jpg)
+![测试成功](../../images/test-success.jpg)
 
-In case one of your test will fail, you'll see this:
+如果其中一个测试失败，您将看到类似于以下内容：
 
-![test failed](../../images/test-failed.jpg)
+![测试失败](../../images/test-failed.jpg)
 
-Some tests may be skipped, they will appear like this:
+有些测试可能被跳过，它们将显示如下：
 
-![test skipped](../../images/test-skipped.jpg)
+![测试跳过](../../images/test-skipped.jpg)
 
-## Test coverage and code highlighting
+## 测试覆盖率和代码高亮
 
-As you can expect in your code, you'll get the covered tests on the tests methods but as well on the methods that have been called:
+您可以期望在测试方法和已调用的方法中获得覆盖的测试结果：
 
-![test highlight](../../images/test-code-highlight.jpg)
+![测试高亮](../../images/test-code-highlight.jpg)
 
-In case of failure, you'll get the same:
+如果失败，将获得相同的结果：
 
-![test failed](../../images/test-integration-vs-failed.jpg)
+![测试失败](../../images/test-integration-vs-failed.jpg)
 
-## Running the tests in a pipeline
+## 在流水线中运行测试
 
-The tests can be run in a pipeline using `vstest.Console.exe`. The adapter to use is `nanoFramework.TestAdapter.dll`. You'll find all this into the NuGet package.
+可以使用`vstest
 
-## Updating the NuGet
+.Console.exe`在流水线中运行测试。要使用的适配器是`nanoFramework.TestAdapter.dll`。您可以在NuGet包中找到所有这些内容。
 
-When you are updating the NuGet if you've done changes into your `.runsettings` file, you will be prompt to replace the file, depending on the choices you have done, you may want to save your choices and merge them into the new file. We do recommend to use the new file and adjust it.
+## 更新NuGet
 
-![replace NuGet](../../images/test-replace-runsettings.jpg)
+当您更新NuGet时，如果对`.runsettings`文件进行了更改，您将被提示替换文件，根据您的选择，您可能希望保存您的选择并将其合并到新文件中。我们建议使用新文件并进行调整。
+
+![替换NuGet](../../images/test-replace-runsettings.jpg)

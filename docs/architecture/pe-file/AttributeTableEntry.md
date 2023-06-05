@@ -1,14 +1,14 @@
-# AttributeTableEntry (CLR_RECORD_ATTRIBUTE)
+# AttributeTableEntry（CLR_RECORD_ATTRIBUTE）
 
-The Attribute table contains entries with the following structure
+属性表包含以下结构的条目：
 
-| Name          | Type                 | Description  |
-|---------------|----------------------|------------  |
-| OwnerType     | TableKind            | One of `TableKind::TypeDef`, `TableKind::MethodDef`, or `TableKind::FieldDef`|
-| OwnerIndex    | uint16_t             | Index into the table specified by OwnerType|
-| Constructor   | MethodDefOrRef       | Binary token for a MethodRef or MethodDef that represents the constructor of the Attribute|
-| Data          | SigTableIndex        | Index into the signature table that defines the parts of the attribute|
+| 名称           | 类型                 | 描述            |
+|---------------|----------------------|------------    |
+| OwnerType     | TableKind            | `TableKind::TypeDef`、`TableKind::MethodDef` 或 `TableKind::FieldDef`之一的类型    |
+| OwnerIndex    | uint16_t             | 指向OwnerType指定的表中的索引    |
+| Constructor   | MethodDefOrRef       | 表示属性构造函数的MethodRef或MethodDef的二进制标记    |
+| Data          | SigTableIndex        | 指向定义属性各部分的签名表中的索引    |
 
-## Signature Table Usage
+## 签名表的使用方法
 
-(TODO: Define valid signature table sequences for an attribute)
+（待完成：定义属性的有效签名表序列）

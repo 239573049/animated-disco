@@ -1,3 +1,3 @@
-# Memory Map Structure
+# 内存映射结构
 
-This document needs to be created. If you are willing to help, feel free to propose a PR!
+需要创建此文档。如果您愿意帮助，请随时提出拉取请求（PR）！

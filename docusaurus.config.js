@@ -107,10 +107,14 @@ const config = {
                 label: 'Gitee',
                 href: 'https://gitee.com/nanoframework/docs',
               },
+              {
+                label: 'GitHub',
+                href: 'https://github.com/nanoframework',
+              },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `版权所有 © ${new Date().getFullYear()} NanoFramework中文社区`,
       },
       prism: {
         theme: lightCodeTheme,

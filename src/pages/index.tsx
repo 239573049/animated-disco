@@ -17,7 +17,7 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/support/community-help">
+            to="/docs/home">
             进入NanoFramework中文社区教程
           </Link>
         </div>

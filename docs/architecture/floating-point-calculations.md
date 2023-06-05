@@ -1,34 +1,34 @@
-# Floating-point calculations
+# 浮点数计算
 
-## About this document
+## 关于本文档
 
-This document describes the specificities and available implementations of System.Math class library in .NET **nanoFramework**.
+本文档描述了在.NET **nanoFramework**中System.Math类库的特殊性和可用实现。
 
-## Available APIs and floating-point implementations
+## 可用的API和浮点数实现
 
-The .NET System.Math APIs are available with `double` parameters. No sweat for the CPUs where the code usually runs.
-When we move to embedded systems that's a totally different story.
+.NET System.Math API可使用`double`参数。对于通常运行代码的CPU来说，这没什么问题。
+但当我们转移到嵌入式系统时，情况就完全不同了。
 
-A few more details to properly set context:
+以下是一些更详细的信息以正确设置上下文：
 
-- [`double` type](https://docs.microsoft.com/en-us/dotnet/api/system.double): represents a double-precision 64-bit number with values ranging from negative 1.79769313486232e308 to positive 1.79769313486232e308. Precision ~15-17 digits. Size 8 bytes.
-- [`float` type](https://docs.microsoft.com/en-us/dotnet/api/system.single): represents a single-precision 32-bit number with values ranging from negative 3.402823e38 to positive 3.402823e38. Precision ~6-9 digits. Size 4 bytes.
-- Comparison of [floating-point numeric types](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types).
+- [`double`类型](https://docs.microsoft.com/zh-cn/dotnet/api/system.double)：表示双精度64位数，取值范围从负1.79769313486232e308到正1.79769313486232e308。精度约为15-17位数字。大小为8字节。
+- [`float`类型](https://docs.microsoft.com/zh-cn/dotnet/api/system.single)：表示单精度32位数，取值范围从负3.402823e38到正3.402823e38。精度约为6-9位数字。大小为4字节。
+- [浮点数数值类型的比较](https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types)。
 
-There are all sorts of variants and combinations on how to deal with FP and DP in the embedded world. From hardware support on the CPU to libraries that perform those calculations at the expense of more code and execution speed. .NET **nanoFramework** targets 32-bit MCUs, therefore support for 64-bits calculations requires extra code and processing.
+在嵌入式世界中，处理浮点数和双精度数有各种各样的变体和组合。从CPU上的硬件支持到通过更多的代码和执行速度来执行这些计算的库。.NET **nanoFramework**针对32位MCU，因此支持64位计算需要额外的代码和处理。
 
-Adding to the above, the extra precision provided by the `double` type is seldom required on typical embedded application use cases.
+除此之外，`double`类型提供的额外精度在典型的嵌入式应用程序用例中很少需要。
 
-Considering all this and the ongoing quest to save flash space we've decided to provide two *flavours* for the System.Math API: the standard one with `double` type parameters and the alternative, lightweight one, with `float` type parameters.
+考虑到所有这些以及对节省闪存空间的持续追求，我们决定为System.Math API提供两种*变体*：标准版使用`double`类型参数，轻量版使用`float`类型参数。
 
-This has zero impact on API and code reuse as both coexist. The only difference is on the firmware image. There is a build option (`DP_FLOATINGPOINT`) to build the image with DP floating point, when that extra precision is required.
+这对API和代码重用没有任何影响，因为两者可以共存。唯一的区别在于固件映像。有一个构建选项(`DP_FLOATINGPOINT`)，用于在需要额外精度时使用DP浮点数来构建映像。
 
-A `NotImplementedException` will be throw when there is no native support for an API. The remedy is to call the API with the *other* parameter type.
+当API没有本机支持时，将抛出`NotImplementedException`。解决方法是使用*另一种*参数类型调用API。
 
 ```(csharp)
-// this is OK when running on a image that has DP floating point support
+// 在支持DP浮点数的映像上运行时没有问题
 Math.Pow(1.01580092094650000000000000, 0.19029495718363400000000000000);
 
-// this is the correct usage when running on a image WITHOUT support for DP floating point
+// 在不支持DP浮点数的映像上运行时，这是正确的用法
 Math.Pow(1.0158009209465f, 0.190294957183634f);
 ```

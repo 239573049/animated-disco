@@ -1,19 +1,19 @@
-# Flash a nanoCLR image in TI CC13x2/CC6x2 boards
+# 在TI CC13x2/CC6x2开发板上刷入nanoCLR镜像
 
-## How To guide
+## 操作指南
 
-To flash nanoCLR image in TI CC13x2/CC6x2 boards [Uniflash](http://www.ti.com/tool/uniflash) tool from TI is required.
+要在TI CC13x2/CC6x2开发板上刷入nanoCLR镜像，需要使用TI的[Uniflash](http://www.ti.com/tool/uniflash)工具。
 
-Assuming that Uniflash tool and the USB drivers are properly installed, follows the recommend procedure for a CC1352R1 LaunchPad board.
+假设Uniflash工具和USB驱动程序已经正确安装，按照以下步骤操作适用于CC1352R1 LaunchPad开发板的推荐过程。
 
-1. Download the image from .NET **nanoFramework** repository.
-1. Connect the board using the USB cable.
-1. Start Uniflash. The board should be detected and listed, unless the configuration is set to manual detection.
+1. 从.NET **nanoFramework**仓库下载镜像。
+1. 使用USB电缆连接开发板。
+1. 启动Uniflash。除非配置为手动检测，否则应该能够检测到并列出开发板。
 ![uniflash-start-screen](../../images/ti/ti-uniflash-start-screen-cc1352r1.png)
-1. Click the **Start** button there.
-1. Select the nanoCLR image file by clicking **Browse** and navigating to the folder/file where the `nanoCLR.bin` is located. (Make sure you do select the file with _bin_ extension).
+1. 点击那里的**Start**按钮。
+1. 通过点击**Browse**并导航到包含`nanoCLR.bin`文件的文件夹/文件位置，选择nanoCLR镜像文件。（确保选择的文件扩展名为_bin_）。
 ![uniflash-browse-image-screen](../../images/ti/ti-uniflash-cc1352r1-browse-image.png)
-1. The nanoCLR image will show in the flash list. By clicking on the **Load Image** button the flashing process starts.
+1. nanoCLR镜像将显示在闪存列表中。通过点击**Load Image**按钮，刷写过程开始。
 ![uniflash-image-loaded-screen](../../images/ti/ti-uniflash-project-screen.png)
-1. After successfully burning the flash with the nanoCLR image, you can disconnect and reconnect the USB cable. The nanoDevice target will show in Visual Studio Device Explorer window as expected.
+1. 成功烧写了带有nanoCLR镜像的闪存后，您可以断开并重新连接USB电缆。预期情况下，nanoDevice目标将显示在Visual Studio Device Explorer窗口中。
 ![vs-device-explorer](../../images/ti/ti-cc1352r1-vs-device-explorer.png)

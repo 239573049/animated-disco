@@ -1,53 +1,54 @@
-# .NET **nanoFramework** PE File Format
+# .NET **nanoFramework** PE文件格式
 
-The .NET **nanoFramework** PE data format is based on the ECMA-335 specification. Specifically sections II.22 - II.24.
-Due to the constraints of the systems .NET **nanoFramework** targets the PE file format is not an exact match/implementation of the ECMA-335 specification. .NET **nanoFramework** PE file format is essentially an extended subset of the format defined in ECMA-335.
+.NET **nanoFramework**的PE数据格式基于ECMA-335规范，具体参考第II.22 - II.24节。由于.NET **nanoFramework**的系统限制，PE文件格式并不是ECMA-335规范的完全匹配/实现。.NET **nanoFramework**的PE文件格式本质上是ECMA-335中定义格式的扩展子集。
 
-## Major differences from ECMA-335
+## 与ECMA-335的主要区别
 
-- The number and size of the metadata tables is limited in .NET **nanoFramework** to keep the overall memory footprint as low as possible.
-- The Windows PE32/COFF header, tables and information is stripped out.
-- Switch instruction branch table index is limited to 8 bits.
-- Table indexes are limited to 12 bits.
-- This also means that the metadata tokens are 16 bits and not 32 so the actual IL instruction stream is different for .NET **nanoFramework**.
-- Resources are handled in a very different manner with their own special table in the assembly header.
+- 在.NET **nanoFramework**中，元数据表的数量和大小受限，以尽可能降低总体内存占用。
+- Windows PE32/COFF头部、表和信息被剥离。
+- Switch指令的分支表索引限制为8位。
+- 表索引限制为12位。
+- 这也意味着元数据标记为16位而不是32位，因此实际的IL指令流在.NET **nanoFramework**中是不同的。
+- 资源的处理方式与ECMA-335有很大不同，具有自己的特殊表格在程序集头部。
 
-## File Data Structure
+## 文件数据结构
 
-The PE file starts with an [Assembly header](AssemblyHeader.md) which is the top level structure of every .NET **nanoFramework** PE file. On disk the AssemblyHeader structure is at offset 0 of the .PE file. On the device the AssemblyHeader is aligned at a 32 bit boundary within a well known ROM/FLASH region (the Deployment region) with the first assembly at offset 0 of the region. Immediately following the assembly header is the metadata table data. Since there are no fixed requirements that an assembly requires all possible tables or what the number of entries in each table will be, the exact size and location of the start of each table's data is entirely described within the header including the end of the assembly, which is used to compute the start location of any subsequent assemblies in memory.
+PE文件以[程序集头部](AssemblyHeader.md)开头，它是每个.NET **nanoFramework** PE文件的顶层结构。在磁盘上，AssemblyHeader结构位于.PE文件的偏移0处。在设备上，AssemblyHeader在已知的ROM/FLASH区域（部署区域）内按32位边界对齐，第一个程序集在该区域的偏移0处。程序集头部紧随其后的是元数据表数据。由于程序集没有固定的要求需要所有可能的表格或每个表格中条目的数量，每个表格数据的确切大小和位置完全由头部描述，包括程序集的结束位置，用于计算内存中任何后续程序集的起始位置。
 
 ```text
-+-----------------+ <--- Aligned to 32 bit boundary in memory
++-----------------+ <--- 在内存中以32位边界对齐
 | AssemblyHeader  |
 +-----------------+
 | Metadata        |
 +-----------------+
 | { padding }     |
-+-----------------+ <--- Aligned to 32 bit boundary in memory
++-----------------+ <--- 在内存中以32位边界对齐
 | AssemblyHeader  |
 +-----------------+
 | Metadata        |
 +-----------------+
 | { padding }     |
-+-----------------+ <--- Aligned to 32 bit boundary in memory
++-----------------+ <--- 在内存中以32位边界对齐
 |  ...            |
 ```
 
-## Structures for the other table entries
+## 其他表格条目的结构
 
-- [AssemblyRef Table](AssemblyRefTableEntry.md)
-- [Attribute Table](AttributeTableEntry.md)
-- [ExceptionHandler Table](ExceptionHandlerTableEntry.md)
-- [FieldRef Table](FieldRefTableEntry.md)
-- [MethodDef Table](MethodDefTableEntry.md)
-- [MethodRef Table](MethodRefTableEntry.md)
-- [Resources Table](ResourcesTableEntry.md)
-- [TypeDef Table](TypeDefTableEntry.md)
-- [TypeRef Table](TypeRefTableEntry.md)
-- [TypeSpec Table](TypeSpecTableEntry.md)
-- [GenericParam Table](GenericParamTableEntry.md) (new in v2.0)
-- [MethodSpec Table](MethodSpecTableEntry.md) (new in v2.0)
-- [Common PE Types and Enumerations](Common-PE-Types-and-Enumerations.md)
+- [AssemblyRef表](AssemblyRefTableEntry.md)
+- [Attribute表](AttributeTableEntry.md)
+- [ExceptionHandler表](ExceptionHandlerTableEntry.md)
+- [FieldRef表](FieldRefTableEntry.md)
+- [MethodDef表](MethodDefTableEntry.md)
+- [MethodRef表](MethodRefTableEntry.md)
+- [Resources表](ResourcesTableEntry.md)
+- [TypeDef表](TypeDefTableEntry.md)
+- [TypeRef表](TypeRefTableEntry.md)
+- [TypeSpec表](TypeSpecTableEntry.md)
+- [GenericParam表](GenericParamTableEntry.md)（v2.0中新增）
+- [MethodSpec表
 
-    > Note 1: The structures above are packed with 1 byte boundary.
-    > Note 2: the documentation for the PE file format was taken from the original one at .NET Micro Framework.
+](MethodSpecTableEntry.md)（v2.0中新增）
+- [常用PE类型和枚举](Common-PE-Types-and-Enumerations.md)
+
+    > 注意1：以上结构按1字节边界对齐。
+    > 注意2：PE文件格式的文档取自.NET Micro Framework的原始文档。
