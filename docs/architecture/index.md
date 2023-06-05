@@ -1,30 +1,30 @@
-# .NET **nanoFramework** Architecture
+# .NET **nanoFramework** 结构
 
-[Simplifications and trade-offs](simplifications-and-trade-offs.md) is an important read to start with. As in micro controller unit the resources are limited, we had to make trade off to still get the best of the .NET and C# experience but with few constraints.
+[简化和权衡](simplifications-and-trade-offs.md)是一个重要的阅读材料。由于微控制器单元的资源有限，我们不得不做出权衡，以便在一些限制下仍然能够获得最好的.NET和C#体验。
 
-Native development:
+本地开发：
 
-- [Generating stubs for a native project, NANOCLR macros, Arguments and return types](nanoclr-stub-args.md)
-- [Class Libraries](class-libraries.md)
-- [Date and Time](date-and-time.md)
-- [Native interrupt handlers](native-interrupt-handlers.md)
-- [Wire Protocol](wire-protocol.md)
-- [PE File format](pe-file.md) and more details [here](pe-file/index.md)
-- [Package and assembly versions and checksums](guide-version-checksums.md)
-- [String.Format for numerics examples](string-format-examples.md)
+- [为本地项目生成存根、NANOCLR宏、参数和返回类型](nanoclr-stub-args.md)
+- [类库](class-libraries.md)
+- [日期和时间](date-and-time.md)
+- [本地中断处理程序](native-interrupt-handlers.md)
+- [Wire协议](wire-protocol.md)
+- [PE文件格式](pe-file.md)和更多细节[在这里](pe-file/index.md)
+- [包和程序集版本和校验和](guide-version-checksums.md)
+- [数字格式的String.Format示例](string-format-examples.md)
 
-As a summary, we can represent the nanoFramework architecture like this:
+总的来说，我们可以这样表示nanoFramework架构：
 
 ![architecture](../../images/architecture.png)
 
-nanoFramework is build on an Hardware Abstraction Layer (HAL). The HAL allow to access the hardware in a consistent and standard way. This allow to have a set of functions that are exposed the same way to the Platform Abstraction Layer (PAL) and specific drivers.
+nanoFramework建立在硬件抽象层（HAL）之上。HAL允许以一致和标准的方式访问硬件。这允许有一组函数以相同的方式暴露给平台抽象层（PAL）和特定的驱动程序。
 
-The CLR is built on the PAL and offers multiple libraries. The one which is always used is mscorlib (System and few other namespaces). The modularity of nanoFramework allows to add as many namespaces, classes as you want. They'll all be linked to the CLR.
+CLR建立在PAL上，并提供多个库。始终使用的是mscorlib（System和少数其他命名空间）。nanoFramework的模块化允许添加任意数量的命名空间、类。它们都将链接到CLR。
 
-Other architecture elements:
+其他架构元素：
 
-- [Unit Test for nanoFramework architecture](unit-test.md)
-- [Floating point calculations](floating-point-calculations.md)
-- [Application deployment](deployment.md)
-- [Thread execution](thread-execution.md)
+- [nanoFramework架构的单元测试](unit-test.md)
+- [浮点数计算](floating-point-calculations.md)
+- [应用程序部署](deployment.md)
+- [线程执行](thread-execution.md)
 - [HAL](HAL.md)

@@ -1,4 +1,5 @@
-# ESP32 specific articles
+ESP32的具体文章
 
-- [ESP32 pin out](esp32_pin_out.md)
-- [Troubleshoot device connection](../getting-started-guides/troubleshooting-device-connection.md)
+- [ESP32引脚输出](esp32_pin_out.md)
+
+- [排除设备连接故障](../getting-started-guides/troubleshooting-device-connection.md)

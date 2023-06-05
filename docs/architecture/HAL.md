@@ -1,5 +1,5 @@
-# HAL architecture
+# HAL 架构
 
-## About this document
+## 关于这份文件
 
-This document describes the .NET **nanoFramework** [HAL](https://en.wikipedia.org/wiki/Hardware_abstraction) design, some explanation on the choices that were made and the options that are available to customize it.
+本文件描述了.NET **nanoFramework** [HAL](https://en.wikipedia.org/wiki/Hardware_abstraction)设计，对所做的选择和可自定义的选项进行了一些解释。

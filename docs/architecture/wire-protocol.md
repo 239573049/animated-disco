@@ -1,52 +1,49 @@
-# Wire Protocol
+# 传输协议
 
-## About this document
+## 关于本文档
 
-This document describes the Wire Protocol used by .NET **nanoFramework** for debug and the booter stage.
-The protocol follows the implementation of the .NET Micro Framework Wire Protocol. The intention is to review it later in order to improve and simplify it.
+本文档描述了.NET **nanoFramework**用于调试和引导阶段的传输协议。该协议遵循.NET Micro Framework传输协议的实现。目的是为了以后进行审查，以便改进和简化它。
 
-## Wire Protocol Message
+## 传输协议消息
 
-The message basic structure is comprised by:
+消息的基本结构由以下组成：
 
-- Signature which is basically a marker to detect the start of a new message packet. Has a fixed length.
-- Header with several fields to cary packet sequence, flags, commands, CRC, etc. Has a fixed length.
-  - CRC32 of header (for verification calculation this CRC32 field has to be zeroed).
-  - CRC32 of payload, when it exists (for verification calculation this CRC32 field has to be zeroed).
-  - Command code.
-  - Sequence number of the message.
-  - Sequence reply. Carries the sequence number of the message that the message is a reply to.
-  - Flags.
-  - Size of the payload.
-- Payload for carrying data. Optional and its size is variable.
+- 签名，基本上是一个标记，用于检测新消息数据包的开始。具有固定的长度。
+- 头部，具有多个字段，用于携带数据包序列、标志、命令、CRC等。具有固定的长度。
+  - 头部的CRC32（用于验证计算此CRC32字段必须为零）。
+  - 负载的CRC32，当存在时（用于验证计算此CRC32字段必须为零）。
+  - 命令代码。
+  - 消息的序列号。
+  - 序列回复。携带消息的序列号，该消息是回复的。
+  - 标志。
+  - 负载的大小。
+- 负载，用于携带数据。可选，其大小可变。
 
-You can check the details on [WireProtocol.h](https://github.com/nanoframework/nf-interpreter/blob/main/src/CLR/Include/WireProtocol.h).
+你可以在[WireProtocol.h](https://github.com/nanoframework/nf-interpreter/blob/main/src/CLR/Include/WireProtocol.h).
+数据通道
 
-## Data channels
+目前，.NET nanoFramework Wire Protocol仅支持串行通道。计划添加对USB（使用CDC类设备）和TCP的支持。
+为了简化到新的HAL/平台的移植，代码被架构成只需要最少的更改即可添加对新实现的支持。
 
-Currently .NET **nanoFramework** Wire Protocol supports only serial channels. The plan is to add support for USB (using CDC class device) and TCP.
-To ease the port to new HAL/platforms the code is architecture so that only minimal changes are required to add support for new implementations.
+接收和传输数据
 
-## Receiving and transmitting data
+代码被架构成通过串行流接收和传输数据。
+最好（并且使用提供的参考实现而不需要太多更改）串行流的接口/API应该：
 
-The code is architecture to receive and transmit data over a serial stream.
-Preferably (and to use the reference implementation provided without much changes) the interface/API of the serial stream should:
+- 允许检查是否有可读取的数据。
+- 允许按顺序（FIFO方式）读取输入流的一定数量的字节。具有读取操作的超时是理想的，以防止错误/不完整的读取操作。
+- 允许以一定数量的字节写入传输流。最好以非阻塞方式进行，以防止错误/不完整的写入操作。
 
-- Allow checking if there is data available for reading.
-- Allow reading sequentially (FIFO fashion) the input stream for a definite number of bytes. Having a timeout for the read operation is ideal to prevent bad/incomplete read operations.
-- Allow writing to the transmit stream a definite number of bytes. Ideally in a non-blocking fashion to prevent bad/incomplete write operations.
+接收器工作流程
 
-## Receiver workflow
+以下是Wire Protocol组件如何工作的高级描述。
 
-Follows a high-level description on how the Wire Protocol component works.
-
-- RTOS thread - ```ReceiverThread(...)``` in `WireProtocol_ReceiverThread`(@ src\CLR\WireProtocol\WireProtocol_ReceiverThread.c) - that loops continuously checking for available data in the receiving channel.
-- On available data the reception of the message is initialized (WP_Message_Initialize) and prepared (WP_Message_PrepareReception) so the reception can actually occur and be processed by calling WP_Message_Process.
-- During the reception states the input stream is read (```WP_ReceiveBytes(...)``` in `WireProtocol_HAL_Interface`(@ src\CLR\WireProtocol\WireProtocol_HAL_Interface.c)) so the message header is received and it's integrity checked. Follows the reception and the integrity check of the payload, if there is any.
-- After a successful reception of the header (and payload, if any) the _Process_ state machine in `WireProtocol_Message`(@ src\CLR\WireProtocol\WireProtocol_Message.c)) reaches the ```ReceiveState_CompletePayload``` state and calls the ```ProcessPayload(...)``` function.
-- Inside ```ProcessPayload(...)``` the lookup table for the commands that are implemented is searched and, if the command is found, the respective handler is called. According to the command its processing can require extra processing or gathering data. Invariably the handler execution end with a call to ```ReplyToCommand(...)``` where the reply is sent back to the host device.
-- When executing ```ReplyToCommand(...)``` the output stream is written (```WP_TransmitMessage(...)``` in `WireProtocol_HAL_Interface`(@ src\CLR\WireProtocol\WireProtocol_HAL_Interface.c)) with the reply message.
-
+- RTOS线程 - `WireProtocol_ReceiverThread`（@ src\\CLR\\WireProtocol\\WireProtocol_ReceiverThread.c）中的`ReceiverThread（...）` - 不断循环检查接收通道中是否有可用数据。
+- 在有可用数据时，初始化消息的接收（WP_Message_Initialize）并准备接收（WP_Message_PrepareReception），以便实际进行接收并通过调用WP_Message_Process进行处理。
+- 在接收状态期间，读取输入流（`WireProtocol_HAL_Interface`（@ src\\CLR\\WireProtocol\\WireProtocol_HAL_Interface.c）中的`WP_ReceiveBytes（...）`）以接收消息头并检查其完整性。如果有的话，接下来是负载的接收和完整性检查。
+- 在成功接收标头（和负载（如果有））后，`WireProtocol_Message`（@ src\\CLR\\WireProtocol\\WireProtocol_Message.c）中的_Process_状态机达到`ReceiveState_CompletePayload`状态并调用`ProcessPayload（...）`函数。
+- 在`ProcessPayload（...）`内，搜索已实现的命令的查找表，如果找到命令，则调用相应的处理程序。根据命令，其处理可能需要额外的处理或收集数据。无论如何，处理程序的执行最终都会调用`ReplyToCommand（...）`，其中回复被发送回主机设备。
+- 在执行`ReplyToCommand（...）`时，输出流被写入（`WireProtocol_HAL_Interface`（@ src\\CLR\\WireProtocol\\WireProtocol_HAL_Interface.c）中的`WP_TransmitMessage（...）`）回复消息。
 ## Wire Protocol Commands
 
 Processing a command is carried in a handler function.
