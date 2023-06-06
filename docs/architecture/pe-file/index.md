@@ -1,3 +1,8 @@
+---
+sidebar_position: 1
+---
+
+
 # .NET **nanoFramework** PE文件格式
 
 .NET **nanoFramework**的PE数据格式基于ECMA-335规范，具体参考第II.22 - II.24节。由于.NET **nanoFramework**的系统限制，PE文件格式并不是ECMA-335规范的完全匹配/实现。.NET **nanoFramework**的PE文件格式本质上是ECMA-335中定义格式的扩展子集。

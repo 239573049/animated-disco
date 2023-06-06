@@ -1,10 +1,10 @@
-# Community provided target boards
+# 社区提供的目标板
 
-There is a GitHub repository that holds target boards provided by community members. Check it [here](https://github.com/nanoframework/nf-Community-Targets).
+有一个 GitHub 仓库存放着社区成员提供的目标板信息。您可以在[这里](https://github.com/nanoframework/nf-Community-Targets)查看。
 
-These boards are NOT maintained by the core team and any related questions or issues about them should be addressed to the target _owner_.
+这些目标板不由核心团队进行维护，任何与它们相关的问题或疑问应该直接向目标板的所有者提问。
 
-## STMicroelectronics boards
+## STMicroelectronics 目标板
 
 - [ESP32 ULX3S](esp32-ULX3S.md)
 - [GHI FEZ Cerb40](GHI_FEZ_CERB40_NF.md)

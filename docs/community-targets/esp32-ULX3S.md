@@ -1,11 +1,11 @@
-# ULX3S specific articles
+# ULX3S特定文章
 
-See the [Main Radiona ULX3S page](https://radiona.org/ulx3s/), and [emard's source](https://github.com/emard/ulx3s).
+请查看[Radiona ULX3S主页](https://radiona.org/ulx3s/)，以及[emard的源代码](https://github.com/emard/ulx3s)。
 
-The full ULX3S schematic is available [here](https://github.com/emard/ulx3s/blob/master/doc/schematics.pdf).
+完整的ULX3S原理图可以在[这里](https://github.com/emard/ulx3s/blob/master/doc/schematics.pdf)找到。
 
-See in particular the ESP32 connections:
+特别注意ESP32的连接方式：
 
-![ESP32 schematic](../../images/ESP32_on_ULX3S.png)
+![ESP32原理图](../../images/ESP32_on_ULX3S.png)
 
-The red LED (D22) is on GPIO5.
+红色LED（D22）连接到GPIO5。

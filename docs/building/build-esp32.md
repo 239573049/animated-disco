@@ -1,251 +1,262 @@
-# How to Build, Flash and Debug the ESP32 nanoCLR on Windows using Visual Code
+# 如何在Windows上使用Visual Code构建、烧写和调试ESP32 nanoCLR
 
-⚠️ NOTE about the need to build .NET **nanoFramework** firmware ⚠️
+⚠️ 关于构建 .NET **nanoFramework** 固件的说明 ⚠️
 
-You only need to build it if you plan to debug the CLR, interpreter, execution engine, drivers, add new targets or add new features at native level.
-If your goal is to code in C# you just have to flash your MCU with the appropriate firmware image using [nanoff](https://github.com/nanoframework/nanoFirmwareFlasher).
-There are available ready to flash firmware images for several targets, please check the [Home](https://github.com/nanoframework/Home#firmware-for-reference-boards) repository.
+只有当您计划调试CLR、解释器、执行引擎、驱动程序、添加新目标或在本机级别添加新功能时，才需要构建它。
+如果您的目标是在C#中编码，您只需使用[nanoff](https://github.com/nanoframework/nanoFirmwareFlasher)将适当的固件映像刷写到您的MCU上。
+针对多个目标，提供了准备好的固件映像可供刷写，请参阅[Home](https://github.com/nanoframework/Home#firmware-for-reference-boards)存储库。
 
-## About this document
+## 关于本文档
 
-This document describes how to build the required images for .NET **nanoFramework** firmware for ESP32 targets.
-The build system is based on CMake tool to ease the development in all major platforms.
+本文档描述了如何为ESP32目标构建所需的.NET **nanoFramework**固件映像。
+构建系统基于CMake工具，以便在所有主要平台上简化开发过程。
 
-## Using Dev Container
+## 使用开发容器
 
-If you want a simple, efficient way, we can recommend you to use [Dev Container](using-dev-container.md) to build your image. This has few requirements as well like Docker Desktop and Remote Container extension in VS Code but it is already all setup and ready to run!
+如果您希望使用一种简单高效的方式，我们建议您使用[Dev Container](using-dev-container.md)来构建您的映像。这也需要一些额外的要求，例如在VS Code中安装Docker Desktop和Remote Container扩展，但它已经配置好并准备好运行！
 
-If you prefer to install all the tools needed on your Windows machine, you should continue this tutorial.
+如果您更喜欢在Windows机器上安装所有所需的工具，请继续本教程。
 
-## Prerequisites
+## 先决条件
 
-You'll need:
+您将需要：
 
-- [Visual Studio Code](https://code.visualstudio.com/). Additional extensions and setup steps follow below.
-- Visual Studio Code Extensions
-  . [C/C++](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) - C/C++ IntelliSense, debugging, and code browsing (by Microsoft)
-  . [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) - Extended CMake support in Visual Studio Code (by Microsoft)
-- [CMake](https://cmake.org/download/) (Minimum required version is 3.21)
-- [Python 3.6.8](https://www.python.org/downloads/release/python-368) Required for uploading the nanoCLR to the ESP32.
-  - Ensure the Windows default app to open `.py` files is Python.
-- A build system for CMake to generate the build files to. We recommend [Ninja](https://github.com/ninja-build/ninja/releases).
-- [ESP-IDF Tools](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/get-started/windows-setup.html).
-- Driver for the USB to UART Bridge. This depends on the ESP32 hardware. After installing it, use Windows Device Manager to determine the COM port as this is needed to complete the setup. Follows the most common drivers (all these are available along with ESP-IDF tools installer):
-  - [CP210x USB to UART Bridge VCP Drivers](https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers?tab=downloads).
-  - [FTDI Virtual COM Port Drivers](https://www.ftdichip.com/Drivers/VCP.htm).
-  - [WHC CH34x](https://www.wch.cn/download/CH341SER_ZIP.html).
+- [Visual Studio Code](https://code.visualstudio.com/)。下面将介绍其他扩展和设置步骤。
+- Visual Studio Code 扩展
+  . [C/C++](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) - C/C++ IntelliSense、调试和代码浏览（由Microsoft提供）
+  . [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) - Visual Studio Code 中的扩展 CMake 支持（由Microsoft提供）
+- [CMake](https://cmake.org/download/)（最低要求版本为3.21）
+- [Python 3.6.8](https://www.python.org/downloads/release/python-368) 用于将nanoCLR上传到ESP32。
+  - 确保Windows默认打开`.py`文件的应用程序是Python。
+- 用于生成构建文件的CMake构建系统。我们推荐使用[Ninja](https://github.com/ninja-build/ninja/releases)。
+- [ESP-IDF 工具](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/get-started/windows-setup.html)。
+- 用于 USB 到 UART 桥接器的驱动程序。这取决于ESP32硬件。安装完驱动程序后，请使用Windows设备管理器确定COM端口，因为这在完成设置时是必需的。以下是常见的驱动程序（所有这些驱动程序都可以与 ESP-IDF
 
-## Overview
+ 工具安装程序一起使用）：
+  - [CP210x USB to UART Bridge VCP Drivers](https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers?tab=downloads)。
+  - [FTDI Virtual COM Port Drivers](https://www.ftdichip.com/Drivers/VCP.htm)。
+  - [WHC CH34x](https://www.wch.cn/download/CH341SER_ZIP.html)。
 
--**Step 1**: Create a directory structure such as the following:
+## 概述
+
+- **步骤1**：创建如下所示的目录结构：
 
       `C:\nanoFramework`
 
--**Step 2**: Download and install [Visual Studio Code](http://code.visualstudio.com).
+- **步骤2**：下载并安装[Visual Studio Code](http://code.visualstudio.com)。
 
--**Step 3**: Clone [`nf-interpreter`](https://github.com/nanoframework/nf-interpreter) repository into `C:\nanoFramework\nf-interpreter`. See next section for more info.
+- **步骤3**：将[`nf-interpreter`](https://github.com/nanoframework/nf-interpreter)存储库克隆到`C:\nanoFramework\nf-interpreter`。有关更多信息，请参阅下一节。
 
--**Step 4**: Install ESP-IDF Tools by using the installer provided by Espressif.
+- **步骤4**：使用Espressif提供的安装程序安装ESP-IDF工具。
 
--**Step 5**: Review and adjust several JSON files to match your environment (as documented below)
+- **步骤5**：检查并调整几个JSON文件以符合您的环境（如下所述的文档中有详细说明）。
 
--**Step 6**: Restart Visual Studio Code (due to json changes)
+- **步骤6**：重新启动Visual Studio Code（由于更改了JSON文件）。
 
-## .NET **nanoFramework** GitHub repo
+## .NET **nanoFramework** GitHub存储库
 
-If you intend to change the nanoCLR and create Pull Requests then you will need to fork the [nanoFramework/nf-interpreter](https://github.com/nanoFramework/nf-interpreter) to your own GitHub repo and clone the forked GitHub repo to your Windows system using an Git client such as [Fork](https://fork.dev) or the [GitHub Desktop application](https://desktop.github.com).
+如果您打算更改nanoCLR并创建拉取请求，那么您需要将[nanoFramework/nf-interpreter](https://github.com/nanoFramework/nf-interpreter)分叉到自己的GitHub存储库，并使用Git客户端（如[Fork](https://fork.dev)或[GitHub桌面应用程序](https://desktop.github.com)）在Windows系统上克隆分叉的GitHub存储库。
 
-The _main_ branch is the default working branch. When working on a fix or experimenting a new feature you should do it on its own branch. See the [Contributing guide](../contributing/contributing-workflow.md#suggested-workflow) for specific instructions on the suggested contributing workflow.
+_main_分支是默认的工作分支。当修复错误或尝试新功能时，您应该在其自己的分支上进行操作。有关建议的贡献工作流程的具体说明，请参阅[贡献指南](../contributing/contributing-workflow.md#suggested-workflow)。
 
-If you don't intend to make changes to the nanoBooter and nanoCLR, you can just clone [nanoFramework/nf-interpreter](https://github.com/nanoFramework/nf-interpreter) directly from GitHub.
+如果您不打算对nanoBooter和nanoCLR进行更改，您可以直接从GitHub克隆[nanoFramework/nf-interpreter](https://github.com/nanoFramework/nf-interpreter)。
 
-Make sure to put this folder high enough on your drive, that you won't trigger long filename issues. CMake does not support filenames in excess of 250 characters.
+请确保将此文件夹放在驱动器上足够高的位置，以避免触发文件名过长的问题。CMake不支持超过250个字符的文件名。
 
-## Setting up the build environment
+## 设置构建环境
 
-After cloning the repo, you need to setup the build environment. You can use the power shell script or follow the step-by-step instructions.
+在克隆存储库之后，您需要设置构建环境。您可以使用PowerShell脚本或按步骤进行手动设置。
 
-### Manual install of the build environment
+### 手动安装构建环境
 
-(If you already have installed ESP-IDF Tools you can skip this step.)
+（如果您已经安装了ESP-IDF工具，可以跳过此步骤。）
 
--**Step 1**: Install ESP-IDF Tools by using the installer provided by Espressif [here](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/get-started/windows-setup.html#esp-idf-tools-installer). The installer includes all the pre-requisites.
+- **步骤1**：使用Espressif提供的安装程序[在此处](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/get-started/windows-setup.html#esp-idf-tools-installer)安装ESP-IDF工具。
 
--**Step 2**: After launching the installer you have to follow the wizard and follow the instruction there. Follows some aspects worth mentioning.
+安装程序包含所有先决条件。
 
--**Step 3**: Location of the IDF repository. You can set this to a location of your choosing. After the installer completes, you'll find a git clone of the ESP-IDF at this location.
+- **步骤2**：在启动安装程序后，您需要按照向导的说明进行操作。以下是一些值得注意的方面。
+
+- **步骤3**：IDF存储库的位置。您可以将其设置为您选择的位置。安装程序完成后，您将在此位置找到ESP-IDF的git克隆。
 
 ![idf repo location](../../images/building/esp32/install-esp-idf-tools-repo-location.png)
 
--**Step 4**: Location of the IDF toolchain and other tools. The default it's at the user folder. Feel free to change this to another location of your choosing.
+- **步骤4**：IDF工具链和其他工具的位置。默认情况下，它位于用户文件夹中。可以自由更改为其他位置。
 
 ![idf tools location](../../images/building/esp32/install-esp-idf-tools-location.png)
 
--**Step 5**: At the options screen, know that you don't have to install all the tools there. Follow the recommended option to be able to build .NET nanoFramework. Also note that you may want to install the toolchains only for the chip serie(s) that you're planning to build for.
+- **步骤5**：在选项屏幕上，知道您不必安装那里的所有工具。按照建议的选项进行设置，以便能够构建.NET nanoFramework。还请注意，您可能只想为您计划构建的芯片系列安装工具链。
 
 ![options](../../images/building/esp32/install-esp-idf-tools-options.png)
 
--**Step 6**: The install step may prompt you for permission on installing drivers and launch secondary installers. And be aware that it can take a while to complete...
+- **步骤6**：安装步骤可能会提示您在安装驱动程序并启动辅助安装程序时获得权限。请注意，这可能需要一些时间才能完成...
 
--**Step 7**: After the installer completes, open a command prompt at the IDF repository location with elevated permission and execute the script `install`. This will _hopefully_ install all the requirements and prerequisites.
+- **步骤7**：安装程序完成后，使用提升的权限在IDF存储库位置打开命令提示符，并执行脚本`install`。这将“希望地”安装所有要求和先决条件。
 
--**Step 8**: Now execute the script `export`. This will _hopefully_ update the path environment variable of your machine. You can check the success of the operation by opening another cmd prompt and print the content of the path variable.
+- **步骤8**：现在执行脚本`export`。这将“希望地”更新机器的路径环境变量。您可以通过打开另一个命令提示符并打印路径变量的内容来检查操作的成功。
 
-:warning: At the time of this writing, the CMake version distributed with IDF it's outdated. You have to edit the path environment variable after this step and remove the entry pointing to CMake so the current CMake it's used. This should be something like `(...).espressif\tools\cmake\3.20.3`. :warning:
+:warning: 在编写本文时，IDF随附的CMake版本已过时。您必须在此步骤之后编辑路径环境变量，删除指向CMake的条目，以便使用当前的CMake。路径可能类似于`(...).espressif\tools\cmake\3.20.3`。 :warning:
 
--**Step 9**: Calling the above scripts it's not 100% guaranteed to effectively install everything and updates the path. This can be because of permission issues, updating the path variable and others. Here's the image of the path on a machine where the update was successful so you can compare it.
+- **步骤9**：不能保证通过调用上述脚本百分之百地成功安装所有内容并更新路径。这可能是由于权限问题、路径变量更新和其他原因。这是安装成功后机器上路径的映像，以便您进行比较。
 
 ![updated path](../../images/building/esp32/install-esp-idf-tools-path.png)
 
--**Step 10**: Also worth checking if the following environment variables have also been setup:
+- **步骤10**：还值得检查以下环境变量是否已设置：
 
-- `IDF_PATH`: must point to the location where the ESP-IDF repo was cloned (see step 3. above).
-- `IDF_PYTHON_ENV_PATH`: must point to Python install location.
-- `IDF_TOOLS_PATH`: must point to the location where the ESP-IDF tools where installed (see step 3. above).
+- `IDF_PATH`：必须指向克隆ESP-IDF存储库的位置（请参阅步骤3）。
+- `IDF_PYTHON_ENV_PATH`：必须指向Python的安装位置。
+- `IDF_TOOLS_PATH`：必
 
-:warning: **Having the path properly setup it's absolutely mandatory in order to be able to build.** :warning:
+须指向ESP-IDF工具的安装位置（请参阅步骤3）。
 
-## Set up Visual Studio Code
+:warning: **正确设置路径对于能够进行构建绝对是必需的。** :warning:
 
--**Step 1**: Install the extensions:
+## 设置Visual Studio Code
+
+- **步骤1**：安装以下扩展：
 
     - [C/C++](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
     - [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools)
 
--**Step 2**: Run the PowerShell script `Initialize-VSCode.ps1` that's on the `install-scripts` folder. This will adjust the required settings, build launch configuration for debugging and setup the tasks to ease your developer work.
+- **步骤2**：运行`install-scripts`文件夹中的PowerShell脚本`Initialize-VSCode.ps1`。这将调整所需的设置，构建用于调试的启动配置，并设置任务以便于开发者工作。
 
     ```ps
     .\Initialize-VSCode.ps1
     ```
 
-    - You can force the environment variables to be updated by adding `-Force` to the command line.
-    - The PowerShell relies on the environment variables described above to properly setup the various VS Code working files. In case you have not used the automated install and the variable are not available you'll have to manually edit `tasks.json`, `launch.json` and `settings.json` to replace the relevant paths. **!!mind to always use forward slashes in the paths!!**
-    - More info available on the [Tweaking CMakeUserPresets.TEMPLATE.json](cmake-presets.md) documentation page.
+    - 您可以在命令行中添加`-Force`来强制更新环境变量。
+    - PowerShell依赖于上述描述的环境变量，以正确设置各种VS Code工作文件。如果您没有使用自动安装并且变量不可用，您将不得不手动编辑`tasks.json`、`launch.json`和`settings.json`以替换相关路径。**请确保始终在路径中使用正斜杠（/）！**
+    - 有关可用目标的文档，请参阅[Tweaking CMakeUserPresets.TEMPLATE.json](cmake-presets.md)文档页面。
 
-- **Step 3:** Copy the template file (in `nf-interpreter\config` folder) `user-tools-repos.TEMPLATE.json` to a (new) file called `user-tools-repos.json`. Rename the json section `user-tools-repos-local` to `user-tools-repos` and adjust paths for the tools and repositories in the `user-tools-repos` configuration preset. If you don't have the intention to build for a particular platform you can simply remove the related options from there. If you don't want to use local clones of the various repositories you can simply set those to `null`. **!!mind to always use forward slashes in the paths!!**
+- **步骤3**：将模板文件（位于`nf-interpreter\config`文件夹中）`user-tools-repos.TEMPLATE.json`复制到（新的）名为`user-tools-repos.json`的文件中。将json部分`user-tools-repos-local`重命名为`user-tools-repos`，并调整`user-tools-repos`配置预设中工具和存储库的路径。如果您不打算为特定平台构建，可以直接从中删除相关选项。如果您不想使用各种存储库的本地克隆，可以将其设置为`null`。**请确保始终在路径中使用正斜杠（/）！**
 
-- **Step 4**: Save any open files and **RESTART** VS Code. Have you **RESTARTED** VS Code? You really have to do it otherwise this won't work.
+- **步骤4**：保存所有打开的文件，然后**重新启动**VS Code。您已经**重新启动**了VS Code吗？您确实需要这样做，否则这不起作用。
 
-## Build nanoCLR
+## 构建nanoCLR
 
--**Step 1**: Launch Visual Studio from the repository folder, or load it from the **File** menu, select **Open Folder** and browse to the repo folder. VS Code could prompt you asking "Would you like to configure this project?". Ignore the prompt as you need to select the build variant first.
-Next time VS Code open it should load the workspace automatically.
+- **步骤1**：从存储库文件夹中启动Visual Studio，或者从**文件**菜单中加载它，选择**打开文件夹**，然后浏览到存储库文件夹。VS Code可能会提示您询问“是否要配置此项目？”忽略该提示，因为您需要先选择构建变体。
+下次打开VS Code时，它应该自动加载工作区。
 
-- **Step 2:** Reopen VS Code. It should load the workspace automatically. In the status bar at the bottom left, click on the `No Configure Preset Selected` and select the target you want to build from the drop-down list that will open at the top, e.g. `ESP32_PSRAM_REV0`. The respective build preset will be automatically selected by VS Code. More details on this on the documentation about the available targets [here](../reference-targets/esp32.md).
+- **步骤2**：重新打开VS Code。它应该自动加载工作区。在左下角的状态栏中，单击`No Configure Preset
+
+ Selected`，然后从打开的下拉列表中选择您要构建的目标，例如`ESP32_PSRAM_REV0`。VS Code将自动选择相应的构建预设。有关此信息的更多详细信息，请参阅文档中关于可用目标的文档[此处](../reference-targets/esp32.md)。
 
 ![choose-preset](../../images/building/vs-code-bottom-tolbar-choose-preset.png)
 
--**Step 3**: In the status bar click `Build` or hit F7.
+- **步骤3**：在状态栏中点击`Build`或按下F7。
 
--**Step 4**: Wait for the build to finish with `Build finished with exit code 0` output message.
+- **步骤4**：等待构建完成，并查看输出消息中的`Build finished with exit code 0`。
 
--**Step 5**: In the `build` folder you'll find several files:
+- **步骤5**：在`build`文件夹中，您将找到几个文件：
     - `nanoCLR.bin`
     - `nanoCLR.elf`
     - `partitions_4mb.elf`
     - ...
 
->> Note: If there are errors during the build process it is possible to end up with a partial build in the `build` folder, and the `CMake/Ninja` build process declaring a successful build despite the `.bin` targets not being created, and a `CMake clean` not helping.
-In this case deleting the contents of the `build` folder should allow the build to complete once you resolve the issues that cause the original failure.
+>> 注意：如果在构建过程中出现错误，可能会导致`build`文件夹中出现部分构建，并且`CMake/Ninja`构建过程声明构建成功，尽管`.bin`目标未被创建，并且`CMake clean`也无法帮助解决问题。
+在这种情况下，删除`build`文件夹中的内容应该允许构建在解决引起原始失败的问题后完成。
 
-### Common Build Issues
+### 常见构建问题
 
-The above may have some errors if:
+如果出现以下情况，可能会出现一些错误：
 
-- CMake is not installed properly, not in the PATH or cannot be found for some reason.
-- Ninja is not recognized: check settings.json or your PATH environment variable and restart Visual Studio Code.
-- COMPILATION object file not found: check that your paths don't exceed 140 chars. Put the solution folder high enough on drive.
-- Reopen VS Code if you have made changes on the `CMakePresets.json` or `CMakeUserPresets.json`.
+- CMake未正确安装，未在路径中，或由于某些原因找不到。
+- Ninja未被识别：检查settings.json或PATH环境变量，并重新启动Visual Studio Code。
+- 未找到COMPILATION对象文件：检查您的路径是否超过140个字符。将解决方案文件夹放在驱动器上足够高的位置。
+- 如果您对`CMakePresets.json`或`CMakeUserPresets.json`进行了更改，则重新打开VS Code。
 
-A good remedy for most of the build issues is to manually clean the build folder by deleting it's contents and restarting VS Code.
+对于大多数构建问题，一个很好的解决方法是手动清理构建文件夹，删除其内容并重新启动VS Code。
 
-## Flash nanoCLR into ESP32
+## 将nanoCLR烧写到ESP32
 
--**Step 1**: The third file that gets flashed into the ESP32 is the `bootloader.bin` which will be located here `build/bootloader/bootloader.bin` after a successful build.
+- **步骤1**：烧写到ESP32的第三个文件是`bootloader.bin`，它将位于成功构建后的`build/bootloader/bootloader.bin`位置。
 
--**Step 2**: Connect your development board.
+- **步骤2**：连接您的开发板。
 
--**Step 3**: Some ESP32 boards require to be put into "download mode". Most don't even need this. Check the documentation for your variant. One of the most common options are: hold down the GPIO0 pin to GND or holding down the respective button during power up.
+- **步骤3**：一些ESP32开发板需要进入“下载模式”。大多数开发板甚至不需要此操作。请查看您所使用的开发板的文档。最常见的选项之一是：按住GPIO0引脚接地，或在上电时按住相应按钮。
 
--**Step 4**: Download the image to device.
-    - In Visual Studio Code go to menu "Terminal" -> "Run Task" and select "Flash nanoCLR to ESP32 from the list.
+- **步骤4**：下载固件到设备上。
+    - 在Visual Studio Code中，转到菜单"终端" -> "运行任务"，然后从列表中选择"Flash nanoCLR to ESP32"。
+  
+    - 作为
 
-    - As an alternative enter the command in command palette:
+替代方法，在命令面板中输入以下命令：
 
        ```cmd
        Tasks: Run task
        ```
 
-       and if you flash the board for the first time
+       如果您第一次为板子烧写固件
 
        ```cmd
        Erase ESP32
        ```
 
-       and then
+       然后
 
        ```cmd
        Flash nanoCLR to ESP32
        ```
 
-       It will ask you for the COM port where it's connected.
+       它将要求您输入连接的COM端口。
 
-    - An other alternative is using [nanoff](../getting-started-guides/getting-started-managed.md#uploading-the-firmware-to-the-board-using-nanofirmwareflasher) tool:
+    - 另一种选择是使用[nanoff](../getting-started-guides/getting-started-managed.md#uploading-the-firmware-to-the-board-using-nanofirmwareflasher)工具：
 
        ```console
        nanoff --target ESP32_PSRAM_REV0 --serialport <YourCOMPort> --image nanoCLR.bin --address 0x00010000
        ```
   
-    - And another alternative would be to use Espressif's own [esptool.py](https://github.com/espressif/esptool) tool:
+    - 还有一种选择是使用Espressif自己的[esptool.py](https://github.com/espressif/esptool)工具：
 
         ```console
         esptool.py --chip auto --port <YourCOMPort> --baud 1500000 --before "default_reset" --after "hard_reset" write_flash -z --flash_mode "dio" --flash_freq "40m" --flash_size detect 0x1000 <YourPathTo>/nf-interpreter/build/bootloader/bootloader.bin 0x10000 <YourPathTo>/nf-interpreter/build/nanoCLR.bin 0x8000 <YourPathTo>/nf-interpreter/build/<PartitionFilePassingToYourBoard>.bin
         ```
 
-## Start with a 'Hello World' C# application
+## 使用“Hello World”C#应用程序入门
 
-Watch the video tutorial [here](https://youtu.be/iZdN2GmefXI) and follow the step that should be done in Visual Studio 2017 Community Edition. Skip the steps that describing uploading the nanoCLR into the STM32 Nucleo board.
+观看此视频教程[here](https://youtu.be/iZdN2GmefXI)，然后按照其中在Visual Studio 2017 Community Edition中应完成的步骤进行操作。跳过描述将nanoCLR上传到STM32 Nucleo板的步骤。
 
-## Debugging nanoCLR
+## 调试nanoCLR
 
-If you want to debug the nanoCLR code on the ESP32 chip you'll need an JTAG debugging adapter. ESP32 WROVER KIT already includes one. For other boards you can use the Olimex ARM-USB-OCD-H JTAG debugging adapter or a Segger JLink. There are preset configurations for these adapters.
+如果您想要调试ESP32芯片上的nanoCLR代码，您将需要一个JTAG调试适配器。ESP32 WROVER KIT已经包含了一个。对于其他板子，您可以使用Olimex ARM-USB-OCD-H JTAG调试适配器或Segger JLink。这些适配器都有预设配置。
 
-You can now debug nanoCLR on the ESP32 by pressing F5 in Visual Studio Code.
+您现在可以通过在Visual Studio Code中按F5来调试ESP32上的nanoCLR代码。
 
-### Notes on JTAG debugging on ESP32
+### 关于在ESP32上进行JTAG调试的说明
 
-The JTAG connections on ESP32 DEVKITC are:
+ESP32 DEVKITC上的JTAG连接如下：
 
 - TDI -> GPIO12
 - TCK -> GPIO13
 - TMS -> GPIO14
 - TDO -> GPIO15
-- TRST -> EN / RST (Reset)
+- TRST -> EN / RST（复位）
 - GND -> GND
 
-See Gojimmypi for description of JTAG connections [here](https://gojimmypi.blogspot.com/2017/03/jtag-debugging-for-esp32.html).
+请参阅Gojimmypi关于JTAG连接的描述[here](https://gojimmypi.blogspot.com/2017/03/jtag-debugging-for-esp32.html)。
 
-If flashing nanoCLR via a COM port (default), then be aware that you need to disconnect the JTAG to avoid it preventing the bootloader from running, and therefore being unable to reprogram the ESP23. e.g. if you see the following pattern repeating, unplug the USB-OCD-H, and then the programming will proceed.
+如果通过COM端口（默认）烧录nanoCLR固件，然后请注意您需要断开JTAG以避免其阻止引导加载程序运行，从而无法重新编程ESP32。例如，如果您看到以下模式重复出现，请拔下USB-OCD-H，然后编程将继续。
 
       ```txt
          esptool.py v2.1
-         Connecting........_____....._____...
+         Connecting
+
+........_____....._____...
       ```
 
-You may have to add the `IRAM_ATTR` attribute to a function that you want to debug, so it can be loaded in RAM. When launched the debugger will normally stop at the main task. Its not possible to set a break point on code that is not yet loaded so either step down to a point that it is loaded or temporarily set the method with the IRAM_ATTR attribute.
+您可能需要在要调试的函数中添加`IRAM_ATTR`属性，以便它可以加载到RAM中。当启动调试器时，通常会停在主任务处。无法在尚未加载的代码上设置断点，因此要么逐步进入加载它的位置，要么临时设置具有IRAM_ATTR属性的方法。
 
-For more information on JTAG debugging see [Espressif documentation](http://esp-idf.readthedocs.io/en/latest/api-guides/jtag-debugging/).
+有关JTAG调试的更多信息，请参阅[Espressif文档](http://esp-idf.readthedocs.io/en/latest/api-guides/jtag-debugging/)。
 
-### Debugging nanoCLR without special hardware
+### 在没有特殊硬件的情况下调试nanoCLR
 
-If you do not have access to any special hardware required for debug methods mentioned above you still may use some old-school technique: just place some temporary code at interesting places to get the required information. Using steps below you will get that information in Visual Studio's standard debug output window.
-Certainly Visual Studio must be debugging something to have that window in working state. So this hack will work only in cases when
-you want to debug a nanoCLR code which can be executed via managed code.
+如果您无法访问调试所需的任何特殊硬件，仍然可以使用一些老派的技巧：只需在有趣的地方放置一些临时代码，以获取所需的信息。使用下面的步骤，您将在Visual Studio的标准调试输出窗口中获得这些信息。
+当Visual Studio正在调试时，调试输出窗口才能正常工作。因此，此技巧仅适用于您希望调试可通过托管代码执行的nanoCLR代码的情况。
 
-- **Step 1**: Write some managed code which results in a nanoCLR call executing the code you are interested in.
-- **Step 2**: Choose one or more places in nanoCLR code where you want to know something.
-   e.g.: What is the value of a variable? Which part of an if-else statement gets executed?
-- **Step 3**: Put the following temporary code there:
+- **步骤1**：编写一些可执行引发执行您感兴趣的nanoCLR调用的托管代码。
+- **步骤2**：选择nanoCLR代码中您想要了解的位置。
+   例如：一个变量的值是多少？if-else语句的哪一部分被执行？
+- **步骤3**：在此处放置以下临时代码：
 
       ```cpp
       {
@@ -255,14 +266,14 @@ you want to debug a nanoCLR code which can be executed via managed code.
       }
       ```
 
-   Or simply:
+   或者简单地：
 
       ```cpp
          CLR_EE_DBG_EVENT_BROADCAST( CLR_DBG_Commands_c_Monitor_Message, 12, "Hello World!", WP_Flags_c_NonCritical | WP_Flags_c_NoCaching );
       ```
 
-- **Step 4**: The boring part: rebuild and re-flash firmware and your program.
-- **Step 5**: Start debugging in Visual Studio and keep eye on it's debug output window.
-   You will get your messages there when the related temporary code gets executed!
-- **Step 6**: Iterate steps 2-5 till you find out what you were interested in.
-- **Step 7**: Do not forget to remove all those temporary code blocks before you accidentally commit it!
+- **步骤4**：无聊的部分：重新构建和重新烧写固件和程序。
+- **步骤5**：在Visual Studio中开始调试，并关注其调试输出窗口。
+   当相关的临时代码执行时，您将在那里收到您的消息！
+- **步骤6**：重复步骤2-5，直到找到您感兴趣的内容。
+- **步骤7**：在意外提交之前，请务必删除所有这些临时代码块！

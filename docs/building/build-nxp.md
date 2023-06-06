@@ -1,150 +1,156 @@
-# How to Build, Flash and Debug the NXP nanoBooter and nanoCLR on Windows using Visual Studio Code
+如何在Windows上使用Visual Studio Code构建、烧写和调试NXP nanoBooter和nanoCLR
 
-⚠️ NOTE about the need to build .NET **nanoFramework** firmware ⚠️
+⚠️ 关于构建.NET **nanoFramework**固件的说明 ⚠️
 
-You only need to build it if you plan to debug the CLR, interpreter, execution engine, drivers, add new targets or add new features at native level.
-If your goal is to code in C# you just have to flash your MCU with the appropriate firmware image using [nanoff](https://github.com/nanoframework/nanoFirmwareFlasher).
-There are available ready to flash firmware images for several targets, please check the [Home](https://github.com/nanoframework/Home#firmware-for-reference-boards) repository.
+只有在您计划调试CLR、解释器、执行引擎、驱动程序、添加新目标或在本机级别添加新功能时，才需要构建它。
+如果您的目标是使用C#进行编码，您只需使用[nanoff](https://github.com/nanoframework/nanoFirmwareFlasher)将您的MCU刷入适当的固件映像。
+针对多个目标可提供准备好的可刷写固件映像，请查看[Home](https://github.com/nanoframework/Home#firmware-for-reference-boards)存储库。
 
-## About this document
+## 关于本文档
 
-This document describes how to build the required images for .NET **nanoFramework** firmware for NXP targets.
-The build system is based on CMake tool to ease the development in all major platforms.
+本文档描述了如何为NXP目标构建所需的.NET **nanoFramework**固件映像。
+构建系统基于CMake工具，以便在所有主要平台上进行开发。
 
-## Using Dev Container
+## 使用Dev Container
 
-If you want a simple, efficient way, we can recommend you to use [Dev Container](using-dev-container.md) to build your image. This has few requirements as well like Docker Desktop and Remote Container extension in VS Code but it is already all setup and ready to run!
+如果您希望简单高效，我们建议您使用[Dev Container](using-dev-container.md)来构建映像。这也有一些要求，比如在VS Code中安装Docker Desktop和Remote Container扩展，但已经配置并准备就绪！
 
-If you prefer to install all the tools needed on your Windows machine, you should continue this tutorial.
+如果您更喜欢在Windows计算机上安装所有所需的工具，那么您应该继续本教程。
 
-## Prerequisites
+## 先决条件
 
-You'll need:
+您将需要：
 
 - [Visual Studio Code](http://code.visualstudio.com/)
-- Visual Studio Code Extensions
-  . [C/C++](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) - C/C++ IntelliSense, debugging, and code browsing (by Microsoft)
-  . [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) - Extended CMake support in Visual Studio Code (by Microsoft)
-  . [Cortex Debug](https://github.com/Marus/cortex-debug)) - Debug tool made explicity for ARM Cortex-M cores (needed for J-Link), if you're using on board programmer you don't need it.
-- [CMake](https://cmake.org/download/) (Minimum required version is 3.21)
-- A build system for CMake to generate the build files to. We recommend [Ninja](https://github.com/ninja-build/ninja/releases).
-- [GNU ARM Embedded Toolchain](https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads)
-- OpenOCD. Suggest the [xPack OpenOCD](https://github.com/xpack-dev-tools/openocd-xpack/releases) that kindly maintains a Windows distribution.
+- Visual Studio Code扩展
+  . [C/C++](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) - C/C++ IntelliSense、调试和代码浏览（由Microsoft提供）
+  . [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) - Visual Studio Code中的扩展CMake支持（由Microsoft提供）
+  . [Cortex Debug](https://github.com/Marus/cortex-debug)) - 专为ARM Cortex-M核心而制作的调试工具（用于J-Link），如果您使用板载编程器，则不需要。
+- [CMake](https://cmake.org/download/)（要求的最低版本为3.21）
+- 一个用于生成构建文件的CMake构建系统。我们推荐使用[Ninja](https://github.com/ninja-build/ninja/releases)。
+- [GNU ARM嵌入式工具链](https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads)
+- OpenOCD。建议使用[xPack OpenOCD](https://github.com/xpack-dev-tools/openocd-xpack/releases)，他们提供了维护良好的Windows发行版。
 
-All the above can be installed by the Power Shell script `.\install-nf-tools.ps1 -TargetSeries NXP` from the `install-scripts` folder within the [`nf-interpreter`](https://github.com/nanoFramework/nf-interpreter) project (cloned or downloaded). If you prefer you can do it manually (NOT RECOMMENDED for obvious reasons).
+上述所有内容都可以通过[`nf-interpreter`](https://github.com/nanoFramework/nf-interpreter)项目中的`install-scripts`文件夹中的PowerShell脚本`.\install-nf-tools.ps1 -TargetSeries NXP`来安装。如果您愿意，也可以手动进行安
 
-## Overview
+装（鉴于明显的原因，这样做是不推荐的）。
 
-To simplify: this guide we will put all our tools and source in easily accessible folders and not at the default install paths (you do not have to do the same).
+## 概述
 
-1. Create a directory structure such as the following:
+为了简化：本指南将把所有工具和源代码放在易于访问的文件夹中，而不是默认的安装路径（您不必采取相同的方式）。
 
-   - `C:\nftools`
-   - `C:\nanoFramework`
-
-1. Download and install [Visual Studio Code](http://code.visualstudio.com).
-
-1. Clone [`nf-interpreter`](https://github.com/nanoframework/nf-interpreter) repository into `C:\nanoFramework\nf-interpreter`. See next section for more info.
-
-1. Run the PowerShell script that's on the `install-scripts` folder that will download and install all the required tools.
-  `.\install-stm32-tools.ps1 -Path 'C:\nftools'`
-   For best results, run in an elevated command prompt, otherwise setting system environment variables will fail.
-1. Review and adjust several JSON files to match your environment (as documented below)
-1. Restart Visual Studio Code (due to json changes)
-
-The setup is a lot easier than it seems. The setup scripts do almost everything.
-
-## .NET **nanoFramework** GitHub repo
-
-If you intend to change the nanoBooter or nanoCLR and create Pull Requests then you will need to fork the [nanoFramework/nf-interpreter](https://github.com/nanoFramework/nf-interpreter) to your own GitHub repo and clone the forked GitHub repo to your Windows system using an Git client such as the [GitHub Desktop application](https://desktop.github.com/).
-
-The _main_ branch is the default working branch. When working on a fix or experimenting a new feature you should do it on its own branch. See the [Contributing guide](../contributing/contributing-workflow.md#suggested-workflow) for specific instructions on the suggested contributing workflow.
-
-If you don't intend to make changes to the nanoBooter and nanoCLR, you can just clone [nanoFramework/nf-interpreter](https://github.com/nanoFramework/nf-interpreter) directly from GitHub.
-
-Make sure to put this folder high enough on your drive, that you won't trigger long filename issues. CMake does not support filenames in excess of 250 characters.
-
-## Setting up the build environment in Windows
-
-To simplify, this guide we will put all our tools and source in easily accessible folders and not at the default install paths (you do not have to do the same):
-
-1. Create a directory structure such as the following:
+1. 创建如下所示的目录结构：
 
    - `C:\nftools`
    - `C:\nanoFramework`
 
-2. [Download](http://code.visualstudio.com/) and install Visual Studio Code.
+2. 下载并安装[Visual Studio Code](http://code.visualstudio.com)。
 
-3. [Download](https://cmake.org/download/) and install CMake to `C:\nftools\CMake`.
+3. 将[`nf-interpreter`](https://github.com/nanoframework/nf-interpreter)存储库克隆到`C:\nanoFramework\nf-interpreter`。有关更多信息，请参阅下一节。
 
-4. [Download](https://github.com/ninja-build/ninja/releases) Ninja and place the executable in `C:\nftools\Ninja`.
+4. 运行位于`install-scripts`文件夹中的PowerShell脚本，该脚本将下载并安装所有所需的工具。
+   `.\install-stm32-tools.ps1 -Path 'C:\nftools'`
+   为了获得最佳效果，请在提升的命令提示符中运行，否则设置系统环境变量将失败。
+5. 查看并调整几个JSON文件以符合您的环境（如下文所述进行文档记录）
+6. 重新启动Visual Studio Code（由于更改了JSON文件）
 
-5. [Download](https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads) and install the GNU ARM Embedded Toolchain to `C:\nftools\GNU_ARM_Toolchain`.
+设置过程比它看起来要简单得多。设置脚本几乎完成了所有工作。
 
-6. Finally, clone `nf-interpreter` into `C:\nanoFramework\nf-interpreter`. See next section for more info.
+## .NET **nanoFramework** GitHub存储库
 
-### Set up MCUXpresso IDE
+如果您打算更改nanoBooter或nanoCLR并创建Pull请求，则需要将[nanoFramework/nf-interpreter](https://github.com/nanoFramework/nf-interpreter)分叉到您自己的GitHub存储库，并使用Git客户端（例如[GitHub桌面应用程序](https://desktop.github.com/)）在Windows系统上克隆分叉的GitHub存储库。
 
-For programming eval board using on board LPC-Link programmer you will need to set up MCUXpresso IDE which provides us with redlink software. Redlink copies flash image to core RAM and from there it's flashed into external HyperFlash or QSPI flash.
+_main_分支是默认的工作分支。在修复错误或尝试新功能时，应在其自己的分支上进行操作。有关建议的贡献工作流程的具体说明，请参见[Contributing guide](../contributing/contributing-workflow.md#suggested-workflow)。
 
-1. Register and download MCUXpresso IDE form nxp [website](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=2ahUKEwiPwZiTlMHmAhU5AxAIHQkrDNIQFjAAegQIBhAB&url=https%3A%2F%2Fwww.nxp.com%2Fdesign%2Fsoftware%2Fdevelopment-software%2Fmcuxpresso-software-and-tools%2Fmcuxpresso-integrated-development-environment-ide%3AMCUXpresso-IDE&usg=AOvVaw0Oh8kETGeCSOnWTlKyGj_I).
-1. Install MCUXpresso IDE.
-1. Remember to set proper paths while setting up `launch.json` file in next steps.
+如果您不打算对nanoBooter和nanoCLR进行更改，可以直接从GitHub克隆[nanoFramework/nf-interpreter](https://github.com/nanoFramework/nf-interpreter)。
 
-## Setting up the build environment
+请确保将此文件夹放在驱动器上足够高的位置，以避免触发长文件名问题。CMake不支持超过250个字符的文件名。
 
-After cloning the repo, you need to setup the build environment. You can use the power shell script or follow the step-by-step instructions.
+## 在Windows中设置构建环境
 
-### Automated Install of the build environment
+为了简化，本指南将把所有工具和源代码放在易于访问的文件夹中，而不是默认的安装路径（您不必采取相同的方式）：
 
-**Run Power Shell as an Administrator and run `set-executionpolicy RemoteSigned` to enable execution of the signed script.**
+1. 创建如下所示的目录结构：
 
-On Windows, one may use the `.\install-nf-tools.ps1` Power Shell script located in the repository `install-scripts` folder to download/install CMake, the toolchain, OpenOCD (for JTAG debugging) and Ninja. You may need to use **Run as Administrator** for power shell to permit installing modules to unzip the downloaded archives.
-The script will download the zips and installers into the repository `zips` folder and extract them into sub-folders of the nanoFramework tools folder `C:\nftools` or install the tool.
+   - `C:\nftools`
+   - `C:\nanoFramework`
 
-1. Open Power Shell in the `install-scripts` folder of the repository and run the script.
+2. [下载](http://code.visualstudio.com/)并安装Visual Studio Code。
 
-Example Power Shell command line:
+3. [下载](https://cmake
+
+.org/download/)并将CMake安装到`C:\nftools\CMake`。
+
+4. [下载](https://github.com/ninja-build/ninja/releases)Ninja并将可执行文件放置在`C:\nftools\Ninja`中。
+
+5. [下载](https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads)并安装GNU ARM嵌入式工具链到`C:\nftools\GNU_ARM_Toolchain`。
+
+6. 最后，将`nf-interpreter`克隆到`C:\nanoFramework\nf-interpreter`。有关更多信息，请参阅下一节。
+
+### 设置MCUXpresso IDE
+
+要使用板载LPC-Link编程器对评估板进行编程，您需要设置MCUXpresso IDE，该IDE为我们提供了redlink软件。Redlink将Flash映像复制到核心RAM中，然后将其刷入外部HyperFlash或QSPI Flash。
+
+1. 在nxp的[网站](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=2ahUKEwiPwZiTlMHmAhU5AxAIHQkrDNIQFjAAegQIBhAB&url=https%3A%2F%2Fwww.nxp.com%2Fdesign%2Fsoftware%2Fdevelopment-software%2Fmcuxpresso-software-and-tools%2Fmcuxpresso-integrated-development-environment-ide%3AMCUXpresso-IDE&usg=AOvVaw0Oh8kETGeCSOnWTlKyGj_I)上注册并下载MCUXpresso IDE。
+2. 安装MCUXpresso IDE。
+3. 在设置`launch.json`文件时，请记住设置正确的路径。
+
+## 设置构建环境
+
+克隆存储库后，您需要设置构建环境。您可以使用PowerShell脚本或按照逐步说明进行操作。
+
+### 自动安装构建环境
+
+**以管理员身份运行PowerShell并运行`set-executionpolicy RemoteSigned`以启用执行已签名脚本的功能。**
+
+在Windows上，可以使用存储库`install-scripts`文件夹中的`.\install-nf-tools.ps1` PowerShell脚本下载/安装CMake、工具链、OpenOCD（用于JTAG调试）和Ninja。您可能需要使用**以管理员身份运行**的PowerShell来允许安装模块以解压缩下载的归档文件。
+该脚本将下载zip和安装程序到存储库`zips`文件夹，并将它们提取到nanoFramework工具文件夹`C:\nftools`的子文件夹中，或者安装该工具。
+
+1. 在存储库的`install-scripts`文件夹中打开PowerShell，并运行脚本。
+
+示例PowerShell命令行：
 
 ```ps
 .\install-nf-tools.ps1 -TargetSeries NXP
 ```
 
-You can force the environment variables to be updated by adding `-Force` to the command line.
+您可以通过在命令行中添加`-Force`来强制更新环境变量。
 
-The script will create the following sub-folders (see manual install below):
+该脚本将创建以下子文件夹
+
+（请参阅下面的手动安装）：
 
 - `C:\nftools`
 - `C:\nftools\GNU_Tools_ARM_Embedded\8-2019-q3-update`
-- `C:\nftools\ninja`  
-- `C:\nftools\hex2dfu`  
-- `C:\nftools\openocd`  
+- `C:\nftools\ninja`
+- `C:\nftools\hex2dfu`
+- `C:\nftools\openocd`
 
-The following Environment Variables will be created for the current Windows User.
+将为当前Windows用户创建以下环境变量。
 
 - `NF_TOOLS_PATH = C:\nftools`
 - `GNU_GCC_TOOLCHAIN_PATH = C:\nftools\GNU_Tools_ARM_Embedded\8-2019-q3-update`
 - `NINJA_PATH = C:\nftools\ninja`
 
-## Set up Visual Studio Code
+## 设置Visual Studio Code
 
-- **Step 1**: Install the extensions:
+- **步骤1**：安装以下扩展：
 
   - [C/C++](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
   - [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools)
 
-- **Step 2**: Run the PowerShell script `Initialize-VSCode.ps1` that's on the `install-scripts` folder. This will adjust the required settings, build launch configuration for debugging and setup the tasks to ease your developer work.
+- **步骤2**：运行`install-scripts`文件夹中的PowerShell脚本`Initialize-VSCode.ps1`。这将调整所需的设置，为调试构建启动配置，并设置任务以简化开发工作。
 
 ```ps
-  .\Initialize-VSCode.ps1
+.\Initialize-VSCode.ps1
 ```
 
-You can force the environment variables to be updated by adding `-Force` to the command line.
-The PowerShell relies on the environment variables described above to properly setup the various VS Code working files. In case you have not used the automated install and the variable are not available you'll have to manually edit `tasks.json`, `launch.json` and `settings.json` to replace the relevant paths.
+您可以通过在命令行中添加`-Force`来强制更新环境变量。
+PowerShell依赖于上述描述的环境变量，以正确设置各种VS Code工作文件。如果您未使用自动安装并且变量不可用，您将不得不手动编辑`tasks.json`、`launch.json`和`settings.json`，以替换相关路径。
 
-- **Step 3:** Copy the template file (in `nf-interpreter\config` folder) `user-tools-repos.TEMPLATE.json` to a (new) file called `user-tools-repos.json`. Rename the json section `user-tools-repos-local` to `user-tools-repos` and adjust paths for the tools and repositories in the `user-tools-repos` configuration preset. If you don't have the intention to build for a particular platform you can simply remove the related options from there. If you don't want to use local clones of the various repositories you can simply set those to `null`. **!!mind to always use forward slashes in the paths!!**
+- **步骤3**：将模板文件（位于`nf-interpreter\config`文件夹中）`user-tools-repos.TEMPLATE.json`复制到一个（新的）文件中，命名为`user-tools-repos.json`。将json部分`user-tools-repos-local`重命名为`user-tools-repos`，并根据`user-tools-repos`配置预设中的工具和存储库的路径进行调整。如果您不打算为特定平台构建，可以从中简单地删除相关选项。如果您不想使用各种存储库的本地克隆，可以将其设置为`null`。**!!请确保始终在路径中使用正斜杠!!**
 
-- **Step 4**: If you want to use onboard programmer edit the file named `settings.json` inside the `.vscode` folder and paste the following (mind to update the path to your setup).
+- **步骤4**：如果要使用板载编程器，请编辑`.vscode`文件夹中的名为`settings.json`的文件，并粘贴以下内容（请记住更新路径以匹配您的设置）。
 
 ```json
 {
@@ -153,25 +159,27 @@ The PowerShell relies on the environment variables described above to properly s
 }
 ```
 
-- **Step 5**: Save any open files and exit VS Code.
+- **步骤5**：保存所有打开的文件并退出VS Code。
 
-## Build nanoCLR
+## 构建nanoCLR
 
-- **Step 1**: Launch Visual Studio Code from the repository folder, or load it from the **File** menu, select **Open Folder** and browse to the repo folder. VS Code could prompt you asking "Would you like to configure this project?". Ignore the prompt as you need to select the build variant first.
+- **步骤1**：从存储库文件夹中启动Visual Studio Code，或者从
 
-- **Step 2**: Reopen VS Code. It should load the workspace automatically. In the status bar at the bottom left, click on the `No Kit Selected` and select `[Unspecified]`.
+**文件**菜单中选择**打开文件夹**并浏览到存储库文件夹。VS Code可能会提示您询问"是否要配置此项目？"忽略该提示，因为您需要先选择要构建的变体。
 
-- **Step 3**: In the status bar at the bottom left, click on the `CMake:Debug NXP_MIMXRT1060_EVK: Ready` and select `Debug`. Wait for it to finish Configuring the project (progress bar shown in right bottom corner). This can take a while the first time.
+- **步骤2**：重新打开VS Code。它应该自动加载工作区。在左下角的状态栏上，单击`No Kit Selected`，然后选择`[Unspecified]`。
 
-- **Step 4:** Reopen VS Code. It should load the workspace automatically. In the status bar at the bottom left, click on the `No Configure Preset Selected` and select the target you want to build from the drop-down list that will open at the top. Possibly `NXP_MIMXRT1060_EVK`. The respective build preset will be automatically selected by VS Code.
+- **步骤3**：在左下角的状态栏上，单击`CMake:Debug NXP_MIMXRT1060_EVK: Ready`，然后选择`Debug`。等待配置项目完成（在右下角显示的进度条）。这可能需要一些时间，第一次比较长。
+
+- **步骤4**：重新打开VS Code。它应该自动加载工作区。在左下角的状态栏上，单击`No Configure Preset Selected`，然后从打开的下拉列表中选择要构建的目标。可能是`NXP_MIMXRT1060_EVK`。VS Code将自动选择相应的构建预设。
 
 ![choose-preset](../../images/building/vs-code-bottom-tolbar-choose-preset.png)
 
-- **Step 5**: In the status bar click `Build` or hit F7.
+- **步骤5**：在状态栏中点击`Build`或按下F7键。
 
-- **Step 6**: Wait for the build to finish with `Build finished with exit code 0` output message.
+- **步骤6**：等待构建完成，输出信息显示为`Build finished with exit code 0`。
 
-- **Step 7**: In the `build` folder you'll find several files:
+- **步骤7**：在`build`文件夹中，您会找到以下文件：
   - `nanoBooter.bin`
   - `nanoBooter.elf`
   - `nanoBooter.hex`
@@ -179,31 +187,33 @@ The PowerShell relies on the environment variables described above to properly s
   - `nanoCLR.elf`
   - `nanoCLR.hex`
 
->> Note: If there are errors during the build process it is possible to end up with a partial build in the `build` folder, and the `CMake/Ninja` build process declaring a successful build despite the `.bin` targets not being created, and a `CMake clean` not helping.
-In this case deleting the contents of the `build` folder should allow the build to complete once you resolve the issues that cause the original failure.
+>>注意：如果在构建过程中出现错误，可能会导致`build`文件夹中出现部分构建，而`CMake/Ninja`构建过程在`.bin`目标未创建时声明成功构建，并且`CMake clean`无法帮助解决问题。
+在这种情况下，删除`build`文件夹中的内容应该允许构建完成，一旦解决了导致原始失败的问题。
 
-### Common Build Issues
+### 常见的构建问题
 
-The above may have some errors if:
+如果存在以下情况，上述构建步骤可能会出现一些错误：
 
-- CMake is not installed properly, not in the PATH or cannot be found for some reason.
-- Ninja is not recognized: check settings.json or your PATH environment variable and restart Visual Studio Code.
-- COMPILATION object file not found: check that your paths don't exceed 140 chars. Put the solution folder high enough on drive.
-- Reopen VS Code if you have made changes on the `CMakePresets.json` or `CMakeUserPresets.json`.
+- CMake未正确安装，不在PATH中或由于某种原因无法找到。
+- 无法识别Ninja：检查settings.json或PATH环境变量，并重新启动Visual Studio Code。
+- 找不到COMPILATION对象文件：检查您的路径是否超过了140个字符。将解决方案文件夹放在足够高的位置。
+- 如果您对`CMakePresets.json`或`CMakeUserPresets.json`进行了更改，请重新打开VS Code。
 
-A good remedy for most of the build issues is to manually clean the build folder by deleting it's contents and restarting VS Code.
+对于大多数构建问题，一个好的解决方法是手动清理构建文件夹，删除其内容，并重新启动VS Code。
 
-## Flash the NXP target
+## 烧写NXP目标
 
-1. Connect the Target board to your PC using an USB cable.
-1. Open Visual Studio Code and go to `Debug and Run` (CTRL+SHIFT+D).
-1. Run debug (green rectangle or F5 default shortcut), firstly on nanoBooter then nanoCLR.
-    >>Note: You don't have to re-flash nanoBooter every time you flash nanoCLR.
+1.
 
-## Debugging with Cortex Debug with J-Link (Optional)
+ 使用USB电缆将目标板连接到计算机。
+2. 打开Visual Studio Code，转到`Debug and Run`（CTRL+SHIFT+D）。
+3. 运行调试（绿色矩形或默认快捷键F5），先运行nanoBooter，然后运行nanoCLR。
+   >>注意：您不需要每次都重新烧写nanoBooter，只需烧写nanoCLR即可。
 
-If you want to view CPU register values in real time and use more advanced debugging tool. It's possible to use Cortex Debug extension. Please refer to guides available at SEGGER's wiki.
+## 使用Cortex Debug和J-Link进行调试（可选）
 
-## Next Steps
+如果您想实时查看CPU寄存器的值并使用更高级的调试工具，则可以使用Cortex Debug扩展。请参考SEGGER的wiki上提供的指南。
 
-See [Getting Started](http://docs.nanoframework.net/content/getting-started-guides/getting-started-managed.html) for instructions on creating and running a 'Hello World' managed application on your nanoFramework board.
+## 下一步
+
+参阅[入门指南](http://docs.nanoframework.net/content/getting-started-guides/getting-started-managed.html)，了解如何在nanoFramework板上创建和运行"Hello World"托管应用程序的说明。

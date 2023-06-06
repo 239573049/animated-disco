@@ -2,18 +2,18 @@
 
 ![BrainPad2](https://www.brainpad.com/wp-content/uploads/2021/06/PulseScreenAnimated.gif)
 
-The board used in this community contribution is a STM32F401RE based board from GHI Electronics called BrainPad.
+本社区贡献所使用的开发板是GHI Electronics推出的基于STM32F401RE的BrainPad。
 
-These pins can be used for:
+这些引脚可用于以下功能：
 
-- 1 x TX/RX
-- 4 x PWM
-- 4 X ADC
-- 1 x I2C
-- 1 x SPI
+- 1个TX/RX引脚
+- 4个PWM引脚
+- 4个ADC引脚
+- 1个I2C引脚
+- 1个SPI引脚
 
-Further information can be found [here]( https://www.brainpad.com/) or [here]( https://forums.ghielectronics.com/c/brainpad/11) where schema can be found.
+更多信息可以在[这里](https://www.brainpad.com/)或[这里](https://forums.ghielectronics.com/c/brainpad/11)找到，其中包含了电路图等信息。
 
-## Managed helpers
+## 托管帮助程序
 
-Checkout as well the [C# managed helpers](https://github.com/nanoframework/nf-Community-Targets/tree/main/ChibiOS/BrainPad2/managed_helpers) for this board.
+您还可以查看适用于该开发板的[C#托管帮助程序](https://github.com/nanoframework/nf-Community-Targets/tree/main/ChibiOS/BrainPad2/managed_helpers)。

@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+---
+
 # .NET **nanoFramework** 结构
 
 [简化和权衡](simplifications-and-trade-offs.md)是一个重要的阅读材料。由于微控制器单元的资源有限，我们不得不做出权衡，以便在一些限制下仍然能够获得最好的.NET和C#体验。

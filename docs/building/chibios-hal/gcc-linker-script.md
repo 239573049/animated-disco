@@ -1,47 +1,47 @@
-# GCC linker script for ChibiOS boards
+# ChibiOS开发板的GCC链接脚本
 
-## About this document
+## 关于本文档
 
-This document describes the GCC linker script for .NET **nanoFramework** boards using ChibiOS HAL/PAL and some explanations on how to customize and adapt it to a new target board.
+本文档描述了使用ChibiOS HAL/PAL和.NET **nanoFramework**开发板的GCC链接脚本，并对如何自定义和适应新目标板进行了一些解释。
 
-## Linker script file naming
+## 链接脚本文件命名
 
-To make it very clear on what file belongs to what image, the linker script files names carry a suffix of '_booter' for the nanoBooter and '_CLR' for the nanoCLR.
+为了清楚地知道哪个文件属于哪个镜像，链接脚本文件名后缀为'_booter'表示nanoBooter，'_CLR'表示nanoCLR。
 
-These linker scripts are used by the linker at the link stage and are added to the build on the CMakeLists.txt global to a target board.
+这些链接脚本由链接器在链接阶段使用，并在CMakeLists.txt全局文件中添加到目标板的构建中。
 
-When adding a new target board make sure that you set each linker script file to the appropriate target (in CMake, that is).
+当添加新的目标板时，请确保将每个链接脚本文件设置为相应的目标（在CMake中设置）。
 
-It's also recommended that each linker script file is located in the respective nanoBooter or nanoCLR folder (these being inside a target board folder, that is).
+还建议将每个链接脚本文件放置在相应的nanoBooter或nanoCLR文件夹中（即在目标板文件夹内）。
 
-## Configurations for nanoBooter link script
+## nanoBooter链接脚本的配置
 
-The nanoBooter image is located at the default boot address of the target Soc/MCU.
+nanoBooter镜像位于目标SoC/MCU的默认引导地址。
 
-It's recommended that that the region length is set to match the FLASH space reserved for the nanoBooter. This adds an extra check because when the build and link occurs, if the image is too large to fit that space an error is generated and corrective actions can be taken.
+建议将区域长度设置为与为nanoBooter保留的FLASH空间大小相匹配。这样做可以额外检查，因为在构建和链接过程中，如果镜像太大无法适应该空间，将会生成错误，并可以采取纠正措施。
 
-To illustrate this we are going to look into the linker script for the ST_NUCLEO_F091RC board. This is file `STM32F091xC_booter.ld`(@ targets/CMSIS-OS/ChibiOS/ST_NUCLEO_F091RC/nanoBooter/STM32F091xC_booter.ld).
+为了说明这一点，我们将看一下ST_NUCLEO_F091RC开发板的链接脚本。该文件是`STM32F091xC_booter.ld`（@ targets/CMSIS-OS/ChibiOS/ST_NUCLEO_F091RC/nanoBooter/STM32F091xC_booter.ld）。
 
-The only configuration here is the length of the `flash` region that should be set to the FLASH space reserved for the nanoBooter. In the example it can be seen that the nanoBooter image will start at address 0x08000000, with a maximum size of 16K.
+这里的唯一配置是`flash`区域的长度，应设置为为nanoBooter保留的FLASH空间大小。在示例中，可以看到nanoBooter镜像将从地址0x08000000开始，最大大小为16K。
 
-## Configurations for nanoCLR link script
+## nanoCLR链接脚本的配置
 
-The nanoCLR image is located at the designated address of the available FLASH space, typically right after the space reserved for the nanoBooter.
+nanoCLR镜像位于可用FLASH空间的指定地址，通常位于为nanoBooter保留的空间之后。
 
-It's recommended that that the region length is set to match the FLASH space reserved for the nanoCLR. This adds an extra check because when the build and link occurs, if the image is too large to fit that space an error is generated and corrective actions can be taken.
+建议将区域长度设置为与为nanoCLR保留的FLASH空间大小相匹配。这样做可以额外检查，因为在构建和链接过程中，如果镜像太大无法适应该空间，将会生成错误，并可以采取纠正措施。
 
-To illustrate this we are going to look into the linker script for the ST_NUCLEO_F091RC board. This is file `STM32F091xC_CLR.ld`(@ targets/CMSIS-OS/ChibiOS/ST_NUCLEO_F091RC/nanoCLR/STM32F091xC_CLR.ld).
+为了说明这一点，我们将看一下ST_NUCLEO_F091RC开发板的链接脚本。该文件是`STM32F091xC_CLR.ld`（@ targets/CMSIS-OS/ChibiOS/ST_NUCLEO_F091RC/nanoCLR/STM32F091xC_CLR.ld）。
 
-The `flash` region configuration depends on two factors: the space reserved for nanoBooter image and the space reserved for application deployment.
-In the example it can be seen that nanoCLR image will start at address 0x08004000 and has a maximum size of 256k - 16k - 100k. That's the size reserved for nanoBooter and the size reserved for the application deployment.
+`flash`区域的配置取决于两个因素：为nanoBooter镜像保留的空间和应用部署保留的空间。在示例中，可以看到nanoCLR镜像将从地址0x08004000
 
-On this particular example (because this SoC requires that the vector table is copied to RAM) the `ram0` region needs to be tweaked so it starts after the space reserved for the vector table. The end result is `ram0` starting at 0x200000C0 with a length of 32k - 0xC0.
+开始，最大大小为256k - 16k - 100k。其中，16k为nanoBooter保留的空间大小，100k为应用部署保留的空间大小。
 
-### Tips
+在这个特定示例中（因为该SoC要求将向量表复制到RAM中），需要微调`ram0`区域，使其从保留给向量表的空间之后开始。最终结果是`ram0`从地址0x200000C0开始，长度为32k - 0xC0。
 
-- When designing the address map make sure that the address region boundaries **match the FLASH memory blocks**. This is very important in order to be able to perform image updates. This is valid for nanoBooter, nanoCLR and application deployment.
+### 提示
 
-- The link script accepts several number format. Use the one that is convenient for what you are specifying.
-Follow some examples. For an absolute address (such as the start of a FLASH block) use the hexadecimal notation like in 0x08000000. When specifying the size of a region use the _k_ and _M_ suffixes, like 16k for a block with 16k Bytes (4096 bytes), or 1M. This makes it much easier to copy/paste from the device data sheet.
+- 在设计地址映射时，请确保地址区域边界与FLASH内存块匹配。这对于能够执行镜像更新非常重要。这适用于nanoBooter、nanoCLR和应用部署。
 
-- It's OK to use mathematical expressions. For example, when setting the available space for the nanoCLR image don't bother with doing the math, just put there 1M - 16k.
+- 链接脚本接受多种数字格式。使用适合您所指定内容的格式。以下是一些示例。对于绝对地址（例如FLASH块的起始地址），请使用十六进制表示法，例如0x08000000。在指定区域大小时，使用_k_和_M_后缀，例如16k表示具有16k字节（4096字节）的块，或者1M。这样可以更轻松地从设备数据表中复制/粘贴。
+
+- 可以使用数学表达式。例如，在设置可用空间给nanoCLR镜像时，不必进行数学计算，只需将1M - 16k放在那里即可。

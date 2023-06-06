@@ -1,35 +1,37 @@
 # ST Nucleo 64 F411RE NF
 
-The board used in this community contribution is the NUCLEO64_F411RE board from ST. The board can be purchased from various sources and should be about 20 euros. Further information on the Nucleo64 boards can be found in the user manual UM1724 over at the [ST website](https://www.st.com). The board used here is of revision c as can be found on the board's lower backside sticker. The board MB1136 C-02 is configured to use ST-LINK MCO as clock input for HSE so we have an HSE of 8 MHz. Plus X2 is mounted we do have an LSE as well. This is reflected in the mcuconf.h in both nanoBooter and nanoCLR paths. If it is chosen to activate LSE as this is a more accurate clock for RTC then board.h file needs to be adjusted accordingly to use 32768 frequency for LSE.
+这个社区贡献中使用的开发板是ST的NUCLEO64_F411RE开发板。该开发板可以从不同的来源购买，价格约为20欧元。关于Nucleo64开发板的更多信息可以在[ST官方网站](https://www.st.com)的用户手册UM1724中找到。本文中使用的开发板是c版本，可以在开发板背面的标签上找到。开发板MB1136 C-02被配置为使用ST-LINK MCO作为HSE的时钟输入，因此我们有一个8 MHz的HSE。此外，X2上还安装了一个LSE。这在nanoBooter和nanoCLR路径的mcuconf.h文件中有所体现。如果选择激活LSE作为RTC的更准确时钟，则需要相应地调整board.h文件以使用32768频率的LSE。
 
-Serial port 2 (USART2) is used to communicate thru the ST-Link connector, so only one Mini-USB cable is used to start the nanoFramework adventure.
+串口2 (USART2) 用于通过ST-Link连接器进行通信，因此只需要一个Mini-USB电缆即可启动nanoFramework之旅。
 
-The nanoFramework firmware can be flashed using the nanoFramework Firmware Flasher (nanoff) in the package manager console. If you are not familiar with nanoff look on <https://github.com/nanoframework/nanoFirmwareFlasher> for more info.
+可以使用nanoFramework Firmware Flasher（nanoff）在包管理器控制台中刷入nanoFramework固件。如果您对nanoff不熟悉，请查看[https://github.com/nanoframework/nanoFirmwareFlasher](https://github.com/nanoframework/nanoFirmwareFlasher)获取更多信息。
 
-The firmware can still be flashed using the STM32 ST-LINK Utility if you prefer. The device should be visible in the Printf via SWO viewer function in the ST-LINK utility. Please set the frequency to match to what has been set in mcuconf.h (here 96000000) and the Stimulus port to 0 and than hit start. If the board doesn't show then a reset (Black button on board) could be of help or a power cycle by disconnecting, connecting the Mini-USB cable and try ST-LINK Utility again.
+如果您愿意，仍然可以使用STM32 ST-LINK Utility刷写固件。设备应该在ST-LINK实用程序的Printf通过SWO查看器功能中可见。请设置频率与mcuconf.h中设置的频率相匹配（这里是96000000），然后设置Stimulus端口为0，点击开始。如果开发板没有显示，则可以尝试通过重置（开发板上的黑色按钮）或断开、连接Mini-USB电缆并再次尝试ST-LINK Utility进行电源循环。
 
-In Visual Studio and with nanoFramework extension being installed, open the Device Explorer window and the board should be visible. Select the board and press the Device Capability button. The board specifics should be visible in the output window.
+在安装了nanoFramework扩展的Visual Studio中，打开设备资源管理器窗口，开发板应该可见。选择开发板并点击设备功能按钮。开发板的详细信息应该显示在输出窗口中。
 
-Now you can start your adventure in the nanoFramework world and use one of the samples and adjust to the board specific features. Try to make a sample of yourself and publish it, for example, on [Hackster.IO](https://www.hackster.io) to show your achievement.
+现在，您可以在nanoFramework世界中开始您的冒险，并使用其中一个示例并根据开发板的特定功能进行调整。尝试自己创建一个示例并发布到例如[Hackster.IO](https://www.hackster.io)，展示您的成就。
 
-For your convenience listed below are the features currently set and on what pins they can be found to help you out for an easy start.
+为了方便起见，以下是当前设置的功能及其所在的引脚，以帮助您轻松入门。
 
-## Arduino header pins
+## Arduino引脚
 
-* D0, D1 can not be used as serial connection is used for nanoFramework communication. Plus the required solder bridges are not fitted by default.
+* D0，D1不能用作串行连接，因为串行连接用于nanoFramework通信。而且默认情况下没有安装所需的焊接桥接。
 
-* D2 - D10 can be used for an intermix of GPIO and PWM
-* D11 - D13 are setup and configured for SPI1 however the on board LED (LD2) is connected to D13 as well and might be of influence. In that case solder bridge SB21 needs to be removed.
+* D2 - D10可用于GPIO和PWM的混合使用
+* D11 - D13已设置并配置为SPI1，但板上的LED（
+
+LD2）也连接到D13，并可能受到影响。在这种情况下，需要移除焊接桥接SB21。
 * D14 = I2C1 SDA
 * D15 = I2C1 SCL
-* A0 = ADC1 Channel 1
-* A1 = ADC1 Channel 2
-* A2 = ADC1 Channel 3
-* A3 = ADC1 Channel 4
-* A4 = ADC1 Channel 5
-* A5 = ADC1 Channel 6
+* A0 = ADC1通道1
+* A1 = ADC1通道2
+* A2 = ADC1通道3
+* A3 = ADC1通道4
+* A4 = ADC1通道5
+* A5 = ADC1通道6
 
-## Connector CN7
+## 连接器CN7
 
 * 1 = SPI3 SCK
 * 2 = SPI3 MISO
@@ -37,7 +39,7 @@ For your convenience listed below are the features currently set and on what pin
 * 17 = USART1 TX
 * 21 = USART1 RX
 
-## Connector CN10
+## 连接器CN10
 
 * 12 = USART6 RX
 * 14 = USART6 TX
@@ -45,8 +47,8 @@ For your convenience listed below are the features currently set and on what pin
 * 28 = SPI2 MISO
 * 30 = SPI2 SCK
 
-**NOTE: This configuration was successfully tested on a NUCLEO64_F411RE board.**
+**注意：此配置已在NUCLEO64_F411RE开发板上成功测试。**
 
-## Managed helpers
+## 托管帮助程序
 
-Checkout the [C# managed helpers](https://github.com/nanoframework/nf-Community-Targets/tree/main/ChibiOS/ST_NUCLEO64_F411RE_NF/managed_helpers) available for this board.
+请查看此开发板可用的[C#托管帮助程序](https://github.com/nanoframework/nf-Community-Targets/tree/main/ChibiOS/ST_NUCLEO64_F411RE_NF/managed_helpers)。

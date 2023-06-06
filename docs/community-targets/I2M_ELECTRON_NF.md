@@ -2,24 +2,24 @@
 
 ![I2M Electron](https://raw.githubusercontent.com/nanoframework/nf-Community-Targets/main/ChibiOS/I2M_ELECTRON_NF/resources/IngenuityMicro_Logo.svg)
 
-## Electron community board
+## Electron社区板
 
-The board used in this community contribution is a STM32F411CEU6 based board from IngenuityMicro called Electron. The board has only 12 pins of which 3 are already used for 3.3V, 5V and GND, leaving use of only 9 pins.
+这个社区贡献中使用的板子是一款基于STM32F411CEU6的IngenuityMicro的Electron板。该板子只有12个引脚，其中3个已经被用于3.3V、5V和GND，因此只剩下9个引脚可供使用。
 
-These pins can be used for:
+这些引脚可以用于：
 
-- 1 x TX/RX
-- 4 x PWM
-- 4 X ADC
-- 1 x I2C
-- 1 x SPI
+- 1个TX/RX
+- 4个PWM
+- 4个ADC
+- 1个I2C
+- 1个SPI
 
-In addition, the board has two on-board LEDs connected to PA1 and PA8 and are tested for use as GPIO, PWM.
+此外，该板子还有两个连接到PA1和PA8的板载LED，可以用作GPIO、PWM进行测试。
 
-Further information can be found on [the store website](https://store.ingenuitymicro.com/electron).
+更多信息可以在[商店网站](https://store.ingenuitymicro.com/electron)上找到。
 
-![pins](https://github.com/nanoframework/nf-Community-Targets/blob/main/ChibiOS/I2M_ELECTRON_NF/resources/electronpins.png?raw=true)
+![引脚](https://github.com/nanoframework/nf-Community-Targets/blob/main/ChibiOS/I2M_ELECTRON_NF/resources/electronpins.png?raw=true)
 
-## Managed helpers
+## 托管助手
 
-Checkout the [C# managed helpers](https://github.com/nanoframework/nf-Community-Targets/tree/main/ChibiOS/I2M_ELECTRON_NF/managed_helpers) available for this board.
+查看可用于该板子的[C#托管助手](https://github.com/nanoframework/nf-Community-Targets/tree/main/ChibiOS/I2M_ELECTRON_NF/managed_helpers)。

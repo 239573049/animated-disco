@@ -1,43 +1,45 @@
-# Instructions for debugging .NET **nanoFramework** native code in VS Code
+# 在VS Code中调试.NET **nanoFramework**本地代码的说明
 
-## About this document
+## 关于本文档
 
-This document describes how to debug .NET **nanoFramework** native code using VS Code.
+本文档描述了如何使用VS Code调试.NET **nanoFramework**本地代码。
 
-## Prerequisites
+## 先决条件
 
-You'll need:
+您需要以下工具：
 
-- [GNU ARM Embedded Toolchain](https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads)
+- [GNU ARM嵌入式工具链](https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads)
 - [Visual Studio Code](http://code.visualstudio.com/)
-- [C/C++ extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
-- OpenOCD. Suggest the [xPack OpenOCD](https://github.com/xpack-dev-tools/openocd-xpack/releases) that kindly maintains a Windows distribution.
+- [C/C++扩展](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
+- OpenOCD。建议使用[xPack OpenOCD](https://github.com/xpack-dev-tools/openocd-xpack/releases)，它提供了Windows发行版。
 
-## Preparation
+## 准备工作
 
-You'll need a binary image with debug information to be loaded in the SoC or MCU.
-Assuming you are using VS Code to launch your builds, you'll have this image ready to be loaded in the MCU.
-(see [Build instructions documentation](../../building/build-instructions.md))
+您需要一个带有调试信息的二进制映像，用于加载到SoC或MCU中。
+假设您使用VS Code启动构建过程，您将准备好将此映像加载到MCU中。
+（参见[构建说明文档](../../building/build-instructions.md)）
 
-In order to launch the debug session you'll need to setup the *launch.json* file, located in the .vscode folder.
-We've provided a template file `launch.TEMPLATE.json` (inside .vscode folder on the repository) to get you started with this. Just copy it and rename to *launch.json*.
+为了启动调试会话，您需要设置位于.vscode文件夹中的*launch.json*文件。
+我们提供了一个模板文件`launch.TEMPLATE.json`（位于存储库的.vscode文件夹内），以帮助您开始设置。只需复制它并将其重命名为*launch.json*。
 
-Here's what you need to change in order to adapt the template file to your setup and make it more suitable to your working style and preferences.
+以下是您需要更改的内容，以便将模板文件适应您的设置，并使其更适合您的工作风格和偏好。
 
-- name: here you can name each of the launch configurations to help choosing the appropriate one when launching the debug session. These could be for example: "nanoBooter in Discovery 4", "nanoCLR in Nucleo F091RC", "test featureXYZ in Discovery 4".
-- miDebuggerPath: full path to the gdb executable (this one is inside the GCC tool-chain folder)
-- program: full path to the .elf output file that results from a successful build
-- setupCommands (fourth 'text' entry): full path to the final image (the .hex file)
-- setupCommands (fifth 'text' entry): the same as the program entry above (the .elf file)
-- debugServerPath: full path to the OpenOCD executable
-- debugServerArgs: full path to the scripts directory on the OpenOCD installation AND the appropriate .cfg files for the interface and the board.
+- name：在启动调试会话时，您可以为每个启动配置命名，以帮助选择适当的配置。例如：“在Discovery 4中的nanoBooter”，“在Nucleo F091RC中的nanoCLR”，“在Discovery 4中的测试功能XYZ”。
+- miDebuggerPath：gdb可执行文件的完整路径（位于GCC工具链文件夹内）
+- program：成功构建的.elf输出文件的完整路径
+- setupCommands（第四个'text'条目）：最终映像的完整路径（.hex文件）
+- setupCommands（第五个'text'条目）：与上述program条目相同的内容（.elf文件）
+- debugServerPath：OpenOCD可执行文件的完整路径
+- debugServerArgs：OpenOCD安装中脚本目录和适当的.cfg文件的完整路径。
 
-> Note 1: VS Code parser seems to have trouble parsing and replacing the ${workspaceRoot} for some OpenOCD commands. That's the reason why you see there the ${workspaceRoot} variable and in other places the full path were that variable would make sense to be at. Just use what's there to keep OpenOCD happy.
-> Note 2: Always mind the forward slash in the paths above, otherwise you'll get into troubles with strange and unclear errors from OpenOCD.
+> 注意1：VS Code解析器似乎在解析和替换某些OpenOCD命令的${workspaceRoot}时存在问题。这就是为什么您在那里看到了${workspaceRoot}变量，而在其他地方是该变量应该出现的完整路径。只需使用其中的内容使OpenOCD正常运行即可。
+> 注意2：请始终注意上述路径中的正斜杠，否则您将遇到来自OpenOCD的奇怪和不明确的错误。
 
-### Templates
+### 模板
 
-To make your life easier, we provide templates with pre-configured launch.json for the various reference targets. Just grab them from our Gist.
+为了使您的生活更加轻松，我们提供了预配置的各种参考目
+
+标的launch.json模板。只需从我们的Gist中获取它们。
 
 - [ST_STM32F4_DISCOVERY](https://gist.github.com/nfbot/560137d32820c5cd3b06e77cb5d9bee7)
 
@@ -51,17 +53,17 @@ To make your life easier, we provide templates with pre-configured launch.json f
 
 - [TI_CC3220SF_LAUNCHXL](https://gist.github.com/nfbot/1c088f66b19fb20d45f0aa0656131239)
 
-## Launch the debug session
+## 启动调试会话
 
-Using VS Code menu View > Debug, clicking on the debug icon on the left hand toolbar or hitting the CTRL+SHIT+D shortcut you'll reach the debug view. There you'll find the launch configurations for debug that we've setup above (see the drop down at the top) and the familiar green play button (or F5 if you prefer).
+使用VS Code菜单中的“视图” > “调试”，点击左侧工具栏中的调试图标，或按下CTRL+SHIT+D快捷键，您将进入调试视图。在那里，您将找到我们上面设置的调试启动配置（顶部的下拉菜单）和熟悉的绿色播放按钮（或者如果您更喜欢，可以使用F5）。
 
-When a debug session is active you can find a lot of familiar stuff:
+当调试会话处于活动状态时，您会发现许多熟悉的内容：
 
-- debug toolbar with the usual operations (pause, step over, into, out, restart and stop)
-- variables list
-- call stack that you can use to navigate up and down
-- breakpoint list to manage those
-- watch expressions
-- support for 'mouse over' a variable which will display a context with the variable content
-- ability to set/remove breakpoints by clicking near the line number
-- other handy tools and options using the right click on the various objects
+- 调试工具栏，具有常见的操作（暂停、跳过、步入、步出、重启和停止）
+- 变量列表
+- 可用于上下导航的调用堆栈
+- 断点列表，用于管理断点
+- 观察表达式
+- 支持“鼠标悬停”变量，将显示带有变量内容的上下文
+- 通过在行号附近点击来设置/移除断点
+- 使用右键单击各种对象可获得其他方便的工具和选项

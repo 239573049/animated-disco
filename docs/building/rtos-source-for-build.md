@@ -1,30 +1,29 @@
-# Building .NET **nanoFramework** firmware with local RTOS source vs RTOS source from repository
+# 使用本地RTOS源代码与使用官方仓库中的RTOS源代码来构建.NET nanoFramework固件
 
-When building .NET **nanoFramework** firmware the developer has two options: either using a local path for the RTOS source code or downloading it from the official repository.
-This document aims to give you an brief overview of the differences between these two so you can choose the option that best fits your use scenario.
+在构建.NET nanoFramework固件时，开发者有两种选择：使用本地路径的RTOS源代码或从官方仓库下载源代码。
+本文旨在简要介绍这两种选择之间的区别，以便您可以选择最适合您使用场景的选项。
 
-## Source from official repository
+## 从官方仓库获取源代码
 
-When running CMake, if the parameter `-DRTOS_SOURCE_FOLDER` is not not specified CMake will connect to the respective official repository and will clone the source from there. The time for this operation to complete will mostly depend on the speed of your internet connection.
+当运行CMake时，如果未指定参数`-DRTOS_SOURCE_FOLDER`，CMake将连接到相应的官方仓库并从那里克隆源代码。此操作的完成时间主要取决于您的互联网连接速度。
 
-The RTOS will be cached within the build directory so the full download won't happen again unless the build directory is cleared. A check for any changes in the upstream repository it's performed whenever a build is run. If there are any, the changes will be downloaded and merged.
+RTOS将被缓存在构建目录中，因此除非清除构建目录，否则不会再次完全下载。每次运行构建时，都会检查上游仓库是否有任何更改。如果有更改，将下载并合并这些更改。
 
-This option it's great for automated builds or when you don't have (or don't want) the repo cloned to your local storage device.
+这个选项非常适合自动化构建或者当您没有（或不想）将仓库克隆到本地存储设备上时。
 
-Another advantage is that you don't have to manage the updates to the local clone yourself.
+另一个优点是您不需要自己管理本地克隆的更新。
 
-An obvious disadvantage is that if the build folder is cleaned (required when switching between target boards) the 'cached' repo will be gone and a full download will occur when the project is next built.
+明显的缺点是，如果清除构建文件夹（在切换目标板时需要），'cached'仓库将消失，并且在下次构建项目时将进行完整下载。
 
-## Source from local clone
+## 使用本地克隆源代码
 
-When running CMake, if the parameter `-DRTOS_SOURCE_FOLDER="....."` is specified, a local clone located at the designated path will be used when the build occurs.
-The only _timing penalty_ is the one necessary for CMake to copy the contents of the local RTOS repo to the build cache folder. This is a one time operation and it won't happen again unless the build folder is cleaned up.
+当运行CMake时，如果指定了参数`-DRTOS_SOURCE_FOLDER="....."`，则在构建时将使用位于指定路径的本地克隆。
+唯一的时间开销是CMake将本地RTOS仓库的内容复制到构建缓存文件夹中所需的时间。这是一次性的操作，除非清除构建文件夹，否则不会再次发生。
 
-This option is preferable when you have a local clone of the repo and you don't want to increase the build time with checks on the repo and downloading it or wish to target a different branch.
+当您有一个本地仓库的克隆，并且不希望通过检查仓库并下载它来增加构建时间，或者希望针对不同的分支进行构建时，此选项是首选。
 
-The downside is that you have to manage the update process for the RTOS repo yourself.
+缺点是您必须自己管理RTOS仓库的更新过程。
 
-Another important aspect to consider is the branch or tag that you have to **to _manually_ checkout**. Not doing this is synonym of using the default branch that contains the development files and is not a stable version, which is probably not what you want to use.
-So, make sure that you checkout the branch or tag matching the currently supported stable version. In doubt ask in the Discord channel.
+另一个重要的考虑因素是分支或标签，您必须**手动检出**。不这样做等同于使用包含开发文件的默认分支，这不是您想使用的稳定版本。因此，请确保检出与当前支持的稳定版本相匹配的分支或标签。如有疑问，请在Discord频道中提问。
 
-Also here, if the build folder is cleaned the 'cached' repo will be gone.
+同样，在清除构建文件夹后，'cached'仓库将消失。

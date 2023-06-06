@@ -1,22 +1,22 @@
-# Using Ninja to build .NET **nanoFramework** firmware
+# 使用 Ninja 构建 .NET nanoFramework 固件
 
-## Inside VS Code using CMake Tools
+## 在 VS Code 中使用 CMake Tools
 
-To setup the CMake tools to build using Ninja you have to follow the following steps:
+要设置 CMake 工具以使用 Ninja 进行构建，请按照以下步骤进行操作：
 
-1. Download and place the Ninja executable in a folder.
-2. Edit the `settings.json` file that VS Code places inside the .vscode folder
-3. Find a line for `"cmake.generator"`. If you don't have one just add it like this: `"cmake.generator": "Ninja",`
-4. Find a line for `"cmake.configureSettings"`. This is were the full path to the Nina executable should be set. Mind the forward slashes.
-If you don't have one just add a block like this: `"cmake.configureSettings": { "CMAKE_MAKE_PROGRAM": "E:/ninja/ninja.exe" },`
+1. 下载并将 Ninja 可执行文件放置在一个文件夹中。
+2. 编辑 VS Code 在 .vscode 文件夹中放置的 `settings.json` 文件。
+3. 找到一个包含 `"cmake.generator"` 的行。如果没有，请添加以下内容：`"cmake.generator": "Ninja",`
+4. 找到一个包含 `"cmake.configureSettings"` 的行。这是设置 Ninja 可执行文件的完整路径的地方。请注意正斜杠的使用。
+   如果没有，请添加以下代码块：`"cmake.configureSettings": { "CMAKE_MAKE_PROGRAM": "E:/ninja/ninja.exe" },`
 
-And that is it! Hit <kbd>F7</kbd> or click the build configuration options for CMake Tools at the bottom toolbar.
+就是这样！按下 <kbd>F7</kbd> 键或单击底部工具栏的 CMake Tools 的构建配置选项。
 
-## Performance comparison
+## 性能比较
 
-A simple test to compare the performance of NMake and Ninja was carried. It's a complete build (nanoBooter and nanoCLR) for a STM32F429I_DISCOVERY target with debugger and GPIO enabled.
+进行了一个简单的测试来比较 NMake 和 Ninja 的性能。这是针对启用调试器和 GPIO 的 STM32F429I_DISCOVERY 目标进行的完整构建（nanoBooter 和 nanoCLR）。
 
-| Build tool | Time to complete build |
+| 构建工具 | 构建完成时间 |
 | --- |  --- |
-| NMake | 3m 17sec |
-| Ninja | 1m 19sec |
+| NMake | 3 分 17 秒 |
+| Ninja | 1 分 19 秒 |

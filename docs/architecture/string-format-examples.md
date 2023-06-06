@@ -1,12 +1,12 @@
-# String.Format for numerics examples
+# 数值格式化的 String.Format 示例
 
-## About this document
+## 关于本文档
 
-This document provides examples of numeric formatting in the **nanoFramework** CLR. The examples are part of the Unit Test Framework and can be found in the [CoreLibrary repository](https://github.com/nanoframework/CoreLibrary) as part of the [Arithmetic unit tests](https://github.com/nanoframework/CoreLibrary/blob/main/Tests/NFUnitTestArithmetic/UnitTestFormat.cs).  When running the unit test for a specifier the example data is gathered and displayed in the Test Output after a successful test run. Each format specifier is attempted for the signed integers (SByte, Int16, Int32, Int64), unsigned integers (Byte, UInt16, UInt32, UInt64) and floating-point (Single/Double) number types.  Negative numbers are not attempted for unsigned integer types (n/a will appear), and the value must be within the range of the integer type (i.e. must be between -128 and +128 for SByte) otherwise n/a will appear.  The Decimal and Hexadecimal types ONLY support integer number types.  For all of the examples both upper and lower case versions of the specifier are tested, however only lower case g and x have any effect on the output.
+本文档提供了在 **nanoFramework** CLR 中进行数字格式化的示例。这些示例是 Unit Test Framework 的一部分，可以在 [CoreLibrary 代码库](https://github.com/nanoframework/CoreLibrary) 的 [Arithmetic unit tests](https://github.com/nanoframework/CoreLibrary/blob/main/Tests/NFUnitTestArithmetic/UnitTestFormat.cs) 中找到。当运行一个特定格式化符号的单元测试时，示例数据会被收集并在测试成功运行后显示在测试输出中。每个格式化符号都会针对有符号整数（SByte、Int16、Int32、Int64）、无符号整数（Byte、UInt16、UInt32、UInt64）和浮点数（Single/Double）类型进行尝试。对于无符号整数类型，不会尝试负数（将显示为 n/a），并且值必须在整数类型的范围内（即 SByte 的范围为 -128 到 +128），否则将显示 n/a。十进制和十六进制类型仅支持整数数值类型。在所有示例中，测试了格式化符号的大写和小写版本，但只有小写的 g 和 x 对输出产生任何影响。
 
 ## D-Decimal
 
-[Decimal Format Specifier](https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#DFormatString)
+[十进制格式说明符](https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#DFormatString)
 
 |    Value| Format| SByte |  Int16|   Int32|   Int64| Byte| UInt16| UInt32 |UInt64  |
 | ---:    | :---  |---:   |---:   |---:    |---:    |---: |---:   |---:    |---:    |
@@ -33,7 +33,7 @@ This document provides examples of numeric formatting in the **nanoFramework** C
 
 ## F-Fixed-point
 
-[Fixed-point Format Specifier](https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#FFormatString)
+[定点格式说明符](https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#FFormatString)
 
  |        Value| Format|  SByte |       Int16 |       Int32 |       Int64|     Byte|      UInt16|      UInt32|      UInt64|       Single |      Double  |
  | ---:        |:---   |---:    |---:         |---:         |---:        |---:     |---:        |---:        |---:        |---:          |---:          |
@@ -68,7 +68,7 @@ This document provides examples of numeric formatting in the **nanoFramework** C
 
 ## G-General
 
-[General Format Specifier](https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#GFormatString)
+[通用格式说明](https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#GFormatString)
 
  |        Value| Format|    SByte |   Int16|    Int32|    Int64| Byte|  UInt16|  UInt32|  UInt64|    Single|    Double |
  | ---:        |:---   |---:      |---:    |---:     |---:     |---: |---:    |---:    |---:    |---:      |---:       |
@@ -115,7 +115,7 @@ This document provides examples of numeric formatting in the **nanoFramework** C
 
 ## N-Number
 
-[Number Format Specifier](https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#NFormatString)
+[数字格式说明](https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#NFormatString)
 
  |           Value| Format|   SByte|         Int16|         Int32|         Int64|     Byte|       UInt16|       UInt32|       UInt64|        Single|        Double |
  |---:            | :---  | ---:   | ---:         | ---:         | ---:         | ---:    | ---:        | ---:        | ---:        | ---:         | ---:          |
@@ -152,7 +152,7 @@ This document provides examples of numeric formatting in the **nanoFramework** C
 
 ## X-Hexadecimal
 
-[Hexadecimal Format Specifier](https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#XFormatString)
+[十六进制格式指定符](https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#XFormatString)
 
 |     Value| Format| SByte|  Int16|    Int32|            Int64| Byte| UInt16| UInt32| UInt64 |
 | ---:     | :---  | ---: | ---:  | ---:    | ---:            | ---:| ---:  | ---:  | ---:   |

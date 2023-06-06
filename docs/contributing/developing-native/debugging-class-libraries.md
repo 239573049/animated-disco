@@ -1,26 +1,23 @@
-# Guidelines for debugging .NET **nanoFramework** class libraries native code
+# 调试.NET nanoFramework类库本地代码的指南
 
-## About this document
+## 关于本文档
 
-This document provides guidelines useful when debugging class libraries native code.
-It doesn't care if the developer is using VS Code or other IDE.
+本文档提供了在调试类库本地代码时有用的指南。无论开发者使用的是VS Code还是其他IDE，都适用。
 
-## How does an assembly load successfully
+## 程序集如何成功加载
 
-The assemblies with the class libraries and the managed application are loaded at startup from the deployment area in the FLASH memory.
-When the `LoadDeploymentAssemblies()` is called the deployment area is sweep and all 'candidate' assemblies are validated. The validation steps are basically checking the start token, a valid header and the CRC32 of the full assembly. Only the ones that pass the complete set of validation make it to the assembly collection.
+类库的程序集和托管应用程序的程序集在启动时从FLASH存储器的部署区域加载。当调用`LoadDeploymentAssemblies()`时，部署区域被扫描，所有的“候选”程序集都会进行验证。验证步骤主要包括检查起始标记、有效的头部以及完整程序集的CRC32校验和。只有通过完整验证集的程序集才能被添加到程序集集合中。
 
-After this step a call to `g_CLR_RT_TypeSystem.ResolveAll()` happens in which the type system tries to resolve all the assemblies. This means that all the required types and methods (from all the assemblies) are available and in the correct versions.
+在此步骤之后，调用`g_CLR_RT_TypeSystem.ResolveAll()`，类型系统会尝试解析所有的程序集。这意味着所有所需的类型和方法（来自所有的程序集）都可用，并且版本正确。
 
-Next comes the `g_CLR_RT_TypeSystem.PrepareForExecution()` which is only called if all the assemblies could be resolved along with the required types.
+接下来是调用`g_CLR_RT_TypeSystem.PrepareForExecution()`，只有在所有程序集都能够解析以及所需的类型都可用的情况下才会调用该方法。
 
-## Starting the execution engine
+## 启动执行引擎
 
-The managed application actually starts to be executed with a call to `g_CLR_RT_ExecutionEngine.Execute()`.
-As long the managed code is being executed this will never exit.
-When the execution ends, because of a serious exception or because there is no managed application to execute the code flow hits the `CLR_EE_DBG_IS( RebootPending )` line (bellow the the call to the execution engine call).
+托管应用程序实际上是通过调用`g_CLR_RT_ExecutionEngine.Execute()`来开始执行的。
+只要托管代码在执行中，该方法将不会退出。
+当执行结束时，可能是由于严重的异常或者没有托管应用程序来执行代码，流程会经过执行引擎调用之后的`CLR_EE_DBG_IS(RebootPending)`行。
 
-## Summarizing
+## 总结
 
-So, by setting break points at, or after, the above calls one can understand and perform a check if the assemblies are being loaded and/or the managed application being executed.
-If something goes wrong (for instance) with an assembly failing to load the developer has to go deeper in order to find out the root cause. But that's a matter for another piece of documentation.
+因此，通过在上述调用点或之后设置断点，开发者可以了解并检查程序集是否正在加载以及托管应用程序是否正在执行。如果出现了问题（例如程序集加载失败），开发者需要深入进行调查以找出根本原因。但这是另一份文档的内容。

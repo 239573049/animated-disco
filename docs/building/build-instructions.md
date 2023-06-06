@@ -1,134 +1,137 @@
-# Building .NET **nanoFramework** firmware
+# 构建 .NET nanoFramework 固件
 
-.NET **nanoFramework** build system is based in CMake. Please read the instructions specific to each target series.
+.NET nanoFramework 构建系统基于 CMake。请阅读针对每个目标系列的特定说明。
 
 - [STM32](build-stm32.md)
 - [ESP32](build-esp32.md)
 - [NXP](build-nxp.md)
-- [Using Dev Container](using-dev-container.md)
+- [使用 Dev Container](using-dev-container.md)
 
-⚠️ NOTE about the need to build .NET **nanoFramework** firmware ⚠️
+⚠️ 关于构建 .NET nanoFramework 固件的注意事项 ⚠️
 
-You only need to build it if you plan to debug the CLR, interpreter, execution engine, drivers, add new targets or add new features at native level.
-If your goal is to code in C# you just have to flash your MCU with the appropriate firmware image using [nanoff](https://github.com/nanoframework/nanoFirmwareFlasher).
-There are available ready to flash firmware images for several targets, please check the [Home](https://github.com/nanoframework/Home#firmware-for-reference-boards) repository.
+只有在您计划调试 CLR、解释器、执行引擎、驱动程序、添加新目标或在本地层面上添加新功能时，才需要构建它。
+如果您的目标是使用 C# 编写代码，您只需使用 [nanoff](https://github.com/nanoframework/nanoFirmwareFlasher) 将适当的固件映像刷写到您的微控制器（MCU）中。
+对于多个目标，可以使用现成的固件映像进行刷写，请参阅 [Home](https://github.com/nanoframework/Home#firmware-for-reference-boards) 存储库。
 
-## About this document
+## 关于本文档
 
-This document describes how to build the required images for .NET **nanoFramework** firmware to be flashed in a SoC or MCU.
-The build is based on CMake tool to ease the development in all major platforms.
+本文档描述了如何构建 .NET nanoFramework 固件所需的映像，以刷写到 SoC 或 MCU 中。
+构建基于 CMake 工具，以简化在所有主要平台上的开发过程。
 
-## Using Dev Container
+## 使用 Dev Container
 
-If you want a simple, efficient way, we can recommend you to use [Dev Container](using-dev-container.md) to build your image. This has few requirements as well like Docker Desktop and Remote Container extension in VS Code but it is already all setup and ready to run!
+如果您希望使用一种简单高效的方法，我们建议您使用 [Dev Container](using-dev-container.md) 来构建映像。这也需要一些先决条件，例如 Docker Desktop 和 VS Code 中的 Remote Container 扩展，但它已经配置好并且可以直接运行！
 
-If you prefer to install all the tools needed on your Windows machine, you should continue this tutorial.
+如果您更喜欢在 Windows 计算机上安装所有所需的工具，您应该继续阅读本教程。
 
-## Prerequisites
+## 先决条件
 
-You'll need:
+您将需要：
 
-- [GNU ARM Embedded Toolchain](https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads)
-- [CMake](https://cmake.org/) (Minimum required version is 3.23)
-- A build tool for CMake to generate the build files to. We recommend [Ninja](https://github.com/ninja-build/ninja). This is lightweight build system, designed for speed and it works on Windows and Linux machines. See [here](cmake/ninja-build.md) how to setup Ninja to build .NET **nanoFramework**.
+- [GNU ARM 嵌入式工具链](https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads)
+- [CMake](https://cmake.org/)（要求的最低版本是 3.23）
+- 用于生成构建文件的 CMake 构建工具。我们推荐使用 [Ninja](https://github.com/ninja-build/ninja)。这是一个轻量级的构建系统，专为速度而设计，在 Windows 和 Linux 机器上都可以运行。请查看 [这里](cmake/ninja-build.md) 如何设置 Ninja 来构建 .NET nanoFramework。
 
-If you are using VS Code as your development platform we suggest that you use the CMake Tools extension. This will allow you to run the builds without leaving VS Code.
+如果您使用 VS Code 作为开发平台，我们建议您使用 CMake Tools 扩展。这将允许您在不离开 VS Code 的情况下运行构建。
 
 - [Visual Studio Code](http://code.visualstudio.com/)
-- [CMake Extension](https://marketplace.visualstudio.com/items?itemName=twxs.cmake)
-- [CMake Tools Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools)
+- [CMake 扩展](https://marketplace.visualstudio.com/items?itemName=twxs.cmake)
+- [CMake Tools 扩展](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools)
 
-In case you specify an RTOS and you want its source to be downloaded from the official repository, you'll need:
+如果您指定了一个 RTOS，并且希望从官方存储库下载
 
-- For ChibiOS a SVN client. [Tortoise SVN](https://tortoisesvn.net/downloads.html) seems to be a popular choice for Windows machines.
-- For all the other repositories a Git client. [Fork](https://git-fork.com/) it's a great visual git client packed with a lot of features or [GitHub Desktop](https://desktop.github.com/) seems to be a popular choice for Windows machines.
+其源代码，您将需要：
 
-## Preparation
+- 对于 ChibiOS，需要一个 SVN 客户端。[Tortoise SVN](https://tortoisesvn.net/downloads.html) 是 Windows 计算机上的一个常见选择。
+- 对于所有其他存储库，需要一个 Git 客户端。[Fork](https://git-fork.com/) 是一个功能丰富的可视化 Git 客户端，或者 [GitHub Desktop](https://desktop.github.com/) 是 Windows 计算机上的一个常见选择。
 
-It's ***highly*** recommended that run the build outside the source tree. This prevents you from cluttering the source tree with CMake artifacts, temporary files etc.
-In fact this is enforced and checked by the CMake script.
+## 准备工作
 
-In case you need to clean up or start a fresh build all you have to do is simply delete the contents of the build directory.
+强烈建议在源代码树之外运行构建。这样可以避免在源代码树中生成 CMake 构件、临时文件等。
+实际上，CMake 脚本会强制执行并检查此操作。
 
-As a suggestion we recommend that you create a directory named *build* in the repository root and run CMake from there.
+如果需要清理或开始全新的构建，您只需简单地删除构建目录中的所有内容。
 
-## Build a .NET **nanoFramework** firmware image
+作为建议，我们建议您在存储库根目录中创建一个名为“build”的目录，并从那里运行 CMake。
 
-The build script accepts the a number of parameters (some of them are mandatory). Please check the details about each parameter [here](cmake-presets.md).
+## 构建 .NET nanoFramework 固件映像
 
-> Note 1: The RTOSes currently supported (except for ESP32 target) are ChibiOS for STM32 targets, FreeRTOS for NXP and TI-RTOS for TI targets. If no source path is specified the source files will be downloaded from nanoFramework  GitHub fork.
-> Note 2: the very first build will take more or less time depending on the download speed of the Internet connection of the machine were the build is running. This is because the source code of the RTOS of your choice will be downloaded from its repository. On the subsequent builds this won't happen.
+构建脚本接受一些参数（其中一些是必需的）。请在[此处](cmake-presets.md)查看每个参数的详细信息。
 
-You can specify any generator that is supported in the platform where you are building.
-For more information on this check CMake documentation [here](https://cmake.org/cmake/help/v3.23/manual/cmake-generators.7.html?highlight=generator).
+> 注意 1：目前支持的 RTOS（除了 ESP32 目标）是 STM32 目标的 ChibiOS、NXP 的 FreeRTOS 和 TI 目标的 TI-RTOS。如果未指定源路径，则源文件将从 nanoFramework GitHub 分支下载。
+> 注意 2：第一次构建将根据构建运行的机器的互联网连接的下载速度需要更多或更少的时间。这是因为将从其存储库下载您选择的 RTOS 的源代码。在后续的构建中，不会发生这种情况。
 
-## Building from the command prompt
+您可以指定任何在正在构建的平台上支持的生成器。有关更多信息，请查看 CMake 文档 [此处](https://cmake.org/cmake/help/v3.23/manual/cmake-generators.7.html?highlight=generator)。
 
-If you are building from the command prompt, just go to the repository root folder and run CMake from there with the appropriate parameters.
-The following is a working example:
+## 从命令提示符中进行构建
+
+如果您是从命令提示符中进行构建，请转到存储库根文件夹，并在那里使用适当的参数运行 CMake。
+以下是一个可行的示例：
 
 ```text
 cmake --preset ST_NUCLEO_F091RC
 cmake --build --preset ST_NUCLEO_F091RC
 ```
 
-This will call CMake and build the ST_NUCLEO_F091RC target from that configuration preset. It's assumed that you've previously adjusted the tools path in the CMakeUserPresets.json file.
+这将调用 CMake，并使用该配置预设从头构建 ST_NUCLEO_F091RC 目标。假设您之前已经调整了 CMakeUserPresets.json 文件中的工具路径。
 
-Any of the build options in the cache variables can be overridden from the CLI like in the example below here we're setting the TOOLCHAIN_PREFIX:
+缓存变量中的任何构建选项都可以从命令行界面中进行覆盖，就像下面的示例中设置 TOOLCHAIN_PREFIX 一样：
 
 ```text
 cmake --preset ST_NUCLEO144_F746ZG -DTOOLCHAIN_PREFIX="E:/GNU_Tools_ARM_Embedded/10.3-2021.10"
-cmake --build --preset ST_NUCLEO144_F746ZG
+cm
+
+ake --build --preset ST_NUCLEO144_F746ZG
 ```
 
-After successful completion you'll have the build files ready to be used in the target build tool.
+成功完成后，您将获得构建文件，可以在目标构建工具中使用。
 
-## Building from VS Code (using CMake Tools extension)
+## 从 VS Code 中进行构建（使用 CMake Tools 扩展）
 
-We've added the required files and configurations to help you launch your build from VS Code.
-Follows a brief explanation on the files you might want to tweak.
+我们已经添加了所需的文件和配置，以帮助您在 VS Code 中启动构建。以下是您可能希望调整的文件的简要说明。
 
-- settings.json (inside .vscode folder) here you can change the generator that CMake uses to generate the build. The default is ```"cmake.generator": "NMake Makefiles"```. The recommendation is to use Ninja as the build tool because it's way faster than NMake.
-- launch.json (inside .vscode folder) here you can set up your launch configurations, such as gdb path or OpenOCD configuration. We've made available Gists with launch.json for several of the reference targets. Grab yours from [here](https://gist.github.com/nfbot). :warning: Remember to update paths and other preferences according to your setup and machine configuration. :wink:
-- CMakeUserPresets.TEMPLATE.json (at the repository root). You should copy this one over to CMakeUserPresets.json. Besides adjusting the paths to the location where you have the tools installed locally, you can tweak build options, add new build configurations and override the default ones. Check the documentation [here](https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/cmake-presets.md). **!!mind to always use forward slashes in the paths!!**
-:warning: Remember to update paths and other preferences according to your setup and machine configuration. :wink:
+- settings.json（位于 .vscode 文件夹中）在这里，您可以更改 CMake 用于生成构建的生成器。默认值为 ```"cmake.generator": "NMake Makefiles"```。建议使用 Ninja 作为构建工具，因为它比 NMake 更快。
+- launch.json（位于 .vscode 文件夹中）在这里，您可以设置启动配置，如 gdb 路径或 OpenOCD 配置。我们提供了针对多个参考目标的 launch.json 的 Gists。您可以从[这里](https://gist.github.com/nfbot)获取适合您的配置。:warning: 根据您的设置和计算机配置更新路径和其他首选项。 :wink:
+- CMakeUserPresets.TEMPLATE.json（位于存储库根目录）。您应该将其复制为 CMakeUserPresets.json。除了调整路径以指向您在本地安装工具的位置外，您还可以调整构建选项、添加新的构建配置并覆盖默认配置。查看[此处](https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/cmake-presets.md)的文档。**！！请始终在路径中使用正斜杠！！**
+:warning: 根据您的设置和计算机配置更新路径和其他首选项。 :wink:
 
-To launch the build in VS Code check the status bar at the bottom. Select the Configure Preset that you want and click the build button (or hit <kbd>F7</kbd>).
+要在 VS Code 中启动构建，请检查底部的状态栏。选择您想要配置的预设，并单击构建按钮（或按下 <kbd>F7</kbd>）。
 
 ![choose-preset](../../images/building/vs-code-bottom-tolbar-choose-preset.png)
 
-## .NET **nanoFramework** firmware build deliverables
+## .NET nanoFramework 固件构建成果物
 
-After a successful build you can find the .NET **nanoFramework** image files in the *build* directory. Those are:
+成功构建后，您可以在 *build* 目录中找到 .NET nanoFramework 映像文件。这些文件包括：
 
-- nanoBooter image (not available for ESP32 builds):
+- nanoBooter 映像（ESP32 构建不可用）：
 
-  - nanoBooter.bin (raw binary format)
-  - nanoBooter.hex (Intel hex format)
-  - nanoBooter.lst (source code listing intermixed with disassembly)
-  - nanoBooter.map (image map)
+  - nanoBooter.bin（原始二进制格式）
+  - nanoBooter.hex（Intel hex 格式）
+  - nanoBooter.lst（源代码列表与反汇编混合）
+  - nanoBooter.map（映像地图）
 
-- nanoCLR image:
+- nanoCLR 映像：
 
-  - nanoCLR.bin (raw binary format)
-  - nanoCLR.hex (Intel hex format)
-  - nanoCLR.lst (source code listing intermixed with disassembly)
-  - nanoCLR.map (image map)
+  - nanoCLR.bin（原始二进制格式）
+  - nanoCLR.hex（Intel hex 格式）
+  - nanoCLR.lst（源代码列表与反汇编混合）
+  - nanoCLR.map（映像地图）
 
-## BUILD_VERSION matching
+## BUILD_VERSION 匹配
 
-When working with self built nanoCLR you may get the following message while deploying a new app:
+当使用自建的 nanoCLR 时，您在部署新应用程序时可能会收到以下消息：
 
 ```text
 Found assemblies mismatches when checking for deployment pre-check.
 ```
 
-This is because the BUILD_VERSION value of your custom built nanoCLR doesn't match the one nanoframework.CoreLibrary expects.
-`BUILD_VERSION` can be set in the file `CMakeUserPresets.json`. The value defaults to `"0.9.99.999"`.
-Change that to the one you need at the moment, like `"1.6.1.28"`.
+这是因为您自定义构建的 nanoCLR 的 BUILD_VERSION 值与 nan
 
-Don't forget to:
+oframework.CoreLibrary 期望的值不匹配。
+`BUILD_VERSION` 可以在文件 `CMakeUserPresets.json` 中设置。该值默认为 `"0.9.99.999"`。您可以根据当前需要将其更改为所需的版本，例如 `"1.6.1.28"`。
 
-- make this change under appropriate target block, as described [here](cmake-presets.md)
-- re-select the CMake target (VSCode bottom line) to reconfigure the build.
-- you're better running CMake command: 'delete cache and reconfigure' for this to become effective.
+不要忘记：
+
+- 在适当的目标块下进行更改，如[此处](cmake-presets.md)所述
+- 重新选择 CMake 目标（VSCode 底部一行）以重新配置构建。
+- 最好运行 CMake 命令：'删除缓存并重新配置'，以使更改生效。

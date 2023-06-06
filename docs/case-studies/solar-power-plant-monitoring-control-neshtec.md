@@ -1,19 +1,19 @@
-# Solar power plant remote monitoring & control
+# 太阳能电厂远程监控与控制
 
-**Company**: [Neshtec](https://neshtec.eu/)
+**公司**: [Neshtec](https://neshtec.eu/)
 
-**Application Industry**: Solar power plant
+**应用行业**: 太阳能电厂
 
-Neshtec used its own newly developed hardware platform called Neshtec-Control in a project for the first time. The HW platform is based on a STM32F7 microcontroller and runs on .NET nanoFramework. In the project, Neshtec-Control is used to implement the interface between a <100kWp PV solar system installed at a sewage treatment plant and the energy supplier.
+Neshtec首次在一个项目中使用了他们自己新开发的硬件平台Neshtec-Control。该硬件平台基于STM32F7微控制器，并在.NET nanoFramework上运行。在该项目中，Neshtec-Control用于实现一个安装在污水处理厂的小于100千瓦峰值功率的光伏太阳能系统与能源供应商之间的接口。
 
-With the help of Neshtec-Control, the energy supplier can monitor the system remotely and also control it, for example set performance specifications or carry out an emergency shutdown. This is connected to Azure which enables Neshtec to perform its own plant monitoring and remote SW updates.
+借助Neshtec-Control，能源供应商可以远程监控系统，并进行控制，例如设置性能规范或进行紧急停机。这与Azure相连接，使得Neshtec能够执行自己的电厂监控和远程软件更新。
 
-The interface conversion by Neshtec-Control takes place between the two communication protocols Modbus and IEC 60870-5-104. The Neshtec-Control has a modular structure and thus enables the project-specific use of different I/O modules, which are available abstractly on the application level through the .NET nanoFramework. In combination with the high reliability of the framework and information security functions, this enables an increase in efficiency in terms of costs and implementation time for Nesstec projects.
+Neshtec-Control进行的接口转换在Modbus和IEC 60870-5-104这两种通信协议之间进行。Neshtec-Control具有模块化结构，因此可以通过.NET nanoFramework在应用层上抽象地使用不同的I/O模块，以满足项目的特定需求。结合框架的高可靠性和信息安全功能，这提高了Neshtec项目在成本和实施时间方面的效率。
 
-Checkout these photos bellow.
+请查看下面的照片。
 
-![Aerial view of the plant](../../images/case-studies/solar-power-plant-remote-monitoring/solar-plant-00.png)
-*Aerial view of the plant*
+![电厂的鸟瞰图](../../images/case-studies/solar-power-plant-remote-monitoring/solar-plant-00.png)
+*电厂的鸟瞰图*
 
-![System diagram](../../images/case-studies/solar-power-plant-remote-monitoring/solar-plant-diagram-00.png)
-*System diagram*
+![系统图示](../../images/case-studies/solar-power-plant-remote-monitoring/solar-plant-diagram-00.png)
+*系统图示*
