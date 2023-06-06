@@ -10,17 +10,60 @@ const config = {
   tagline: 'Dinosaurs are cool',
   favicon: 'img/favicon.ico',
 
+  ssrTemplate: `<!DOCTYPE html>
+<html <%~ it.htmlAttributes %>>
+  <head>
+    <meta charset="UTF-8">
+     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3962178453276408"
+     crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="msvalidate.01" content="98BE5D79561DEF1C4A835031113DA43F" />
+    <meta name="generator" content="Docusaurus v<%= it.version %>">
+    <% if (it.noIndex) { %>
+      <meta name="robots" content="noindex, nofollow" />
+    <% } %>
+    <%~ it.headTags %>
+    <% it.metaAttributes.forEach((metaAttribute) => { %>
+      <%~ metaAttribute %>
+    <% }); %>
+    <% it.stylesheets.forEach((stylesheet) => { %>
+      <link rel="stylesheet" href="<%= it.baseUrl %><%= stylesheet %>" />
+    <% }); %>
+    <% it.scripts.forEach((script) => { %>
+      <link rel="preload" href="<%= it.baseUrl %><%= script %>" as="script">
+    <% }); %>
+    <meta name="msvalidate.01" content="98BE5D79561DEF1C4A835031113DA43F" />
+  </head>
+  <body <%~ it.bodyAttributes %>>
+    <%~ it.preBodyTags %>
+    <div id="__docusaurus">
+      <%~ it.appHtml %>
+    </div>
+    <% it.scripts.forEach((script) => { %>
+      <script src="<%= it.baseUrl %><%= script %>"></script>
+    <% }); %>
+    <%~ it.postBodyTags %>
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a78edb0c5bf099244d917360b1b5a927";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+  </body>
+</html>`,
   // Set the production url of your site here
   url: 'https://your-docusaurus-test-site.com',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
-
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'facebook', // Usually your GitHub org/user name.
   projectName: 'docusaurus', // Usually your repo name.
-
   onBrokenLinks: 'ignore',
   onBrokenMarkdownLinks: 'warn',
   i18n: {
