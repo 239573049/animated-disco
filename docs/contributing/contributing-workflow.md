@@ -1,195 +1,182 @@
-# Contribution Workflow
+# 贡献工作流程
 
-You can contribute to .NET **nanoFramework** with issues and PRs. Simply filing issues for problems you encounter is a great way to contribute. Contributing implementations is greatly appreciated.
+您可以通过问题和PR向.NET **nanoFramework**做出贡献。简单地为您遇到的问题提出问题是做出贡献的好方法。贡献实现将不胜感激。
 
-## Getting Started
+## 入门
 
-If you are looking at getting your feet wet with some simple (but still beneficial) changes, check out [_up-for-grabs_](https://github.com/nanoframework/Home/issues?q=is%3Aissue+is%3Aopen+label%3Aup-for-grabs) issues on the [.NET **nanoFramework** Home](https://github.com/nanoframework/Home) repo.
+如果您想尝试一些简单（但仍然有益）的更改，请查看 [.NET **nanoFramework** Home](https://github.com/nanoframework/Home) 存储库上的 [_up-for-grabs_](https://github.com/nanoframework/Home/issues?q=is%3Aissue+is%3Aopen+label%3Aup-for-grabs) 问题。
 
-For new ideas, please always start with an issue before starting development of an implementation. See [project priorities](project-priorities.md) to understand the team's approach to engagement on general improvements to the product.
+对于新的想法，请始终从问题开始，然后开始实现。请参见 [项目优先级](project-priorities.md) 以了解团队在产品的一般改进方面的参与方式。
 
-You do not need to file an issue for trivial changes (e.g. typo fixes). Just create a PR for those changes.
+对于微不足道的更改（例如错别字修复），您无需提交问题。只需为这些更改创建PR即可。
 
-## Making a change
+## 进行更改
 
-Make a quality change. Consider and document (preferably with tests) as many usage scenarios as you can to ensure that your change will work correctly in the myriad of ways it might get used.
+进行高质量的更改。请考虑并记录（最好使用测试）尽可能多的使用场景，以确保您的更改在可能使用的各种方式中都能正常工作。
 
-There are several issues to keep in mind when making a change.
+进行更改时，请注意以下几个问题。
 
-## Typos
+## 拼写错误
 
-Typos are embarrassing! We will accept most PRs that fix typos. In order to make it easier to review your PR, please focus on a given component with your fixes or on one type of typo across the entire repository. If it's going to take >30 mins to review your PR, then we will probably ask you to chunk it up.
+拼写错误很尴尬！我们将接受大多数修复拼写错误的PR。为了更容易地审查您的PR，请将您的修复重点放在给定组件上，或者在整个存储库中针对一种类型的拼写错误进行修复。如果需要花费> 30分钟来审查您的PR，则我们可能会要求您将其分成几个部分。
 
-## Coding Style Changes
+## 代码风格更改
 
-We would like to have .NET **nanoFramework** in full conformance with the style guidelines described here [C/C++ Coding Style](cxx-coding-style.md) and here [C# Coding Style](cs-coding-style.md). We plan to do that with tooling, in a holistic way. In the meantime, please:
+我们希望.NET **nanoFramework**完全符合这里描述的样式指南 [C/C++ Coding Style](cxx-coding-style.md) 和 [C# Coding Style](cs-coding-style.md)。我们计划通过工具以整体方式实现这一点。在此期间，请：
 
-- **DO NOT** send PRs for style changes.
-- **DO** give priority to the current style of the project or file you're changing even if it diverges from the general guidelines.
+- **不要**发送用于样式更改的PR。
+- **请**优先考虑您正在更改的项目或文件的当前样式，即使它与一般指南不同。
+## 提交信息
 
-## Commit Messages
-
-Please format commit messages as follows (based on this [excellent post](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)):
+请按照以下格式编写提交信息（基于此[优秀的文章](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)）：
 
 ```text
-Summarize change in 50 characters or less
+在50个字符或更少的字数中总结更改
 
-Provide more detail after the first line. Leave one blank line below the
-summary and wrap all lines at 72 characters or less.
+在第一行之后提供更多详细信息。在摘要下面留一行空白，并将所有行限制在72个字符或更少。
 
-If the change fixes an issue, leave another blank line after the final
-paragraph and indicate which issue is fixed in the specific format
-below.
+如果更改修复了问题，请在最后一段之后再留一行空白，并以特定格式指示修复了哪个问题，如下所示。
 
 Fix #42
 ```
 
-Also do your best to factor commits appropriately, i.e. not too large with unrelated
-things in the same commit, and not too small with the same small change applied N
-times in N different commits. If there was some accidental reformatting or whitespace
-changes during the course of your commits, please rebase them away before submitting
-the PR.
+同时，请尽力适当地分解提交，即不要在同一提交中包含不相关的内容，也不要在N个不同的提交中多次应用相同的小更改。如果在提交过程中发生了意外的重新格式化或空格更改，请在提交PR之前将它们重新基于主干。
 
-### Signing off your commit messages
+### 在提交信息中签名
 
-We recommend (although is not mandatory) that you include a `Signed-off-by` line in the commit message:
+我们建议（虽然不是强制性的）您在提交信息中包含一个`Signed-off-by`行：
 
 ```text
 Signed-off-by: Joe Smith <joe.smith@email.com>
 ```
 
-The project requires that the name used is your real name. Neither anonymous contributions nor those utilizing pseudonyms will be accepted.
+该项目要求使用您的真实姓名。不接受匿名贡献或使用化名的贡献。
 
-## Contributor License Agreement
+## 贡献者许可协议
 
-### Why a CLA
+### 为什么需要CLA
 
-The Contributor License Agreement helps ensure everyone that .NET **nanoFramework** is here to stay.
-Specifically, our Contributor License Agreements (CLAs) grant the contributor and .NET **nanoFramework** joint copyright interest in contributed code. Further, it provides assurance from the contributor that contributions are original work that does not violate any third-party license agreement. The agreement between contributors and project is explicit, so developers and users can be confident in the legal status of the source code and their right to use it.
+贡献者许可协议有助于确保.NET **nanoFramework**的持续发展。具体而言，我们的贡献者许可协议（CLA）授予贡献者和.NET **nanoFramework**共同的版权利益。此外，它提供了贡献者的保证，即贡献是原创作品，不违反任何第三方许可协议。贡献者和项目之间的协议是明确的，因此开发人员和用户可以对源代码的法律地位和使用权利感到放心。
 
-### Our CLA's
+### 我们的CLA
 
-All contributions to .NET **nanoFramework** (no matter if that's code, bug fixes, configuration changes, documentation, or anything else) requires that the contributor(s) complete and sign a Contributor License Agreement. You can read it [here](cla.md).
+所有对.NET **nanoFramework**的贡献（无论是代码、错误修复、配置更改、文档还是其他任何东西）都要求贡献者完成并签署贡献者许可协议。您可以在[这里](cla.md)阅读它。
 
-.NET **nanoFramework** team and community members will provide feedback on your change. Community feedback is highly valued. You will often see the absence of team feedback if the community has already provided good review feedback.
+.NET **nanoFramework**团队和社区成员将对您的更改提供反馈。社区反馈非常重要。如果社区已经提供了良好的审查反馈，您通常会看到团队反馈的缺失。
+PR反馈
 
-## PR Feedback
+.NET nanoFramework团队和社区成员将对您的更改提供反馈。社区反馈非常重要。如果社区已经提供了良好的审查反馈，您通常会看到团队反馈的缺失。
 
-.NET **nanoFramework** team and community members will provide feedback on your change. Community feedback is highly valued. You will often see the absence of team feedback if the community has already provided good review feedback.
+一个或多个.NET nanoFramework团队成员将在合并之前审查每个PR。他们通常会回复“LGTM，modulo comments”。这意味着一旦解决了反馈，PR将被合并。“LGTM” == “我觉得很好”。
 
-One or more .NET **nanoFramework** team members will review every PR prior to merge. They will often reply with "LGTM, modulo comments". That means that the PR will be merged once the feedback is resolved. "LGTM" == "looks good to me".
+有很多思考和方法可以有效地讨论变化。最好清晰明确地反馈您的反馈。请耐心对待可能不了解您反馈方法的人。同时，不要认为评论和请求更改意味着您的贡献不受欢迎，人们可能会拖延或使您感到沮丧。您可能已经在手头的任务上做得很好，但由于它仍然是一个非常大的软件项目的一部分，可能会对您不知道的方面产生影响或产生副作用。保持开放的心态和积极的态度！:wink:
 
-There are lots of thoughts and [approaches](https://github.com/antlr/antlr4-cpp/blob/master/CONTRIBUTING.md#emoji) for how to efficiently discuss changes. It is best to be clear and explicit with your feedback. Please be patient with people who might not understand the finer details about your approach to feedback.
-Also don't think that comments and requests for changes means that your contribution is not appreciated and people can be stalling or discouraging you. You may have done a wonderful job on the task at hand but, as it's still part of a very large software project, there could be implications on aspects that you might not be aware of, or that it's impacting or causing side effects on other parts. Keep an open mind and positive attitude! :wink:
+.NET nanoFramework项目使用许多标签来对问题和拉取请求进行分类。在此处查看完整列表。
 
-.NET **nanoFramework** project uses many labels for categorizing issues and pull requests. Check [here](labels.md) the full list.
+处理开放问题
 
-## Working on an open issue
+当您想要处理开放问题（包括_up for grabs_）时，我们建议采取以下措施。
 
-When you want to work on an open issue (including _up for grabs_) we recommend the following.
+- 带有[_investigating_](labels.md#l10)标签的问题：如果当前状态似乎没有更新或清晰，请在开始任何工作之前添加评论以请求澄清。
+- 带有[_under review_](labels.md#l27)标签的问题：如果当前状态似乎没有更新或清晰，请在开始任何工作之前添加评论以请求澄清。
+- 带有[_up for grabs_](labels.md#l9)标签的问题：添加评论以表明您的兴趣，问题将被分配给您，并将标签切换为_in progress_。
+## 建议的工作流程
 
-- Issues labeled with [_investigating_](labels.md#l10): if the current status doesn't seem updated or clear, add a comment asking for clarification before start any work on it.
-- Issues labeled with [_under review_](labels.md#l27): if the current status doesn't seem updated or clear, add a comment asking for a clarification before start any work on it.
-- Issues labeled with [_up for grabs_](labels.md#l9): add a comment stating your interest and the issue will be assigned to you and the label switched to _in progress_.
+我们使用并推荐以下工作流程：
 
-## Suggested Workflow
+1. 为您的工作创建一个问题。
+    - 对于微不足道的更改，您可以跳过此步骤。
+    - 如果有关于该主题的现有问题，请重复使用该问题。
+    - 从团队和社区获得您的建议更改是一个好的建议。
+    - 如果您的更改添加了新的API，请遵循[API审查流程](api-review-process.md)。
+    - 明确表示您将着手实施它，如果是这种情况。您可以请求将问题分配给您。注意：问题文件和实施者不必是同一个人。
 
-We use and recommend the following workflow:
+2. 在GitHub上创建一个个人分支（如果您已经有一个，可以直接跳到步骤5）。
 
-1. Create an issue for your work.
-    - You can skip this step for trivial changes.
-    - Reuse an existing issue on the topic, if there is one.
-    - Get agreement from the team and the community that your proposed change is a good one.
-    - If your change adds a new API, follow the [API Review Process](api-review-process.md).
-    - Clearly state that you are going to take on implementing it, if that's the case. You can request that the issue be assigned to you. Note: The issue filer and the implementer don't have to be the same person.
+      在GitHub上，分叉存储库只需单击“Fork”按钮（位于页面右上角）即可完成。
 
-2. Create a personal fork of the repository on GitHub (if you already have one you can jump straight to step 5 bellow).
+3. 将该新分支克隆到本地系统。
 
-      Forking the repository is a simple click on the "Fork" button (at the top right corner) on the repositories page in GitHub.
+    此操作严重依赖于您将使用的本地客户端，以便管理本地克隆。有许多客户端，从Git命令行到更复杂和GUI客户端。
 
-3. Clone that new fork to your local system.
+    - GitHub有自己的[桌面客户端](https://desktop.github.com/)。
+    - 有一个适用于[Visual Studio的扩展程序](https://marketplace.visualstudio.com/items?itemName=GitHub.GitHubExtensionforVisualStudio)。
+    - Visual Studio Code有自己的Git客户端。
+    - 还有流行的[Tower](https://www.git-tower.com/)和许多其他客户端。
 
-    This operation depends heavily on what local client you are going to use in order to manage your local clone. There are a number of clients, from Git command line to more sophisticated and GUI clients.
+    如果您使用GUI客户端，请不要使用下面显示的git命令行。
 
-    - GitHub has it's own [desktop client](https://desktop.github.com/).
-    - There is an extension for [Visual Studio](https://marketplace.visualstudio.com/items?itemName=GitHub.GitHubExtensionforVisualStudio).
-    - Visual Studio Code has it's owned Git client baked in.
-    - There is also the popular [Tower](https://www.git-tower.com/) and many others.
+    在GitHub上，将本地克隆克隆到本地只需单击显示在GitHub上的个人分支右上角的绿色“Clone or Download”按钮。
 
-    If you are using a GUI client don't bother with the the git command lines shown bellow.
-
-    Cloning locally is a simple click on the green "Clone or Download" button (at the top right corner) that shows on your personal fork in GitHub.
-
-    You can also perform this operation locally. Directly from your Git client or from the git command line:
+    您也可以在本地执行此操作。直接从您的Git客户端或从git命令行：
 
     `git clone https://github.com/<your-github-id-here>/<nf-repo-name-here>.git`
 
-4. Configure a remote upstream to the master repository.
+4. 配置远程上游到主存储库。
 
     `git remote add upstream https://github.com/nanoframework/<nf-repo-name-here>.git`
 
-5. Make sure that your main branch is in sync with the upstream  **main** branch.
+5. 确保您的主分支与上游**main**分支同步。
 
     `git checkout main`
 
     `git pull upstream main`
-
-6. Create a branch off of **main** branch.
+6. 从**main**分支创建一个分支。
 
     `git checkout -b <branch-name-here> main`
   
-    We suggest that you name the branch so that it clearly communicates your intentions, such as _issue-123_ or _githubhandle-issue_.
-    Don't use a branch name starting with _develop_ because that may be mistaken with the _develop_ branches on the upstream repository.
+    我们建议您命名分支，以便清楚地传达您的意图，例如_issue-123_或_githubhandle-issue_。
+    不要使用以_develop_开头的分支名称，因为这可能会被误认为是上游存储库上的_develop_分支。
 
-    Branches are useful since they isolate your changes from incoming changes from upstream. They also enable you to create multiple PRs from the same fork.
+    分支很有用，因为它们将您的更改与来自上游的更改隔离开来。它们还使您能够从同一分叉创建多个PR。
 
-7. Work your way through the changes and commit them using your Git client or the command line as you prefer.
-      - Please follow our [Commit Messages](contributing-workflow.md#commit-messages) guidance.
-      - Include `Signed-off-by` line, e.g. `git commit -s`
+7. 根据您的喜好，使用Git客户端或命令行逐步进行更改并提交它们。
+      - 请遵循我们的[提交消息](contributing-workflow.md#commit-messages)指南。
+      - 包括`Signed-off-by`行，例如`git commit -s`
 
-8. Add new tests corresponding to your change, if applicable.
+8. 如果适用，请添加与您的更改相应的新测试。
 
-9. Build the repository with your changes.
-      - Make sure that the builds are clean.
-      - Make sure that the tests are all passing, including any new tests that you've added.
+9. 使用您的更改构建存储库。
+      - 确保构建是干净的。
+      - 确保所有测试都通过，包括您添加的任何新测试。
 
-10. If you've been working in this branch and changes have been made in upstream main, you should rebase the working branch on the upstream main branch so that your work shows on top of any other changes. If you have just created your working branch you can skip this step.
+10. 如果您一直在此分支上工作，并且上游主分支发生了更改，则应将工作分支在上游主分支上进行变基，以便您的工作显示在其他更改之上。如果您刚刚创建了工作分支，则可以跳过此步骤。
 
     `git rebase upstream/main`
 
-11. Push your changes to your fork on GitHub (if you haven't already).
+11. 将更改推送到GitHub上的您的分叉（如果尚未推送）。
 
     `git push origin <branch-name-here>`
 
-12. Create a pull request (PR) against the upstream repository's **main** branch.
+12. 针对上游存储库的**main**分支创建拉取请求（PR）。
 
-    Creating a PR is a simple click on the "Pull Request" button that shows on your personal fork in GitHub.
+    创建PR是在GitHub上个人分叉中显示的“拉取请求”按钮上单击即可。
 
-    There is a template for the PR message. We ask you to follow it. It has the required topics and placeholders for what is required to make it clear. Also acts as a check list for you as the submitter.
+    PR消息有一个模板。我们要求您遵循它。它具有所需的主题和占位符，以使其清晰。还充当提交者的检查清单。
 
-    When starting a PR GitHub will show you if you repo is up to date with the master one and if a merge is OK. If there are differences showing you have to go back to you local clone and merge those into your local clone. After doing that it's advisable to re-run the build and tests because there could have been changed brought in that affected your code.
-    After the above succeeds you have to push the changes up to origin repeating step 10 above.
+    在开始PR时，GitHub会向您显示您的存储库是否与主存储库保持同步，以及合并是否OK。如果显示有差异，则必须返回本地克隆并将其合并到本地克隆中。在执行此操作后，建议重新运行构建和测试，因为可能会带来影响您的代码的更改。
+    在上述步骤成功后，您必须将更改推送到origin，重复上面的第10步。
 
-Note 1: It is OK for your PR to include a large number of commits. If that's the case, once your change is accepted, you can be asked to squash your commits into one or some appropriately small number of commits before your PR is merged.
+注1：您的PR可以包含大量提交，这是可以接受的。如果是这种情况，一旦您的更改被接受，可以要求您将提交压缩为一个或一些适当的小提交，然后合并您的PR。
 
-Note 2: It is OK to create your PR as "[WIP]" on the upstream repo before the implementation is done. This can be useful if you'd like to start the feedback process concurrent with your implementation. State that this is the case in the initial PR comment.
+注2：在实现完成之前，将您的PR创建为“[WIP]”在上游存储库中是可以的。如果您想同时开始反馈过程，则可以使用此选项。在初始PR注释中说明情况。
 
-Note 3: If you are working on a feature that has high impact or it's something experimental, your original PR can have it's target branch moved into a new develop branch in the master repo, something like _develop-shiny-awesome-feature_.
+注3：如果您正在开发具有高影响力或是实验性的功能，则可以将原始PR的目标分支移动到主存储库中的新开发分支中，例如_develop-shiny-awesome-feature_。
 
-## General git resources
+## 通用git资源
 
-If you are coming from another version control system _git_ can feel daunting, awkward, confusing and may cause you frustration. :warning: Be warned about that! :warning: :stuck_out_tongue_winking_eye:
+如果您来自另一个版本控制系统_git_可能会感到令人生畏，笨拙，令人困惑，并可能使您感到沮丧。:warning:请注意！:warning: :stuck_out_tongue_winking_eye:
 
-We suggest that you go through some basic tutorial and give it a try on a test repo that you setup for yourself.
+我们建议您通过一些基本教程并在为自己设置的测试存储库上尝试一下。
 
-Here are a few resources that we've compiled to get you up to speed. No claims that these are, by any stretch, the only or the better ones! You can find a bunch of these out there!
+以下是我们编制的一些资源，可帮助您快速掌握。不保证这些是唯一或更好的！您可以在那里找到一堆！
 
-- [GitHub trial site](http://try.github.io/). Gives you a nice tour of git. Get your feet wet without even installing software!
+- [GitHub试用网站](http://try.github.io/)。为您提供Git的良好介绍。即使没有安装软件，也可以让您入门！
 
-- [GitHub help page](http://help.github.com/) Deals with basic usage, concepts and terms of git and github. Good to get a first idea.
+- [GitHub帮助页面](http://help.github.com/)。处理git和github的基本用法，概念和术语。很好的第一印象。
 
-- [Git Reference](http://git.github.io/git-reference/). Nice and concise reference of the essential functions of git. Takes about 30min to read through, you'll come out smarter at the end.
+- [Git参考](http://git.github.io/git-reference/)。Git基本功能的简洁参考。需要大约30分钟阅读，您将在最后变得更聪明。
 
-- The git [community book](https://git-scm.com/book/en/v2). This book is meant to help you learn how to use Git as quickly and easily as possible.
+- git [社区书籍](https://git-scm.com/book/en/v2)。本书旨在帮助您尽快，尽可能轻松地学习如何使用Git。
 
-- [Escape a git mess step-by-step](http://justinhileman.info/article/git-pretty/git-pretty.png). Humorous and handy workflow to help you when you get stuck with git and your blood pressure starts to rise.
+- [逐步解决git混乱](http://justinhileman.info/article/git-pretty/git-pretty.png)。幽默而方便的工作流程，可帮助您在遇到git问题并且您的血压开始上升时。

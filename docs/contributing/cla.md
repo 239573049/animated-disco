@@ -1,4 +1,4 @@
-# .NET nanoFramework Individual Contributor License Agreement
+# .NET nanoFramework个人贡献者许可协议
 
-Because the project is part of the [.NET Foundation](https://dotnetfoundation.org/) the CLA "belongs" to the Foundation.
-You can read the latest version of the CLA [here](https://github.com/dotnet-foundation/.github/blob/main/CLA/dotnetfoundation.yml).
+由于该项目是[.NET 基金会](https://dotnetfoundation.org/)的一部分，CLA“属于”该基金会。
+您可以在此处阅读CLA的最新版本：https://github.com/dotnet-foundation/.github/blob/main/CLA/dotnetfoundation.yml。

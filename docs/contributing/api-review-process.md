@@ -1,3 +1,3 @@
-# API review process
+# API审核流程
 
-We're working on it! Stay tuned! Raise PR and that will help us finding good recommendations.
+我们正在努力!请继续关注!提高公关，这将有助于我们找到好的推荐。

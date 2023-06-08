@@ -1,22 +1,21 @@
-# Individuals contributing or helping .NET **nanoFramework**
+# 个人为.NET **nanoFramework**做出贡献或帮助
 
-.NET **nanoFramework** was started from individual contributions and keeps growing based on those.
-That's very important for the project and we sure would love to have you onboard!
+.NET **nanoFramework**是由个人贡献开始的，并且基于这些贡献不断发展壮大。这对于项目来说非常重要，我们非常希望您能加入我们！
 
-The project needs people with skills on C/C++ and C# and Azure DevOps. No need to be a subject matter expert! Even the smallest contribution matters.
+该项目需要具有C/C++和C#以及Azure DevOps技能的人。您不需要成为专家！即使是最小的贡献也很重要。
 
-We welcome embedded system developers familiar with platforms we target, including: ESP32, STM32, TI CC32xx and NXP. Or are familiar with RTOSes, including: FreeRTOS, ChibiOS and TI SimpleLink.
+我们欢迎熟悉我们所针对的平台的嵌入式系统开发人员，包括：ESP32、STM32、TI CC32xx和NXP。或者熟悉RTOS，包括：FreeRTOS、ChibiOS和TI SimpleLink。
 
-C# developers with general coding experiencing, coding Visual Studio extension development, coding with Visual Studio debugging components, willing to write unit tests.
+C#开发人员具有一般编码经验，编写Visual Studio扩展开发、编写Visual Studio调试组件、愿意编写单元测试。
 
-Technical writers that want to get experience, gain knowledge on a new platform or technology or just wanting to contribute voluntarily.
+技术作家想要获得经验，获得有关新平台或技术的知识，或者只是想自愿做出贡献。
 
-Designers, video editors, web designers and people with marketing and PR skills. Basically the project can benefit from good communication, presenting good and nice looking materials, provide great and engaging training materials.
+设计师、视频编辑、网页设计师和具有营销和公关技能的人。基本上，该项目可以从良好的沟通、呈现良好且外观漂亮的材料、提供出色和引人入胜的培训材料中受益。
 
-## Code of conduct
+## 行为准则
 
-This project has adopted the code of conduct defined by the [Contributor Covenant](https://www.contributor-covenant.org/version/1/4/code-of-conduct) to clarify expected behavior in our community.
+该项目已采用由[贡献者公约](https://www.contributor-covenant.org/version/1/4/code-of-conduct)定义的行为准则，以澄清我们社区中预期的行为。
 
-## Contributing guide
+## 贡献指南
 
-Please read our [Contribution Workflow](contributing-workflow.md) to get an idea on the matter and hopefully get you started on your first Pull Request! ;)
+请阅读我们的[贡献工作流程](contributing-workflow.md)以了解相关事项，并希望您能开始您的第一个拉取请求！;)
