@@ -1,9 +1,9 @@
-# Working with STM32 targets
+# 在STM32目标上进行工作
 
-## Can I debug the native code on any STM32 board
+## 我可以在任何STM32开发板上调试本机代码吗？
 
-For that to be possible you need to be able to connect to the JTAG pins on the MCU. Most of the STM32 Discovery and Nucleo boards include a ST-Link hardware that exposes the debug port.
+要实现这个目标，您需要能够连接到MCU上的JTAG引脚。大多数STM32 Discovery和Nucleo开发板都包含一个ST-Link硬件，可以暴露调试端口。
 
-## How to convert MCU pin name to nanoFramework pin number?
+## 如何将MCU引脚名称转换为nanoFramework引脚编号？
 
-nF pin number is calculated like so: `portNumber * 16 + pinNumber`. For STMs, ports are numbered alphabetically, so PA=0, PB=1, PC=2 and so on. For example, PD4 corresponds to nF pin number 52, because `3 * 16 + 4 = 52`.
+nanoFramework引脚编号的计算方式如下：`portNumber * 16 + pinNumber`。对于STM32来说，端口按字母顺序编号，因此PA=0，PB=1，PC=2，依此类推。例如，PD4对应于nanoFramework引脚编号52，因为 `3 * 16 + 4 = 52`。

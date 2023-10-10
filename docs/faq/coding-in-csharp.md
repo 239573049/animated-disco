@@ -1,14 +1,12 @@
-# Coding in C#
+# 在C#中使用自动属性吗
 
-## Can I use auto-properties in classes
+不可以，你必须声明后备字段。
 
-No, you have to declare the backing fields.
+# 我有一个旨在同时针对nanoFramework和标准.NET的解决方案，想要在两个平台中共享/重用代码。我知道我不能引用一个平台的程序集到另一个平台。我该如何实现这一目标
 
-## I have a Solution that targets both nanoFramework and standard .NET and would like to share/reuse code in both platforms. I know I can't reference assemblies from one into the other. How can I accomplish this
+你最好的选择是使用一个共享项目来保存通用代码。将那些在两个平台中都要使用的类放在共享项目中。你可以通过使用编译器常量、编译器定义甚至局部类来实现这种可重用性。
+关于这一点的一个小例子，请查看我们示例仓库中的[ToString示例](https://github.com/nanoframework/Samples/tree/master/samples/ToStringTest)。它使用这种技术来在nanoFramework应用程序和.NET控制台应用程序之间共享代码。
 
-Your best option is to use a shared project to hold the common code. Put there the classes that are to be used in both platforms. You can go all the way into this reusability by using compiler constants, compiler defines and even partial classes.
-For a small example on this check the [ToString sample](https://github.com/nanoframework/Samples/tree/master/samples/ToStringTest) on our samples repo. It's using this technic to share code between a nanoFramework app and a .NET console app.
+# 我需要在一个类库中调试某些内容，如何轻松地将NuGet引用替换为实际项目
 
-## I need to debug something in a class library how can I easily replace the NuGet reference with the real project
-
-This can be easily accomplished by using a handy Visual Studio extension called [NuGet Reference Switcher](https://marketplace.visualstudio.com/items?itemName=RicoSuter.NuGetReferenceSwitcherforVisualStudio2017). Add the class library project to your solution and using that tool _switch_ the NuGet package reference to the recently added project. After debugging you can switch back to the NuGet reference.
+你可以使用一个方便的Visual Studio扩展工具，叫做[NuGet Reference Switcher](https://marketplace.visualstudio.com/items?itemName=RicoSuter.NuGetReferenceSwitcherforVisualStudio2017)。将类库项目添加到你的解决方案中，然后使用该工具将NuGet包引用切换到最近添加的项目。在调试完成后，你可以切换回NuGet引用。

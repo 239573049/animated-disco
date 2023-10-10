@@ -1,146 +1,145 @@
-# .NET **nanoFramework** Virtual Device
+# .NET nanoFramework 虚拟设备
 
-A .NET **nanoFramework** _Virtual Device_ is available as a [.NET Tool](https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools). It allows to run nanoCLR on Windows machines. This can be useful for development purposes, performing automated tests on pipelines and other usage scenarios that benefit from having a virtual device opposed to real physical hardware. The virtual device can be accessed just like a real one through a virtual serial port or a TCP/IP port.
+.NET nanoFramework 虚拟设备作为一个 [.NET 工具](https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools) 可供使用。它允许在Windows机器上运行nanoCLR。这对于开发目的、在流水线上执行自动化测试和其他需要虚拟设备而不是真实物理硬件的用途非常有用。虚拟设备可以通过虚拟串行端口或TCP/IP端口像真实设备一样访问。
 
-The Visual Studio extension can interact with the .NET **nanoFramework** virtual device just like it does with a real device. It will be listed in Device Explorer window and will offer the same option as a real device.
+Visual Studio扩展可以与.NET nanoFramework虚拟设备进行交互，就像与真实设备一样。它将在设备资源管理器窗口中列出，并提供与真实设备相同的选项。
 
-![virtual device listed in device explorer](../../images/virtual-device/device-explorer-showing-virtual-device.png)
+![虚拟设备在设备资源管理器中列出](../../images/virtual-device/device-explorer-showing-virtual-device.png)
 
-> Note: the .NET Tool with the **nanoFramework** virtual device is not exclusive of the Visual Studio extension. It's a global tool that can be use standalone. Read below instructions on how to use it.
+> 注意：.NET nanoFramework虚拟设备与Visual Studio扩展不是互斥的。它是一个全局工具，可以独立使用。请阅读下面的说明以了解如何使用它。
 
-The serial port that exposes the **nanoFramework** virtual device is provided by [HHD Software](https://www.hhdsoftware.com/) which has kindly sponsored a free license for running their tool in .NET **nanoFramework** tools.
+暴露nanoFramework虚拟设备的串行端口由 [HHD Software](https://www.hhdsoftware.com/) 提供，他们慷慨地赞助了运行其工具在.NET nanoFramework工具中的免费许可证。
 
-## Configuring the Virtual Device
+## 配置虚拟设备
 
-To enable and configure .NET **nanoFramework** virtual device, open the `Settings` configuration dialog in Device Explorer (click on the cog wheel icon in the toolbar). Navigate to the `Virtual Device` tab.
+要启用和配置.NET nanoFramework虚拟设备，请在设备资源管理器中打开“设置”配置对话框（点击工具栏中的齿轮图标）。导航到“虚拟设备”选项卡。
 
-![virtual device configurations](../../images/virtual-device/settings-virtual-device-tab.png)
+![虚拟设备配置](../../images/virtual-device/settings-virtual-device-tab.png)
 
-To enable the Virtual Device, simply check the "Enable Virtual Device" check box. This will start **nanoFramework** virtual device with Visual Studio. If the tool is not installed, Visual Studio will do it in the background. If the Virtual Device is not needed, uncheck the option and it won't be started.
+要启用虚拟设备，只需选中“启用虚拟设备”复选框。这将在Visual Studio中启动nanoFramework虚拟设备。如果工具未安装，Visual Studio将在后台安装它。如果不需要虚拟设备，请取消选中该选项，虚拟设备将不会启动。
 
-A specific serial port can be configured to expose the Virtual Device. Enter a valid COM port name in the `Serial Port` text box and this will be used. If the virtual serial port doesn't exist yet, it will be created.
+可以配置一个特定的串行端口来暴露虚拟设备。在“串行端口”文本框中输入有效的COM端口名称，它将被使用。如果虚拟串行端口尚不存在，它将被创建。
 
-The virtual device can be started & stopped by clicking the respective button.
+虚拟设备可以通过单击相应的按钮来启动和停止。
 
-Last configuration pertains the automatic update of the nanoCLR image that the virtual device will be running. To have the tool automatically update and use the latest available version, just enable the checkbox.
+最后一个配置涉及虚拟设备将运行的nanoCLR图像的自动更新。要使工具自动更新并使用最新可用版本，只需启用复选框。
 
-> Note: if a specific nanoCLR version was installed, the virtual device will use that one. This is useful if you're testing a specific version of a library of firmware version, for example.
+> 注意：如果已安装了特定的nanoCLR版本，虚拟设备将使用该版本。这对于测试特定版本的库或固件版本非常有用，例如。
 
-## Output from Virtual Device
+## 虚拟设备的输出
 
-The output from the virtual device is made available in Visual Studio Output pane, just select `.NET nanoFramework Virtual Device`.
+虚拟设备的输出在Visual Studio的输出窗格中提供，只需选择“.NET nanoFramework虚拟设备”。
 
-![virtual device configurations](../../images/virtual-device/settings-virtual-device-tab.png)
+![虚拟设备配置](../../images/virtual-device/settings-virtual-device-tab.png)
 
-## Known limitations
+## 已知限制
 
-The virtual device has implemented most of the libraries and APIs that do not require hardware interaction. For those a "stubbed" version is offered meaning that a call to those APIs will result on a `Not Implemented Exception`. There is also no support for network. This will be added in a future version.
+虚拟设备已实现了大多数不需要硬件交互的库和API。对于那些需要硬件交互的API，提供了一个“存根”版本，这意味着对这些API的调用将导致“Not Implemented Exception”。目前不支持网络。这将在未来版本中添加。
 
-## Usage
+## 用法
 
-Once the tool is installed, you can call it by using its command `nanoclr`, which is a short version of the name to ease typing.
+安装了该工具后，可以通过其命令`nanoclr`来调用它，这是名称的一个缩写，以便于输入。
 
 ```console
-nanoclr [command] [args]
+nanoclr [命令] [参数]
 ```
 
-The tool includes help for all available commands. You can see a list of all available ones by entering:
+该工具包括所有可用命令的帮助。可以通过输入以下命令查看所有可用命令的列表：
 
 ```console
 nanoclr --help
 ```
 
-## Virtual Serial Ports
+## 虚拟串行端口
 
-This verb allows managing the virtual serial port exposing the virtual device.
-The virtual serial port is only available in Windows machines. It's made available with the sponsorship of [HHD Software](https://www.hhdsoftware.com/) which has kindly sponsored a free license for running their tool.
+这个动词允许管理暴露虚拟设备的虚拟串行端口。
+虚拟串行端口仅在Windows机器上可用。它是由 [HHD Software](https://www.hhdsoftware.com/) 赞助的，他们慷慨地提供了免费许可证来运行他们的工具。
 
-### List Virtual Serial ports
+### 列出虚拟串行端口
 
-This command lists the installed virtual serial port bridges in the system.
+此命令列出系统中安装的虚拟串行端口桥接器。
 
 ```console
 nanoclr virtualserial --list
 ```
 
-### Create Virtual Serial port
+### 创建虚拟串行端口
 
-This command creates a virtual serial port that will be used to expose the nanoCLR instance. A random COM port will be created.
-A COM port can be optionally specified as an option. In this case, if that COM port it's not being used, it will be created.
+此命令创建一个虚拟串行端口，该端口将用于暴露运行的nanoCLR实例。将创建一个随机的COM端口。还可以选择指定COM端口作为选项。在这种情况下，如果该COM端口未被使用，它将被创建。
 
 ```console
 nanoclr virtualserial --create [COM99]
 ```
 
-### Remove Virtual Serial port
+### 删除虚拟串行端口
 
-This command removes an existing virtual serial port.
+此命令删除现有的虚拟串行端口。
 
 ```console
 nanoclr virtualserial --remove [COM99]
 ```
 
-### Install Virtual Serial Port tools
+### 安装虚拟串行端口工具
 
-This command installs [HHD Software](https://www.hhdsoftware.com/) Virtual Serial Port Tools software. The installer is downloaded from their website and executed. Executing the installer requires "Install Driver" privilege and must be elevated. If the process running it doesn't have the required permissions an UAC prompt will be show.
+此命令安装[HHD Software](https://www.hhdsoftware.com/)的虚拟串行端口工具软件。安装程序将从他们的网站下载并执行。执行安装程序需要“安装驱动程序”权限，必须提升权限。如果运行它的进程没有所需的权限，将显示UAC提示。
 
 ```console
 nanoclr virtualserial --install
 ```
 
-## Running the virtual nanoCLR
+## 运行虚拟nanoCLR
 
-These options run the nanoCRL instance loading the specified assemblies and exposing the device on a specified interface. Please note that for successfully running a nanoCLR instance it's require to load a set of assemblies _and_ specify an interface to expose it, otherwise it has no use.
+这些选项运行nanoCLR实例，加载指定的程序集并在指定的接口上暴露设备。请注意，为了成功运行nanoCLR实例，需要加载一组程序集并指定一个接口来暴露它，否则它没有用处。
 
-### Load a set of assemblies
+### 加载一组程序
 
-This loads a set of .NET nanoFramework assemblies and runs the nanoCLR. These have to be in .NET nanoFramework PE (Portable Executable) format.
-They are found in the output folder of a Visual Studio project (typically `bin\Debug` or `bin\Release`). Full path of the PE files is required.
+集
+
+这将加载一组.NET nanoFramework程序集并运行nanoCLR。这些程序集必须以.NET nanoFramework PE（可移植可执行文件）格式存在。它们通常位于Visual Studio项目的输出文件夹中（通常是`bin\Debug`或`bin\Release`）。需要提供PE文件的完整路径。
 
 ```console
 nanoclr run --assemblies "C:\nano\my_nice_project\bin\Debug\mscorlib.pe" "C:\nano\my_nice_project\bin\Debug\my_nice_project.pe"
 ```
 
-### Specify Serial Port
+### 指定串行端口
 
-This option specifies the COM port that will be used to expose the virtual nanoCLR that will be running. It requires a previous setup of a Virtual Serial Port (see [Create Virtual Serial port](#create-virtual-serial-port)).
+此选项指定将用于暴露运行的虚拟nanoCLR的COM端口。需要先设置虚拟串行端口（参见[创建虚拟串行端口](#create-virtual-serial-port)）。
 
 ```console
 nanoclr run --serialport COM99 (--assemblies ...)
 ```
 
-### Specify Named Pipe
+### 指定命名管道
 
-This option specifies a [Named Pipe](https://learn.microsoft.com/en-us/windows/win32/ipc/named-pipes) that will be used to expose the virtual nanoCLR that will be running.
+此选项指定将用于暴露运行的虚拟nanoCLR的[命名管道](https://learn.microsoft.com/en-us/windows/win32/ipc/named-pipes)。
 
 ```console
 nanoclr run --namedpipe MyNanoDevice (--assemblies ...)
 ```
 
-### Resolve references
+### 解析引用
 
-This option tries to resolve cross-assembly references between the loaded assemblies.
+此选项尝试解析加载的程序集之间的交叉引用。
 
 ```console
 nanoclr run --resolve (--assemblies ...)
 ```
 
-## Maintenance operations with the nanoCLR
+## 使用nanoCLR执行维护操作
 
-The nanoCLR is, in fact, a wrapper to the nanoCLR instance that is distributed as DLL so it can be easily updated.
-The following operations are available to manage this.
+nanoCLR实际上是分发为DLL的nanoCLR实例的包装，以便于轻松更新。以下操作可用于管理此功能。
 
-### Version of nanoCLR
+### nanoCLR版本
 
-Gets the version of the current nanoCLR instance.
+获取当前nanoCLR实例的版本。
 
 ```console
 nanoclr instance --getversion
 ```
 
-### Update nanoCLR instance
+### 更新nanoCLR实例
 
-Checks for stable versions of nanoCLR and updates it, if there is one. A version can be specified. To check preview versions add the `--preview` option.
+检查稳定版本的nanoCLR是否可用，并更新它，如果有的话。可以指定版本。要检查预览版本，请添加`--preview`选项。
 
 ```console
 nanoclr instance --update [--preview] [--clrversion 1.22.333.4444]

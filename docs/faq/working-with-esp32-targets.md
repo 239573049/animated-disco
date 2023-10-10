@@ -1,49 +1,47 @@
-# Working with ESP32 targets
+# 使用ESP32目标进行工作
 
-## Is the ESP32 Dev Kit C the ONLY board version that will work with nanoFramework
+## ESP32 Dev Kit C是唯一与nanoFramework兼容的板版本吗？
 
-There are available several different versions including: ESP32-WROOM-32, ESP32-WROOM-32D, ESP32-WROOM-32U, ESP32-SOLO-1, ESP32-WROVER-B, ESP32-WROVER-IB, etc.
-The current ESP32 Dev Kit C image that we provide works on all ESP32 boards that use the ESP32-Wroom-32x or ESP32-WROVER modules. The SOLO modules have only one core which currently won't work as we start the nanoCLR on the 2nd core.
+当前我们提供的ESP32 Dev Kit C映像适用于所有使用ESP32-Wroom-32x或ESP32-WROVER模块的ESP32板，包括ESP32-WROOM-32、ESP32-WROOM-32D、ESP32-WROOM-32U、ESP32-SOLO-1、ESP32-WROVER-B、ESP32-WROVER-IB等。SOLO模块只有一个核心，目前无法工作，因为我们在第二个核心上启动nanoCLR。
 
-## Can I use Smart Config to configure my ESP32 devices
+## 我可以使用Smart Config配置我的ESP32设备吗？
 
-Yes you can! The Smart Config is automatically started when the device is booted and there is no wireless SSID set up. i.e. When the device is first flashed.
+是的，您可以！当设备首次启动且没有设置无线SSID时，Smart Config会自动启动，即当设备首次刷写时。
 
-To configure the device use one of the Smart Config apps on your phone such as :- the ESP8266 SmartConfig, DHC smartConfig apps on Android and EspressiF ESpTouch on IOS.
+要配置设备，请使用手机上的Smart Config应用程序之一，例如ESP8266 SmartConfig、Android上的DHC SmartConfig应用程序以及iOS上的EspressiF ESpTouch。
 
-Connect phone to Wifi to the Access point, run Smart Config application which will prompt you for the AP password.
-This will then send the details to the device. The device saves the details and connects to the AP point. When connected it confirms the connection back to the Phone.
+将手机连接到Wi-Fi访问点，运行Smart Config应用程序，该应用程序将提示您输入AP密码。然后将详细信息发送到设备。设备保存详细信息并连接到AP点。连接后，它会将连接状态确认回传给手机。
 
-When the device is next rebooted the device automatically connects to AP as the WiFi details have been saved.
+下次设备重新启动时，设备会自动连接到AP，因为Wi-Fi详细信息已保存。
 
-For more information see [here](https://www.switchdoc.com/2018/06/tutorial-esp32-bc24-provisioning-for-wifi).
+有关更多信息，请参阅[此处](https://www.switchdoc.com/2018/06/tutorial-esp32-bc24-provisioning-for-wifi)。
 
-In your application you can wait for the network to be configured/connected by waiting for the IP to be set.
+在您的应用程序中，您可以等待网络配置/连接，方法是等待IP设置。
 
 ```csharp
 static void WaitIP()
 {
-    Console.WriteLine("Wait for IP");
-        while (true)
+    Console.WriteLine("等待IP");
+    while (true)
+    {
+        NetworkInterface ni = NetworkInterface.GetAllNetworkInterfaces()[0];
+        if (ni.IPv4Address != null && ni.IPv4Address.Length > 0)
         {
-            NetworkInterface ni = NetworkInterface.GetAllNetworkInterfaces()[0];
-            if (ni.IPv4Address != null && ni.IPv4Address.Length > 0)
+            if (ni.IPv4Address[0] != '0')
             {
-                if (ni.IPv4Address[0] != '0')
-                {
-                    Console.WriteLine("Have IP " + ni.IPv4Address);
-                    break;
-                }
+                Console.WriteLine("获得IP " + ni.IPv4Address);
+                break;
             }
-            Thread.Sleep(1000);
         }
+        Thread.Sleep(1000);
+    }
 }
 ```
 
-## Can I debug nanoCLR code on ESP32 using Visual Studio without any special hardware
+## 我可以在Visual Studio上调试ESP32上的nanoCLR代码，无需特殊硬件吗？
 
-Yes you can! Follow the old-school steps described [here](../building/build-esp32.md#debugging-nanoclr-without-special-hardware).
+是的，您可以！按照[此处](../building/build-esp32.md#debugging-nanoclr-without-special-hardware)描述的老式步骤操作。
 
-## How do I decode a _Guru Meditation Error_ output?
+## 如何解码“Guru Meditation Error”输出？
 
-We have a VS Code Task to help on this. If you have installed the Tasks template we offer for VS Code, you'll find it under the name "Decode ESP32 back trace". Here's a [blog post](https://jsimoesblog.wordpress.com/2022/11/04/decoding-esp32-back-trace/) with the instructions on how to use it.
+我们在这方面提供了一个VS Code任务来帮助您。如果您已安装我们为VS Code提供的任务模板，您可以在名称为“Decode ESP32 back trace”的任务下找到它。以下是如何使用它的[博客文章](https://jsimoesblog.wordpress.com/2022/11/04/decoding-esp32-back-trace/)。

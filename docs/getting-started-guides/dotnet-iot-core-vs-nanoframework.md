@@ -1,45 +1,45 @@
-# Comparison between .NET **nanoFramework** and .NET IoT
+# .NET **nanoFramework** 与 .NET IoT 的比较
 
-This document compares .NET **nanoFramework** and .NET IoT platforms. For this documentation a same sample application with an identical scenario is created on both platforms.
+本文对比了.NET **nanoFramework** 和.NET IoT平台。为了进行此文档比较，在两个平台上创建了一个相同的样本应用程序，具有相同的场景。
 
-The sample application includes a scenario on both platforms: Every 3 seconds the application reads temperature value from BMP280 sensor and turns on LED after reading the value. Then this temperature value is pushed to IoT Hub with device name and after every successful push LED will blink and turn off. Data will be handled by IoT Hub message routing and will be pushed to blob storage to store.
+示例应用程序在两个平台上都包括以下场景：每3秒钟，应用程序从BMP280传感器读取温度值，然后在读取值后打开LED。然后将此温度值与设备名称一起推送到IoT Hub，每次成功推送后，LED将闪烁并关闭。数据将由IoT Hub消息路由处理，并被推送到Blob存储中进行存储。
 
 | .NET IoT               | .NET **nanoFramework** |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 | ![Raspberry Pi with .Net IoT](../../images/getting-started-guides/compare-RP-BMP280_bb.png) | ![M5Stack with .NET nanoFramework](../../images/getting-started-guides/compare-ESP32-BMP280_bb.png) |
-| [Raspberry Pi with .Net IoT sample project](https://github.com/dotnet/iot/tree/main/samples) | [M5Stack with .NET nanoFramework sample project](https://github.com/nanoframework/Samples/tree/main/samples/AzureSDK/AzureSDKSensorCertificate) |
+| [.NET IoT上的Raspberry Pi示例项目](https://github.com/dotnet/iot/tree/main/samples) | [.NET **nanoFramework**上的M5Stack示例项目](https://github.com/nanoframework/Samples/tree/main/samples/AzureSDK/AzureSDKSensorCertificate) |
 
-## Certificate
+## 证书
 
-Device certificates are used in these samples. Certificates provide handshake between your device and Azure IoT Hub, and samples explain how to use certificates on both .NET IoT and .NET **nanoFramework** platforms.
+这些示例使用设备证书。证书提供了您的设备与Azure IoT Hub之间的握手，示例解释了如何在.NET IoT和.NET **nanoFramework**平台上使用证书。
 
-If you don't have any certificate, you can learn how to create certificates following [Create test certificate using OpenSSL and Azure IoT Hub](https://github.com/nanoframework/Samples/blob/main/samples/AzureSDK/AzureSDKSensorCertificate/create-certificate.md) documentation.
+如果您没有任何证书，可以按照[使用OpenSSL和Azure IoT Hub创建测试证书](https://github.com/nanoframework/Samples/blob/main/samples/AzureSDK/AzureSDKSensorCertificate/create-certificate.md)文档中的说明来创建证书。
 
-You can check differences of using these certificates below.
+您可以查看以下使用这些证书的区别。
 
-## Quick Tips & Differences
+## 快速提示和区别
 
 | .NET IoT                                                | .NET **nanoFramework**                                           |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Works on powerful boards with memory and CPU                 | Works on low-level microcontroller devices with low memory   |
-| Due to device specs it can benefit from all .NET core libraries | Uses specific .NET libraries for **nanoFramework** due to performance on low-level devices |
-| You can add your packages via NuGet manager                  | You can add your packages via NuGet manager                  |
-| You only need to add `Iot.Device.Bindings` and `System.Device.Gpio` packages for new sensors | You need to add **nanoFramework** specific packages separately for each sensor |
-| You need to setup your deployment and remote debugging manually | Built-in deployment and rich remote debugging experience as Default |
-| Deploy the code via SSH connection                           | Deploy the code directly via wired connection                |
-| It can use WiFi of Raspberry Pi OS                           | You need to connect your device to WiFi through your code                   |
-| You can use `pfx` certificates in your code                  | You can use `PEM`, `crt` and `der` certificates in your code |
+| 适用于具有内存和CPU的强大板 | 适用于具有低内存的低级微控制器设备   |
+| 由于设备规格，可以从所有.NET核心库中受益 | 由于在低级设备上的性能问题，使用特定的.NET库  |
+| 您可以通过NuGet管理器添加您的软件包 | 您可以通过NuGet管理器添加您的软件包 |
+| 对于新的传感器，只需要添加`Iot.Device.Bindings`和`System.Device.Gpio`软件包 | 您需要分别为每个传感器添加.NET **nanoFramework**特定的软件包 |
+| 您需要手动设置部署和远程调试 | 默认情况下内置部署和丰富的远程调试体验 |
+| 通过SSH连接部署代码 | 直接通过有线连接部署代码 |
+| 它可以使用Raspberry Pi OS的WiFi | 您需要通过您的代码将设备连接到WiFi |
+| 您可以在您的代码中使用`pfx`证书 | 您可以在您的代码中使用`PEM`、`crt`和`der`证书 |
 
-## Code Comparison
+## 代码比较
 
-With this comparison we use exactly the same scenario for .NET IoT and .NET **nanoFramework** platforms. We're controlling BMP280 temperature & pressure sensor and LED via GPIO pins, connecting to Wi-Fi and accessing Azure IoT Hub via client specific Azure SDKs. We're using certificates to identify devices on Azure IoT Hub and grant access based on certificates.
+通过这个比较，我们在.NET IoT和.NET **nanoFramework**平台上使用完全相同的场景。我们通过GPIO引脚控制BMP280温度和压力传感器以及LED，连接到Wi-Fi并通过客户端特定的Azure SDK访问Azure IoT Hub。我们使用证书来标识Azure IoT Hub上的设备，并基于证书授予访问权限。
 
-Code may change due to access some platform specific resources and SDKs, but majority of the code lines are identically same in these samples. Let's compare what are the differences on these platforms.
+由于访问某些特定于平台的资源和SDK，代码可能会发生变化，但在这些示例中，大部分代码行都是相同的。让我们比较一下这些平台的区别。
 
-![Compare .NET IoT vs .NET nanoFramework](../../images/getting-started-guides/compare-dotnet-iot-and-nanoframework-code.jpeg)
+![比较.NET IoT与.NET **nanoFramework**](../../images/getting-started-guides/compare-dotnet-iot-and-nanoframework-code.jpeg)
 
-## Conclusion
+## 结论
 
-Both .NET IoT and .NET **nanoFramework** are very powerful platforms and enable the writing of managed code applications using C# on different boards. Both platforms provide maximum code reusability, there are only small nuances which are due to platform/board specific differences.
+.NET IoT和.NET **nanoFramework**都是非常强大的平台，可以在不同的板上使用C#编写托管代码应用程序。两个平台都提供了最大的代码可重用性，只有一些小差异，这些差异是由于平台/板特定的差异引起的。
 
-Both of them provide access to GPIO pins, pin numbers may change based on device manufacturer.
+它们都提供对GPIO引脚的访问，但根据设备制造商的不同，引脚编号可能会有所变化。

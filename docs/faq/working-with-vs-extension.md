@@ -1,58 +1,63 @@
-# Working with Visual Studio extension
+# 使用Visual Studio扩展
 
-## I have a Solution with several class library projects that are referenced in the application project. After a few debug sessions VS complains that it can't access one of them because the file is locked by another process
+## 我有一个包含多个类库项目的解决方案，这些项目在应用程序项目中被引用。经过几次调试会话后，VS会投诉无法访问其中一个项目，因为另一个进程锁定了该文件
 
-This occurs because the debugger or de deployment provider have locked that DLL on a previous debug session.
-To prevent this from happening, you have to open the "Configuration Manager" dialog for the Solution and un-check the "Deploy" option for all projects _except_ the executable.
-To remove the lock on that file open a PowerShell console and execute the following command, being NNNN the process number that shows at the very end of the VS message:
-`Stop-Process -id NNNNN`.
+这是因为调试器或部署提供程序在以前的调试会话中锁定了该DLL。
+要防止这种情况发生，您需要打开解决方案的 "配置管理器" 对话框，并取消选中所有项目的 "部署" 选项，**除了**可执行文件。
+要删除该文件上的锁定，请打开PowerShell控制台并执行以下命令，其中NNNNN是VS消息末尾显示的进程号：
+```powershell
+Stop-Process -id NNNNN
+```
 
-## When opening a Solution, Visual Studio complains about missing references and I see a bunch of red squiggles and there is no Intellisense
+## 打开解决方案时，Visual Studio抱怨缺少引用，我看到了大量的红色波浪线，而且没有智能感知
 
-This can happen because Visual Studio is having issues resolving types from one or more referenced assemblies.
-Start by restoring the NuGet packages by right clicking on the Solution (in Solution Explorer). Then rebuild.
-If that doesn't work, you can try clean the solution and then close and open the Solution again.
-In case that still doesn't work: close the solution and manually delete the `bin`, `obj` and `.vs` folders. Then open it again, restore the NuGet packages and rebuild. That should take care of it.
+这可能是因为Visual Studio在解析一个或多个引用的程序集类型时出现了问题。
+首先，通过右键单击解决方案（在“解决方案资源管理器”中）来还原NuGet包。然后重新构建。
+如果这不起作用，您可以尝试清理解决方案，然后关闭并重新打开解决方案。
+如果仍然不起作用：关闭解决方案，手动删除`bin`、`obj`和`.vs`文件夹。然后再次打开它，还原NuGet包并重新构建。这应该解决问题。
 
-## When I build a project/solutions it fails with an error `NFMDP: Error 0x81010009`. What is this
+## 构建项目/解决方案时出现错误，错误消息为 `NFMDP: Error 0x81010009`。这是什么错误？
 
-This happens when you are using a C# feature that is not currently supported by nanoFramework. The most common cases are generics or a complicated Linq expression.
-There is currently no way to point you exactly where the issue is. The best suggestion is to build often so you can spot this as early as possible. It can also help if you comment the code that you've added recently and start uncomment as you run the build. This way you'll have a general guidance on where the root cause could be.
+当您使用.NET nanoFramework不支持的C#功能时，就会发生这种情况。最常见的情况是泛型或复杂的Linq表达式。
+目前无法准确指出问题出在哪里。最好的建议是经常构建，以便尽早发现此问题。如果可能的话，还可以尝试注释最近添加的代码，然后在构建时逐步取消注释。这样您将对问题的根本原因有一个大致了解。
 
-## When deploying an application I get a message like `Couldn't find a valid native assembly required by...` complaining that it can't find a native assembly. What can I do to fix this
+## 部署应用程序时，我收到消息，如 `找不到所需的本机程序集...`，投诉找不到本机程序集。我该怎么办来修复这个问题？
 
-This occurs when you are deploying a project that is referencing one (or more) libraries for which the target image doesn't have support or are of a different version.
-Make sure you have your NuGet updated and that the target device is flashed with the appropriate image.
-It could be that you are referencing preview versions of the NuGet packages but the target device is flashed with an older stable image and is "behind".
-For a detailed explanation please check [this blog post](https://www.nanoframework.net/nuget-assembly-and-native-versions/) with the details.
+这发生在您部署一个引用了一个或多个库的项目，而目标映像不支持这些库或版本不同的情况下。
+确保您的NuGet包已更新，并且目标设备已刷上适当的映像。
+可能是您正在引用NuGet包的预览版本，但目标设备刷有较旧的稳定映像并且"过时"。
+有关详细解释，请参阅[这篇博客文章](https://www.nanoframework.net/nuget-assembly-and-native-versions/)中的详细信息。
 
-## I'm having issues with NuGet package manager complaining that it can't resolve dependencies for a package
+## 我在使用NuGet包管理器时遇到了无法解析依赖项的投诉
 
-This is occurring because you're probably referencing a preview version of a NuGet package that is published only on .NET **nanoFramework** development feed. The same can occur if the package is referencing another package that its only available there.
-When working with preview packages, make sure that you register nanoFramework Azure DevOps NuGet feed by adding the package source in Visual Studio. Follow our blog post with instructions [here](https://nanoframework.net/setup-visual-studio-to-access-preview-versions-feed/).
+这是因为您可能正在引用一个只在.NET **nanoFramework**开发源中发布的预览版本NuGet包。如果该包引用了另一个只在那里可用的包，也会出现此问题。
+在使用预览包时，请确保在Visual Studio中注册.NET nanoFramework Azure DevOps NuGet源，添加包源。按照我们的博客文章中的说明进行操作[点击这里](https://nanoframework.net/setup-visual-studio-to-access-preview-versions-feed/)。
 
-## After starting a debug session it end abruptly with a message like `Error: Device stopped after type resolution failure`. What can I do to fix this
+## 启动调试会话后，会突然出现消息，如 `错误：设备在类型解析失败后停止`。我该怎么办来修复这个问题？
 
-This happens when there is a problem with type resolution on the deployed application. Usually happens after one of these situations:
+当部署应用程序的类型解析出现问题时会发生这种情况。通常发生在以下情况下：
 
-- The firmware image was updated and the deployment wasn't erased. The assemblies in the deployment area are outdated and the required types or versions can't be found on the new image. Fix: erase de deployment area and deploy a new version of the application.
-- One or more NuGet packages where updated and there is a version mismatch between them. This is noticeable by Visual Studio adding an `app.config` file to one or more of the projects to use assembly binding redirect. This is not possible with .NET **nanoFramework**. Fix: erase the `app.config` and work the update of the NuGet packages. The best option is usually to update the one(s) that have more dependencies and the package manager will make sure to update all the other in a cascading manner. If this doesn't work the alternative is to uninstall the NuGet packages and start adding them back again.
+- 固件映像已更新，但未删除部署。部署区域中的程序集已过时，新映像上找不到所需的类型或版本。修复方法：删除部署区域并部署新版本的应用程序。
+- 一个或多个NuGet包已更新，并且它们之间存在版本不匹配。这通常通过Visual Studio添加一个`app.config`文件来表示，以使用程序集绑定重定向。但这在.NET **nanoFramework**中是不可能的。修复方法：删除`app.config`并处理NuGet包的更新。通常最佳选择是更新具有更多依赖项的包，包管理器会确保以级联方式更新所有其他包。如果这不起作用，另一种选择是卸载NuGet包，然后重新添加它们。
 
-## I need to revert the VS extension I have installed to an older version. How can I do that?
+## 我需要将已安装的VS扩展还原到较旧的版本。我该怎么做？
 
-You can do that following these steps:
+您可以按照以下步骤进行操作：
 
-1. Uninstall the current version from the "Manage Extension" window in Visual Studio.
-1. Go to the [Releases](https://github.com/nanoframework/nf-Visual-Studio-extension/releases) section in the Visual Studio extension repository.
-1. Find the version that you're looking for and expand the 'Assets' listed in the release entry.
-1. Download the '.vsix' package and start the install.
+1. 在Visual Studio的 "管理扩展" 窗口中卸载当前版本。
+1. 转到Visual Studio扩展存储库的[发布页面](https://github.com/nanoframework/nf-Visual-Studio-extension/releases)。
+1. 找到您要查找的版本，展开发布条目中列出的 'Assets'。
+1. 下载 '.vsix' 包并开始安装。
 
-## I'm having issues installing the Visual Studio extension
+## 我在安装Visual Studio扩展时遇到了问题
 
-- Our extension is maintained and kept up to date with the current version of VS2022 and VS2019. Generally only the latest version of Visual Studio is guaranteed to be supported. If you experience difficulties installing the extension, check that you are running the latest VS.NET version. If you need an older version for a specific VS version, you can download it from the [GitHub repository](https://github.com/nanoframework/nf-Visual-Studio-extension/releases).
+- 我们的扩展会保持维护，并与当前版本的VS2022和VS2019保持兼容。通常只有最新版本的Visual Studio才能得到支持的保证。如果您在安装扩展时遇到困难，请检查您是否运行的是最新的VS.NET版本。如果您需要为特定的VS版本获取旧版本，请从[
 
-## I want to exclude certain COM ports from being scanned by Device Explorer
+GitHub存储库](https://github.com/nanoframework/nf-Visual-Studio-extension/releases)中下载它。
 
-1. Open the Settings dialog in Device Explorer (cog wheel icon).
-1. Go to General tab.
-1. Add to 'COM port exclusion list' the COM port(s) to exclude, separated by a semi-column, no spaces.
+
+## 我想排除某些COM端口，不让Device Explorer扫描它们
+
+1. 在Device Explorer中打开设置对话框（齿轮图标）。
+1. 转到“常规”选项卡。
+1. 在“COM端口排除列表”中添加要排除的COM端口，用分号分隔，不要有空格。

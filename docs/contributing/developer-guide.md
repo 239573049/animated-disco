@@ -1,28 +1,28 @@
-# Developer Guidelines
+# 开发者指南
 
-We're working on it! Stay tuned! Raise PR and that will help us finding good recommendations.
+我们正在进行中！请保持关注！提交PR将有助于我们找到良好的建议。
 
-Until then, here follows some unsorted tips.
-These are not a full reference, but they give some clues on where to look next.
+在此之前，以下是一些未排序的提示。
+这些不是完整的参考，但它们提供了一些线索，指导你下一步该去哪里。
 
-## Quick note about compatibility between managed and native parts
+## 关于托管和本机部分之间的兼容性的快速说明
 
-There is an interface mechanism between the managed libraries and the firmware. This interface is structured around the methods decorated with the `MethodImpl(MethodImplOptions.InternalCall)` attribute. During the build of a managed library a checksum value generated taking into account the methods name, parameters and return types. That checksum, is used to characterize the library interface and it's stored in stub files.
-Changes can happen at both ends without any compatibility issues, as long as the interface does change.
+托管库和固件之间存在一个接口机制。这个接口是围绕着用 `MethodImpl(MethodImplOptions.InternalCall)` 属性装饰的方法构建的。在构建托管库时，会生成一个考虑方法名称、参数和返回类型的校验和值。这个校验和值用于描述库接口，并存储在存根文件中。
+只要接口没有更改，双方都可以发生变化而不会出现兼容性问题。
 
-More details about checksum value can be found in [NativeMethodsChecksum](../architecture/pe-file/AssemblyHeader.md#nativemethodschecksum) `AssemblyHeader` field description.
+有关校验和值的更多详细信息，请参阅[NativeMethodsChecksum](../architecture/pe-file/AssemblyHeader.md#nativemethodschecksum) `AssemblyHeader` 字段的描述。
 
-More details about whole versioning can be found in [NuGet, assembly and native versions](https://www.nanoframework.net/nuget-assembly-and-native-versions/) blog post.
+有关整体版本控制的更多详细信息，请参阅[NuGet、程序集和本机版本](https://www.nanoframework.net/nuget-assembly-and-native-versions/)博客文章。
 
-## How to call native code from managed code
+## 如何从托管代码调用本机代码
 
-Assuming you want to call from nanoframework's mscorlib (source can be found in CoreLibrary repository) C# code (e.g. System.Number class) some implementation you would like to place in it's nanoCLR (source in nf-interpreter repository) C++ code. Follow steps below:
+假设你想要从NanoFramework的mscorlib（源代码可以在CoreLibrary存储库中找到）的C#代码（例如System.Number类）调用一些你想放在其nanoCLR（源代码在nf-interpreter存储库中）的C++代码中的实现。请按照以下步骤操作：
 
-1. Build the nf-CoreLibrary solution without making any changes.
-1. Copy these folders somewhere for later use:
-   - ```nanoFramework.CoreLibrary\bin\Debug\Stubs```
-   - ```nanoFramework.CoreLibrary.NoReflection\bin\Debug\Stubs```
-1. Declare your C++ function in your C# class:
+1. 构建nf-CoreLibrary解决方案，不做任何更改。
+2. 复制以下文件夹以备将来使用：
+   - `nanoFramework.CoreLibrary\bin\Debug\Stubs`
+   - `nanoFramework.CoreLibrary.NoReflection\bin\Debug\Stubs`
+3. 在你的C#类中声明你的C++函数：
 
    ```csharp
    [MethodImpl(MethodImplOptions.InternalCall)]
@@ -36,138 +36,139 @@ Assuming you want to call from nanoframework's mscorlib (source can be found in 
       int[] numberGroupSizes);
    ```
 
-1. Add code which calls the function above as you wish.
-1. If you change the assembly signature (via adding or modifying an ```extern``` function) you should bump the assembly version in the ```AssemblyInfo.cs``` file:
+4. 添加调用上面函数的代码，根据你的需要。
+5. 如果你更改了程序集签名（通过添加或修改 `extern` 函数），你应该在 `AssemblyInfo.cs` 文件中增加程序集版本：
 
    ```csharp
    [assembly: AssemblyNativeVersion("100.5.0.5")]
    ```
 
-1. Build the solution.
-1. Compare the ```nanoFramework.CoreLibrary\bin\Debug\Stubs``` folder's actual state with the saved one. The files which should have changed:
-   - ```corlib_native.cpp```
-   - ```corlib_native.h```
-   - your class's C++ counterpart, ```corlib_native_System_Number.cpp``` in the example
+6. 构建解决方案。
+7. 比较 `nanoFramework.CoreLibrary\bin\Debug\Stubs` 文件夹的实际状态与保存的状态。应该更改的文件包括：
+   - `corlib_native.cpp`
+   - `corlib_native.h`
+   - 你的类的C++对应项，例如在示例中的 `corlib_native_System_Number.cpp`
 
-   Do the same with ```nanoFramework.CoreLibrary.NoReflection\bin\Debug\Stubs``` too.
-1. Apply the changes you found to the same files under ```nf-interpreter/src/CLR/CorLib```.
+   还要在 `nanoFramework.CoreLibrary.NoReflection\bin\Debug\Stubs` 下执行相同的操作。
+8. 将你发现的更改应用到 `nf-interpreter/src/CLR/CorLib` 下的相同文件中。
 
-   **DO NOT** overwrite the files there! The files under nf-interpreter may have additional declarations, etc.
-   Open the file and look for ```#if (NANOCLR_REFLECTION ==``` lines. There could be more of them.
-   Copy over the diff meaningfully:
-   - changes from the ```nanoFramework.CoreLibrary\bin\Debug\Stubs``` are going inside the ```NANOCLR_REFLECTION == TRUE``` blocks
-   - changes from the ```nanoFramework.CoreLibrary.NoReflection\bin\Debug\Stubs``` are going inside the ```NANOCLR_REFLECTION == FALSE``` blocks.
-1. You will find that a stub for the function you declared above will be generated with this signature:
+   请不要覆盖那里的文件！nf-interpreter下的文件可能包含额外的声明等。
+   打开文件，查找 `#if (NANOCLR_REFLECTION ==` 行。可能会有更多这样的行。
+   有意义地复制差异：
+   - 来自 `nanoFramework.CoreLibrary\bin\Debug\Stubs` 的更改将进入 `NANOCLR_REFLECTION == TRUE` 块
+   - 来自 `nanoFramework.CoreLibrary.NoReflection\bin\Debug\Stubs` 的更改将进入 `NANOCLR_REFLECTION == FALSE` 块。
+9. 你将发现一个用以下签名生成的函数存根：
 
    ```cpp
    HRESULT Library_corlib_native_System_Number::
        FormatNative___STATIC__STRING__OBJECT__BOOLEAN__STRING__STRING__STRING__STRING__SZARRAY_I4(CLR_RT_StackFrame &stack)
    ```
 
-1. Now you can implement your function.
+10. 现在你可以实现你的函数。
 
-## How to handle the C++ parameter values received from a C# call
+## 如何处理从C#调用收到的C++参数值
 
-Lets see the example method discussed in the (#How-to-call-native-code-from-managed-code) tip. The generated (by lib-CoreLibrary solution build, where you declared your needs as an ```extern``` function) C++ stub will have a ```CLR_RT_StackFrame &stack``` parameter.
-The values can be accessed as follows:
+让我们看一下在(#How-to-call-native-code-from-managed-code)提示中讨论的示例方法。由lib-CoreLibrary解决方案构建生成的C++存根将具有 `CLR_RT_StackFrame &stack` 参数。
+可以按以下方式访问这些值：
 
-### ```object value```
+### `object value`
 
 ```cpp
-// get ref to value container
+// 获取值容器的引用
 CLR_RT_HeapBlock *value;
 value = &(stack.Arg0());
 
-// perform unboxing operation if necessary
+// 如果需要，执行拆箱操作
 CLR_RT_TypeDescriptor desc;
 NANOCLR_CHECK_HRESULT(desc.InitializeFromObject(*value));
 NANOCLR_CHECK_HRESULT(value->PerformUnboxing(desc.m_handlerCls));
 
-// get the CLR_DataType of the value in container, like DATATYPE_U1 for a Byte or DATATYPE_R8 for Double
+// 获取值容器中值的CLR_DataType，比如对于Byte，它是DATATYPE_U1，对于Double，它是DATATYPE_R8
 CLR_DataType dataType = value->DataType();
 
-// retrieving the real value depends on dataType above
+// 根据上面的dataType，获取实际值
 int32_t int32Value = value->NumericByRef().s4;
 ```
 
-### ```bool isInteger```
+### `bool isInteger`
 
 ```cpp
-// get value
+// 获取值
 bool isInteger;
 isInteger = (bool)stack.Arg1().NumericByRef().u1;
 ```
 
-### ```String format```
+### `String format`
 
 ```cpp
-// get value
+// 获取值
 char *format;
 format = (char *)stack.Arg2().RecoverString();
 ```
 
-### ```int[] numberGroupSizes```
+### `int[] numberGroupSizes`
 
 ```cpp
-// get ref to value container
+// 获取值容器的引用
 CLR_RT_HeapBlock_Array *numberGroupSizes;
 numberGroupSizes = stack.Arg6().DereferenceArray();
 
-// get number of elements
+// 获取元素的数量
 CLR_UINT32 numOfElements = numberGroupSizes->m_numOfElements;
 
-// get the 5th element
-// cast necessary, because GetElement declared as CLR_INT8*, 
-// but the C# code call placed items of Int32 type into array.
-int the5thEelement = *((CLR_INT32 *)numberGroupSizes->GetElement(5));
+// 获取第五个元素
+// 需要进行强制转换，因为GetElement声明为CLR_INT8*，
+// 但C#代码调用将Int32类型的项目放入数组中。
+int the5thElement = *((CLR_INT32 *)numberGroupSizes->GetElement(5));
 ```
 
-## Returning from C++ function for C# code
+## 从C++函数返回给C#代码
 
-Values should be returned via the ```CLR_RT_StackFrame &stack``` parameter.
+应该通过 `CLR_RT_StackFrame &stack` 参数返回值。
 
-### String
+### 字符串
 
 ```cpp
 char * ret;
-// ... assign value to ret ...
+// ... 分配
 
-// use helper methods to set return value
+值给ret ...
+
+// 使用辅助方法设置返回值
 NANOCLR_SET_AND_LEAVE(stack.SetResult_String(ret));
 ```
 
-## Returning with an Exception
+## 带有异常返回
 
 ```cpp
-// see other CLR_E_* defined values
+// 查看其他CLR_E_*定义的值
 NANOCLR_SET_AND_LEAVE(CLR_E_FAIL);
 ```
 
-Not sure on the differences, but there is a ```NotImplementedStub``` helper on ```CLR_RT_StackFrame &stack``` parameter may be used too:
+不确定差异，但是 `CLR_RT_StackFrame &stack` 参数上可能还有一个 `NotImplementedStub` 辅助方法，也可以使用：
 
 ```cpp
 NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
 ```
 
-## Example managed-native development cycle
+## 示例托管-本机开发周期
 
-The managed-native border crossing development cycle could have significant time penalty.
-Without any shortcuts the required steps are:
+托管-本机边界跨越开发周期可能会带来显着的时间成本。
+没有任何快捷方式，所需的步骤包括：
 
-1. The native code changes should be compiled
-2. The native code changes should be downloaded to the device
-3. The managed code should be compiled
-4. The managed code should be downloaded to the device
-5. The code should be executed.
+1. 编译本机代码更改。
+2. 将本机代码更改下载到设备上。
+3. 编译托管代码。
+4. 将托管代码下载到设备上。
+5. 执行代码。
 
-So two builds, two downloads required and two development environments involved.
+因此，需要两次构建，两次下载，并涉及两个开发环境。
 
-Below you can find a suggestion which can be used in cases when the physical device's capabilities (lik GPIO ports, etc.) not affected by the development, only it's execution of the nanoCLR (like the number ToString() implementation) required.
-It saved me a lot of time.
+下面是一个建议，可在不影响物理设备功能（如GPIO端口等）的情况下使用，仅需要执行nanoCLR的设备，例如实现数字ToString()功能。这可以节省大量时间。
 
-1. Write you managed code which requires native code support (see (#How-to-call-native-code-from-managed-code)) but DO NOT declare native part as an ```extern``` method. Just declare it as a "normal" private method. Add some simple implementation what supports the actual development state of your managed code, like return a constant what the currently implemented managed feature would expect from native call. Finish your managed coding agains this stub. You can either write tests for your code too because you have an "emulated" native behaviour. No need to leave the managed code development environment meanwhile.
-2. Replace the stub with the correct ```extern``` declaration. Rebuild solution to get the appropriate corlib changes as described in (#How-to-call-native-code-from-managed-code).
-3. Switch to native code development environment.
-4. Add minimal implementation to the ```extern``` counterpart C++ function: just extract parameters from their CLR form to C++ form (see (#How to handle in C++ parameter values received from C# call)). The goal is: convert the managed-call-specific things into native C++. Forward call with the extracted parameters to a private func with same logical signature. Now you have a "clean" C++ function without any CLR specific parameter handling logic.
-5. [Debug once](../building/build-esp32.md#debugging-nanoclr-without-special-hardware). Check that your "clean" C++ func receives all the parameters appropriatelly from managed call.
-6. Implement the body of "clean" C++ function. At this moment you are not depending on managed call so you can write anywhere and with any development method, using tests to call your function without any need to setup extensive CLR objects just to test the code you are just developing. E.g. you can write and debug your code on <https://www.onlinegdb.com/>.
+1. 编写需要本机代码支持的托管代码（请参阅#如何从托管代码调用本机代码）但是不要将本机部分声明为 `extern` 方法。只需将其声明为“正常”的私有方法。添加一些简单的实现，支持你的托管代码的当前开发状态，例如从本机调用预期从本机调用中获得的常量。根据这个存根完成你的托管编码。你还可以为你的代码编写测试，因为你有一个“模拟”的本机行为。无需离开托管代码开发环境。
+2. 将存根替换为正确的 `extern` 声明。重新构建解决方案以获取如#如何从托管代码调用本机代码中描述的适当的 corlib 更改。
+3. 切换到本机代码开发环境。
+4. 为 `extern` 对应的C++函数添加最小的实现：只需从它们的CLR形式提取参数到C++形式（请参阅#如何处理从C#调用收到的C++参数值）。目标是：将托管调用特定的东西转换成纯粹的本机C++。使用从提取的参数将调用转发到具有相同逻辑签名的私有函数。现在你有一个没有任何CLR特定参数处理逻辑的“干净”的C++函数。
+5. [调试一次](../building/build-esp32.md#debugging-nanoclr-without-special-hardware)。检查你的“干净”C++函数是否从托管调用中适当地接收到所有参数。
+6. 实现“干净”C++函数的主体。此时，你不依赖于托管调用，因此可以随时以任何开发方法在任何地方编写和调试你的代码，使用测试调用你的函数，无需设置大量的CLR对象来测试你正在开发的代码。例如，你可以在<https://www.onlinegdb.com/>上编写和调试你的代码。

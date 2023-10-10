@@ -1,30 +1,27 @@
-# C/C++ Coding Style
+# C/C++编码风格
 
-For C/C++ files (*.c,*.cpp and *.h), we use clang-format (version 3.10) to ensure code styling.
-The rules and config files are included in the nf-interpreter repository.
+对于C/C++文件（*.c，*.cpp和*.h），我们使用clang-format（版本3.10）来确保代码风格的一致性。规则和配置文件已包含在nf-interpreter存储库中。
 
-## Using Visual Studio Code
+## 在使用Visual Studio Code时
 
-If you are using Visual Studio Code we suggest that you install the [Clang-Format extension](https://marketplace.visualstudio.com/items?itemName=xaver.clang-format).
-To have this extension working you need to have the clang-format.exe installed on your system.
+如果您使用Visual Studio Code，建议您安装[Clang-Format扩展](https://marketplace.visualstudio.com/items?itemName=xaver.clang-format)。要使此扩展正常工作，您需要在系统上安装clang-format.exe。
 
-LLVM.org doesn't provide a separate installer for this tool so follows a quick and dirty way of getting it.
+LLVM.org没有为此工具提供单独的安装程序，因此以下是获取它的一种快速而简便的方法。
 
-1. Install the Clang-Format extension.
-1. Install the LLVM package from [here](https://github.com/llvm/llvm-project/releases/).
-1. Take note of the path where you choose to install it.
-1. Back in VS Code, open the settings and adjust the entry for `clang-format.executable` with the path to the executable. The new setting file will have a new entry with something similar to the following:
+1. 安装Clang-Format扩展。
+2. 从[这里](https://github.com/llvm/llvm-project/releases/)安装LLVM包。
+3. 记下您选择安装的路径。
+4. 在Visual Studio Code中，打开设置并调整`clang-format.executable`的条目，将其设置为可执行文件的路径。新的设置文件将包含以下类似的条目：
 
 ```json
-"clang-format.executable" : "C:/Program Files/LLVM/bin/clang-format.exe"
+"clang-format.executable": "C:/Program Files/LLVM/bin/clang-format.exe"
 ```
 
-You might have something slightly different in your setup.
-Just remember the following: add that setting, the path that you've copied before, change it to have forward slashes and add the **clang-format.exe** at the end.
+您的设置可能会稍有不同。只需记住以下内容：添加此设置，将之前复制的路径添加到其中，将其改为正斜杠并在末尾添加**clang-format.exe**。
 
-After following the above steps successfully you can now right click on any C, C++ or H file and hit 'Format Document'. The VS Code extension will take care that the document is properly formatted according to the coding style guidelines.
+成功执行以上步骤后，您现在可以右键单击任何C、C++或H文件，然后点击'格式化文档'。VS Code扩展将确保根据编码风格指南正确格式化文档。
 
-When you have the extension installed, you can request VS Code to automatically format a file on save by adding the following to your vscode settings.json file:
+安装该扩展后，您可以通过将以下内容添加到您的vscode settings.json文件中，要求VS Code在保存文件时自动格式化：
 
 ```json
 {
@@ -32,22 +29,22 @@ When you have the extension installed, you can request VS Code to automatically 
 }
 ```
 
->**WARNING**: you'll need to avoid automatic formating on 3rd party files (both .h and .c and .cpp) as the formatting can introduce many changes that add no value and make it very difficult to subsequintly compare the file with the orginal or with a template file when the external 3rd party software is updated.
+> **警告**：您需要避免在第三方文件（.h和.c和.cpp）上进行自动格式化，因为格式化可能会引入许多无价值的更改，并且在稍后与原始文件或模板文件进行比较时会变得非常困难，特别是当外部第三方软件更新时。
 
-You can turn clang auto format 'off' and 'on' around code you don't what reformatted.
+您可以在不希望重新格式化的代码周围关闭和打开clang自动格式化。
 
-Typically at the top of the file below the Copright notice turn off clang-formating with:
+通常，在版权声明下方的文件顶部，使用以下方式关闭clang格式化：
 
 ```c
 // clang-format off
 ```
 
-and  at the end of the file remember to turn it back on with:
+在文件末尾，请不要忘记重新打开它：
 
 ```c
 // clang-format on
 ```
 
-## Using Visual Studio
+## 在使用Visual Studio时
 
-If you are using Visual Studio we suggest that you install the [ClangFormat extension](https://marketplace.visualstudio.com/items?itemName=LLVMExtensions.ClangFormat).
+如果您使用Visual Studio，建议您安装[ClangFormat扩展](https://marketplace.visualstudio.com/items?itemName=LLVMExtensions.ClangFormat)。

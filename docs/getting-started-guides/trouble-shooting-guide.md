@@ -1,45 +1,45 @@
-# Getting Started Trouble Shooting Guide
+# 开始故障排除指南
 
-Here are solutions to some common problems when getting started.
+以下是解决一些常见问题的方法，以便在开始时能够顺利进行。
 
-## No devices appear in **Device Explorer** in Visual Studio (View/Other Windows/Device Explorer)
+## 在 Visual Studio 中的 **设备资源管理器** 中没有显示任何设备（查看/其他窗口/设备资源管理器）
 
-- The **Visual Studio nanoFramework Extension** communicates to the device using serial/COM ports.  The extension must first detect that the COM port is active, and then ping the port for a response to a specific query.  The device drivers for serial ports come in many flavours and versions, and are probably the #1 problem with detecting and communicating with a device.  Install the latest drivers for the USB chipset used by your board.  Check the version using Windows Device Manager.  
-- Sometimes unplugging and replugging the USB port will "wake up" a serial device driver
-- Try pressing the RESET button on your device to reboot it
-- Reflash your device to make sure it has nanoFramework installed
-- On the **Device Explorer** enable the **Show Internal Errors** button ![Show Internal Errors](../../images/getting-started-guides/show-internal-errors.png). Check for messages in the Visual Studio Output Window and select **.Net nanoFramework Extension** in the `Show output from:` dropdown. <BR/>![nanoFramework Extension Output Window](../../images/getting-started-guides/nf-extension-output-window.png)
-- Toggle the **Disable Device Watchers** button ![Disable Device Watchers](../../images/getting-started-guides/disable-device-watchers.png) on the **Device Explorer** ON then back OFF.  This will cause the extension to rescan all of the COM ports.
-- Try a different USB cable, or test cable on a known good device.  Sometimes it is difficult to tell if a cable was only intended to be used for charging and does not carry the signal wires.  Cables over 2M/6FT are to be suspected since those are often power only cables.
-- Some STM32 devices need to use two USB cables - one for power and one for serial/COM. See [Getting Started Guide for managed code (C#)](../getting-started-guides/getting-started-managed.md).
+- **Visual Studio nanoFramework 扩展** 通过串行/COM端口与设备通信。首先，扩展必须检测到COM端口处于活动状态，然后对该端口发出特定查询的响应进行PING。串行端口的设备驱动程序有各种不同的类型和版本，通常是检测和与设备通信的最大问题。安装您的开发板使用的USB芯片组的最新驱动程序。使用Windows设备管理器检查驱动程序的版本。
+- 有时，拔出并重新插入USB端口会“唤醒”串行设备驱动程序。
+- 尝试按下设备上的RESET按钮以重新启动它。
+- 刷新您的设备以确保安装了nanoFramework。
+- 在 **设备资源管理器** 中启用 **显示内部错误** 按钮 ![显示内部错误](../../images/getting-started-guides/show-internal-errors.png)。在Visual Studio的输出窗口中检查消息，并在 `显示来自:` 下拉菜单中选择 **.Net nanoFramework 扩展**。
+- 切换 **禁用设备监视器** 按钮 ![禁用设备监视器](../../images/getting-started-guides/disable-device-watchers.png) 在 **设备资源管理器** 上，然后再次切换为OFF。这将导致扩展重新扫描所有COM端口。
+- 尝试不同的USB电缆，或在已知正常设备上测试电缆。有时很难确定电缆是否仅用于充电而不携带信号线。长度超过2米/6英尺的电缆可能存在此问题，因为这些通常是仅用于供电的电缆。
+- 一些STM32设备需要使用两根USB电缆 - 一根用于供电，另一根用于串行/COM通信。请参阅[托管代码（C#）入门指南](../getting-started-guides/getting-started-managed.md)。
 
-## When you attempt to debug you get a deployment error and you see a message "Couldn't find a valid assembly required by mscorlib..." in the Output Window/.NET nanoFramework Extension
+## 尝试调试时出现部署错误，输出窗口/.NET nanoFramework 扩展中出现 "找不到 mscorlib 需要的有效程序集..." 的消息
 
-- An example of the error when the problem is version number.  This was done by back-levelling the CoreLibrary to 1.10.4-preview.11 which was for the previous checksum. In this case the checksum was not checked - since the required native assembly version did not match the deploy failed prior to checking the checksum:
+- 当问题是版本号时，这是错误的示例。这是通过将CoreLibrary回退到1.10.4-preview.11来完成的，该版本是为以前的校验和准备的。在这种情况下，由于所需的本机程序集版本不匹配，未检查校验和而导致部署失败：
 
->![mscorlib version mismatch](../../images/getting-started-guides/mscorlib-version-mismatch.png)
+> ![mscorlib版本不匹配](../../images/getting-started-guides/mscorlib-version-mismatch.png)
 
-- The C# and native C++ assemblies are not version aligned.
-- The C# version is determined by NuGet and the version of the component you selected. nanoFramework.CoreLibrary is the most common problem seen since it tends to load early.  
-- The description of the NuGet package will contain the version and checksum of the native assembly that is required.
-- See [Guide for package and assembly versions and checksums](../architecture/guide-version-checksums.md) for more info.
-- Use the **Device Capabilities** button ![Device Capabilities](../../images/getting-started-guides/device-capabilities.png) on the **Device Explorer** to see what assembly versions and checksums are installed on the device as part of the firmware.
-- If you are changing a nanoFramework component and you change the interface/contract of either the C# code or the C++ code, you will get a checksum mismatch error instead of a version mismatch error.  This is the mechanism that prevents developers from breaking the contract without generating new versions and checksums.
+- C#和本机C++程序集的版本不对齐。
+- C#版本由NuGet和您选择的组件的版本确定。nanoFramework.CoreLibrary是最常见的问题，因为它倾向于早期加载。
+- NuGet包的描述中包含所需本机程序集的版本和校验和信息。
+- 请参阅[包和程序集版本以及校验和的指南](../architecture/guide-version-checksums.md)以获取更多信息。
+- 使用 **设备能力** 按钮 ![设备能力](../../images/getting-started-guides/device-capabilities.png) 在 **设备资源管理器** 中查看设备上作为固件的一部分安装的程序集版本和校验和。
+- 如果要更改nanoFramework组件并更改C#代码或C++代码的接口/契约，则会出现校验和不匹配错误而不是版本不匹配错误。这是防止开发人员在不生成新版本和校验和的情况下破坏契约的机制。
 
-## nanoff does not load correct version of firmware
+## nanoff 未加载正确版本的固件
 
-- Clear the cache at [username]\\.nanoFramework\\[device-name] - or just delete all of the cache folders.
-- Use the **Device Capabilities** button ![Device Capabilities](../../images/getting-started-guides/device-capabilities.png) in the **Device Explorer** to verify the firmware version that is installed on the device.
+- 清除缓存位于 [用户名]\\.nanoFramework\\[设备名称] 的缓存，或者只需删除所有缓存文件夹。
+- 使用 **设备能力** 按钮 ![设备能力](../../images/getting-started-guides/device-capabilities.png) 在 **设备资源管理器** 中验证设备上安装的固件版本。
 
-## nanoff ends with Ennnn error
+## nanoff 以 Ennnn 错误结束
 
-- Update your copy of the `nanoff` tool using the command
+- 使用以下命令更新您的 `nanoff` 工具副本：
 
     ```console
     dotnet tool update nanoff --global
     ```
 
-- Run `nanoff` again, this time with detailed output messages by adding `-v diag` at the end. This will output verbose messages on the progress of the tool execution, hopefully detailing what could be wrong.
-- Make sure you have the latest drivers of the serial devices connected. Check the driver manufacturer website as not all of them make available the latest versions through Windows Update.
-- Check permissions for the cache folders at [username]\\.nanoFramework.  Deleting the cache files can sometimes fix problems.
-- Like the **Device Explorer** the flash utility depends on serial/COM drivers for most devices.  Check that USB cables are not power-only cables (i.e. no signal wires), and that you are using the most recent USB drivers.
+- 再次运行 `nanoff`，这次在末尾添加 `-v diag` 以输出工具执行进度的详细消息，希望详细说明可能出现的问题。
+- 确保连接的串行设备具有最新的驱动程序。检查驱动程序制造商的网站，因为并非所有驱动程序都通过Windows Update提供最新版本。
+- 检查位于 [用户名]\\.nanoFramework 的缓存文件夹的权限。有时，删除缓存文件可以修复问题。
+- 与 **设备资源管理器** 一样，闪存实用程序依赖于大多数设备的串行/COM驱动程序。检查USB电缆不是仅用于供电的电缆（即不带信号线），并确保您使用的是最新的USB驱动程序。

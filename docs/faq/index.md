@@ -1,11 +1,11 @@
-# Frequently asked questions
+# 常见问题解答
 
-Despite working with .NET **nanoFramework** being tremendously easy there are always moments where one needs a hand or bumps into an awkward situation. This is a collection of tips, pearls of wisdom and answers to frequent situations.
+尽管使用.NET **nanoFramework**非常简单，但仍然会有一些时刻需要帮助，或者遇到尴尬的情况。这是一些技巧、智慧之珠和常见情况的答案的集合。
 
-Please do contribute with your own contribution!
+请随时提供您自己的贡献！
 
-- [Coding in C#](coding-in-csharp.md)
-- [Working with ESP32 targets](working-with-esp32-targets.md)
-- [Working with STM32 targets](working-with-stm32-targets.md)
-- [Working with Visual Studio extension](working-with-vs-extension.md)
-- [Automatic Firmware Updates](automatic-firmware-updates.md)
+- [在C#中编码](coding-in-csharp.md)
+- [使用ESP32目标工作](working-with-esp32-targets.md)
+- [使用STM32目标工作](working-with-stm32-targets.md)
+- [使用Visual Studio扩展工作](working-with-vs-extension.md)
+- [自动固件更新](automatic-firmware-updates.md)

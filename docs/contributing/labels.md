@@ -1,32 +1,30 @@
-# Labels
+.NET nanoFramework 项目使用许多标签来对问题和拉取请求进行分类。
 
-.NET **nanoFramework** project uses many labels for categorizing issues and pull requests.
-
-| Label | Meaning on Issue | Meaning on Pull Request |
+| 标签 | 在问题中的含义 | 在拉取请求中的含义 |
 | --- | --- | --- |
-| bug | The issue concerns a bug in the code | The issue concerns a bug in the code |
-| enhancement | The issue is an improvement to the code | The pull request is an improvement to the code |
-| up-for-grabs | The issue has been discussed and it's ready for someone to start working on it. It's not assigned to a particular person. If you want to work on it, just add a comment saying so and it's yours! | Normally not applicable (see comments if observed on a pull request) |
-| investigating | The issue is being investigated by the team or by a community member. If the status is not clear, better ask for an update about it. | n/a |
-| question | The issue is a question | Normally not applicable (see comments if observed on a pull request) |
-| code review | n/a | The pull request is under review |
-| needs discussion | The issue needs further discussion before an actionable decision can be made | The pull request needs further discussion before an actionable decision can be made |
-| pull request | A pull request intended to address the issue has been created, but not yet merged | n/a |
-| blocked | The issue cannot be fixed until another issue, which may be external, is addressed | The pull request cannot be merged until another issue, which may be external, is addressed |
-| do not merge | n/a | The pull request should not be merged at this time. This could indicate a work-in-progress, a problem in the implementation code, or cases where the pull request depends on (is blocked by) another issue or pull request which has not been addressed. |
-| merge OK | n/a | The pull request has been reviewed and meets all the contribution requirements so it's ready to be merged |
-| in progress | A developer is currently working on the issue | A developer is currently making updates to the code in the pull request |
-| fixed | The issue has been resolved | The pull request describes a new issue (i.e. no separate issue exists), and the content of the pull request was merged to fix the issue |
-| duplicate | Another issue or pull request contains the original report for this topic | Another pull request was submitted to correct the issue. This is generally only applied to pull requests after another pull request to correct the issue is merged. |
-| wontfix | The issue will not be corrected. The current behaviour could be by design, out of scope, or cannot be changed due to the breaking changes policy for the project (see comments for details). | The pull request will not be merged due to a fundamental issue (see description for this label on issues) |
-| documentation | The issue is related with documentation | The pull request is related with documentation |
-| feature-request | The issue contains a new feature request | Normally not applicable (see comments if observed on a pull request) |
-| FEEDBACK REQUESTED | Feedback from the community is requested. Please step in and add your comment, that is if you have anything relevant to say about it. | Normally not applicable (see comments if observed on a pull request) |
-| help wanted | If this issue has any work assigned or has already started to be addressed in a pull request help is welcomed. If you are willing to help add a comment to coordinate with the people already working on it. | Help is welcomed for this pull request. If you are willing to help add a comment to coordinate with the people already working on it. |
-| DONE | The work on the issue is completed | n/a |
-| under review | The issue (probably a feature request) is under review and a decision hasn't been made | n/a |
-| trivial | The work required to complete this issue is considered to be very simple and it shouldn't pose any significant challenge. It can be completed in a very short time. It doesn't require any particular skills or deep knowledge on the matter or the project.  | n/a |
-| non trivial | The work required to complete this issue is considered to be somewhat complex. It requires a particular skill set or deep knowledge on the matter or about the matter or the project architecture.  | n/a |
-| area-Config-and-Build | The issue is related with the configuration and build of .NET **nanoFramework** | The pull request is related with the configuration and build of .NET **nanoFramework** |
-| area-Infrastructure-and-Organization | The issue is related with the infrastructure or the overall organization of the .NET **nanoFramework** project | The pull request with the infrastructure or the overall organization of the .NET **nanoFramework** project |
-| area-Interpreter | The issue is related with the Interpreter component of .NET **nanoFramework** | The pull request is related with the Interpreter component of .NET **nanoFramework** |
+| bug | 问题涉及代码中的错误 | 问题涉及代码中的错误 |
+| enhancement | 问题是对代码的改进 | 拉取请求是对代码的改进 |
+| up-for-grabs | 问题已经讨论过，准备好由某人开始处理。它没有分配给特定的人。如果你想处理它，只需添加一条评论表明你要处理它，那么它就归你了！ | 通常不适用（如果在拉取请求中观察到，请参见评论） |
+| investigating | 问题正在由团队或社区成员调查。如果状态不明确，最好询问一下有关情况的更新。 | 不适用 |
+| question | 问题是一个问题 | 通常不适用（如果在拉取请求中观察到，请参见评论） |
+| code review | 不适用 | 拉取请求正在审查中 |
+| needs discussion | 在可以采取行动的决定之前，问题需要进一步讨论 | 在可以采取行动的决定之前，拉取请求需要进一步讨论 |
+| pull request | 为解决问题而创建的拉取请求，但尚未合并 | 不适用 |
+| blocked | 问题无法解决，直到另一个问题（可能是外部问题）得到解决 | 拉取请求无法合并，直到另一个问题（可能是外部问题）得到解决 |
+| do not merge | 不适用 | 拉取请求当前不应合并。这可能表明工作仍在进行中，实现代码存在问题，或者拉取请求依赖于（被阻止的）另一个问题或拉取请求，该问题或拉取请求尚未得到解决。 |
+| merge OK | 不适用 | 拉取请求已经经过审查，符合所有贡献要求，因此可以合并 |
+| in progress | 开发人员当前正在处理问题 | 开发人员当前正在更新拉取请求中的代码 |
+| fixed | 问题已经解决 | 拉取请求描述了一个新问题（即没有单独的问题存在），并且拉取请求的内容已合并以解决问题 |
+| duplicate | 另一个问题或拉取请求包含了此主题的原始报告 | 另一个拉取请求已经提交以纠正问题。通常只适用于另一个拉取请求已合并以纠正问题之后。 |
+| wontfix | 问题不会被纠正。当前的行为可能是设计的，超出了范围，或者由于项目的破坏性更改政策而无法更改（有关详细信息，请参见评论）。 | 不会合并拉取请求，因为存在根本性问题（请参阅问题标签的描述） |
+| documentation | 问题与文档相关 | 拉取请求与文档相关 |
+| feature-request | 问题包含一个新的功能请求 | 通常不适用（如果在拉取请求中观察到，请参见评论） |
+| FEEDBACK REQUESTED | 请求社区提供反馈。如果你有相关的意见，请加入并添加你的评论。 | 通常不适用（如果在拉取请求中观察到，请参见评论） |
+| help wanted | 如果这个问题已经分配了工作或已经在拉取请求中开始处理，欢迎提供帮助。如果你愿意提供帮助，请添加一条评论以协调与已经在处理问题的人员。 | 欢迎提供帮助以解决此拉取请求。如果你愿意提供帮助，请添加一条评论以协调与已经在处理问题的人员。 |
+| DONE | 问题的工作已经完成 | 不适用 |
+| under review | 问题（可能是功能请求）正在审查中，尚未做出决定 | 不适用 |
+| trivial | 完成此问题所需的工作被认为非常简单，不应构成任何重大挑战。可以在很短的时间内完成。不需要任何特定的技能或深入的知识，无论是关于问题还是项目本身的知识。 | 不适用 |
+| non trivial | 完成此问题所需的工作被认为有一定复杂性。它需要特定的技能或深入的知识，无论是关于问题还是项目的架构。 | 不适用 |
+| area-Config-and-Build | 问题与.NET nanoFramework的配置和构建相关 | 拉取请求与.NET nanoFramework的配置和构建相关 |
+| area-Infrastructure-and-Organization | 问题与.NET nanoFramework项目的基础设施或整体组织相关 | 与.NET nanoFramework项目的基础设施或整体组织相关的拉取请求 |
+| area-Interpreter | 问题与.NET nanoFramework的解释器组件相关 | 拉取请求与.NET nanoFramework的解释器组件相关 |

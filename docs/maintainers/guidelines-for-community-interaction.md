@@ -1,18 +1,18 @@
-# Guidelines for community interaction
+# 社区互动指南
 
-## About this document
+## 关于本文档
 
-This document provides guidelines for maintainers on how to interact with the community.
+本文档提供了维护者与社区互动的指南。
 
-## Introduction
+## 介绍
 
-.NET **nanoFramework** it's an Open Source project therefore it aims to gather the interest of a community as broad as possible. This community is expected to be as active as possible in various fronts: providing feedback, generate discussions around issues and suggestions, contribute back to the project with code and performing various tasks like answering questions in project forums, repo maintenance, project web site, writing documentation, social marketing and others.
-The interaction between the project team and the community plays an important role on the overall success of .NET **nanoFramework**. The following guidelines are provided as a suggestion and should also be considered as a "kind of" **S**ervice **L**evel **A**greement for maintainers.
+.NET **nanoFramework** 是一个开源项目，因此它的目标是尽可能吸引广泛的社区兴趣。这个社区期望在各个方面都能积极参与：提供反馈、围绕问题和建议展开讨论、用代码为项目做贡献，并执行各种任务，如在项目论坛回答问题、维护代码库、项目网站、编写文档、社交营销等。
+项目团队与社区之间的互动在.NET **nanoFramework** 的整体成功中起着重要作用。以下指南提供了建议，也应被视为维护者的一种“服务水平协议”。
 
-* Always interact with community members in a friendly, courteous and positive way. Remember: people come here probably because they have questions or are in search for help. If they are treated correctly they'll be happy, feel welcome and the are more likely to contribute back, provide a positive feedback or spread the word about .NET **nanoFramework**.
+* 始终以友好、礼貌和积极的方式与社区成员互动。记住：人们来这里可能是因为有问题或需要帮助。如果他们得到正确的待遇，他们会感到高兴，感到受欢迎，更有可能做出贡献，提供积极反馈或传播关于.NET **nanoFramework** 的信息。
 
-* If someone is not using the proper channel, not providing enough details to formulate a clear question or not writing clearly, do your best to point them in the right direction and try to understand them. They may not have understood the project instructions properly or they might not be English native. Be patient and understandable.
+* 如果有人没有使用正确的渠道、没有提供足够的细节以提出清晰的问题或写得不清楚，请尽力指导他们走向正确的方向，并试图理解他们。他们可能没有正确理解项目的说明，或者可能不是以英语为母语。要耐心和理解。
 
-* People tend to expect a quick reply to their questions or interactions. Being able to accomplish this not only makes them to have a positive feeling about the project but it also shows that the project is alive and kicking! The person(s) in charge of each channel should be able to provide feedback in a timely fashion. If someone from the team notices that this is not happening (for some reason) it should step in and do it by itself. Note that the feedback here depends on the channel. If it's the Discord channel a dialog has to be established. If it's an issue or a PR just by setting the appropriate labels and assigning it to the person in charge, it's a sign that something is happening and the user will be rest assured that it's being taken care of.
+* 人们往往期望能够迅速得到答复。能够做到这一点不仅会让他们对项目有积极的感觉，还会显示项目是活跃的！每个渠道负责人都应该能够及时提供反馈。如果团队中的某人注意到这并未发生（出于某种原因），他应该自己介入并采取行动。请注意，这里的反馈取决于渠道。如果是Discord渠道，则需要建立对话。如果是问题或PR，只需设置适当的标签并分配给负责人，这是一个信号，表明正在处理，并使用户放心，问题正在得到解决。
 
-* Pull request should be always welcomed. Even if they are small or almost meaningless. It helps setting a positive feeling about this and will bring more and with increased quality. When commenting or reviewing keep the positive and friendly tone. Use thanks and please all the time. If a PR is complete trash, not relevant or makes no sense at all try to put it as nicely as possible.  
+* 欢迎任何拉取请求。即使它们很小或几乎毫无意义。这有助于建立一个积极的感觉，并会带来更多的贡献和提高质量。在评论或审查时保持积极和友好的口吻。始终使用“谢谢”和“请”。如果一个PR完全无用、不相关或毫无意义，请尽量以最友好的方式提出。

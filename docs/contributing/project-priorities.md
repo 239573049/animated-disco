@@ -1,5 +1,5 @@
-# Project priorities
+# 项目优先事项
 
-We're working hard to have a wide support of targets and platforms, a proper way of building them, deploying their firmware images and, of course, documentation. We have our Discord channel where our top priority is to help each other, answer questions and engage in productive conversations. So [join us on Discord](https://discordapp.com/invite/gCyBu8T)!
+我们正在努力支持广泛的目标和平台，建立适当的构建方式，部署其固件图像，当然还有文档编写。我们在Discord频道上互相帮助，回答问题，并进行富有成效的讨论是我们的首要任务。所以，[加入我们的Discord](https://discordapp.com/invite/gCyBu8T)吧！
 
-Any help it's highly appreciated, we ❤️ **P**ull **R**equests! Keep them coming. 😉
+任何帮助都非常感激，我们热爱**P**ull **R**equests！请继续提交。 😉

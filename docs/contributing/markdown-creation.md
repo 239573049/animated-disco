@@ -1,135 +1,137 @@
-# Rules for creating Markdown in the repository
+# 创建Markdown仓库的规则
 
-This document explains a couple of rules to create a proper Markdown file in the documentation repository.
+本文档解释了在文档仓库中创建正确的Markdown文件的一些规则。
 
-Markdown is a lightweight markup language that you can use to add formatting elements to plaintext text documents. Created by John Gruber in 2004, Markdown is now one of the world’s most popular markup languages.
+Markdown是一种轻量级的标记语言，您可以使用它来为纯文本文档添加格式化元素。由John Gruber于2004年创建，Markdown现在是世界上最流行的标记语言之一。
 
-Markdown files are text based. If you want to learn about possibilities (headers, lists, tables, code and such) this cheat sheet is always helpful: [Markdown Cheatsheet · adam-p/markdown-here Wiki · GitHub](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet). There are a number of them.
+Markdown文件是基于文本的。如果您想了解Markdown的各种可能性（标题、列表、表格、代码等），此[Markdown速查表](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)将始终有所帮助。有很多这样的速查表。
 
-Using Markdown is different than using a WYSIWYG editor. In an application like Microsoft Word, you click buttons to format words and phrases, and the changes are visible immediately. Markdown isn’t like that. When you create a Markdown-formatted file, you add Markdown syntax to the text to indicate which words and phrases should look different. That said, as explained in the [section below](#preview-in-vs-code), you can have a nice preview when you open the repository with VS Code.
+使用Markdown与使用所见即所得编辑器不同。在像Microsoft Word这样的应用程序中，您点击按钮来格式化单词和短语，更改会立即可见。Markdown不是这样的。当您创建一个Markdown格式的文件时，您需要在文本中添加Markdown语法，以指示哪些单词和短语应该看起来不同。尽管如此，正如下面的部分所解释的那样，当您在VS Code中打开仓库时，可以获得一个很好的预览。
 
-You can find more information, a full documentation [here](https://www.markdownguide.org/).
+您可以在[此处](https://www.markdownguide.org/)找到更多信息，包括完整的文档。
 
-## Images and attachments
+## 图像和附件
 
-**All** images should be stored in `/images` and its sub directories.
+**所有**图像都应存储在`/images`及其子目录中。
 
-Reason: we are using [DocFX](https://dotnet.github.io/docfx/) to generate a static website. We only move attachments and pictures from `/images`. The rest is ignored.
+原因：我们使用[DocFX](https://dotnet.github.io/docfx/)来生成一个静态网站。我们只会移动`/images`中的附件和图片，其余内容将被忽略。
 
-## Naming conventions
+## 命名约定
 
-Please to follow those simple rules:
+请遵循以下简单的规则：
 
-- Try to only use lowercase in your file names
-- Don't use spaces, use `-` or `_`
-- Use only ASCII 7 characters from the alphabet and numerical
+- 尽量只使用小写字母作为文件名
+- 不要使用空格，使用“-”或“_”
+- 仅使用来自字母和数字的ASCII 7字符
 
-## Links
+## 链接
 
-It's ok to use external links.
+可以使用外部链接。
 
-For internal links on documentation, please use relative link to the file. For example if you are in `/content/esp32` and want to reference the document `build-esp32.md` which is located in `/content/building`, the link will be `../building/build-esp32.md`.
+对于文档内部链接，请使用相对链接到文件。例如，如果您在`/content/esp32`中，并且想要引用位于`/content/building`中的文档`build-esp32.md`，链接将是`../building/build-esp32.md`。
 
-## Practical Tips & Tricks
+## 实用技巧与窍门
 
-### Preview in VS Code
+### 在VS Code中预览
 
-When editing markdown in [VS Code](https://code.visualstudio.com), there is a preview button on the top right that will open a live preview window on the left. So you can type and see the result at the same time. This is usually a great way to avoid basic mistakes, making sure your images are showing up properly for example.
+在[VS Code](https://code.visualstudio.com)中编辑Markdown时，右上角有一个预览按钮，它会打开左侧的实时预览窗口。因此，您可以同时输入并查看结果。这通常是避免基本错误的好方法，例如确保您的图像正常显示。
 
-![VS Code Preview](../../images/VSCodeMdPreview.gif)
+![VS Code预览](../../images/VSCodeMdPreview.gif)
 
-### Typora as an alternative tool
+### Typora作为备选工具
 
-[Typora](https://typora.io/) is an online editor to help you generate proper Markdown. It can help you creating your first Markdown, get use to it. It also has great features like the ability to create table from a copy/paste of a web page. Be sensitive of the fact this is an online tool and of the confidentiality of the information you may put into this tool.
+[Typora](https://typora.io/)是一个在线编辑器，可帮助您生成正确的Markdown。它可以帮助您创建您的第一个Markdown文档，并逐渐熟悉它。它还具有一些出色的功能，例如能够从网页复制/粘贴创建表格。请注意，这是一个在线工具，需要谨慎处理其中可能包含的信息的机密性。
 
-### Run markdownlint before pushing
+### 在推送之前运行markdownlint
 
-To make sure before you push, run the markdownlint tool on your md-file and solve all messages. This tool will be run in the pipeline to validate your Markdown files. Check more details [below](#markdownlint).
+为确保在推送之前运行markdownlint工具检查您的md文件并解决所有消息。此工具将在流水线中运行以验证您的Markdown文件。请查看下面的[更多细节](#markdownlint)。
 
-If you're using VS Code you can install an extension with a markdown linter such as [markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint). With it, you'll immediately get visual feedback on any formatting issues.
+如果您使用VS Code，可以安装一个Markdown linter的扩展，例如[markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint)。使用它，您将立即获得有关任何格式问题的视觉反馈。
 
-> **Important**: There won't be any merge possible if the Markdown file is **not** properly formed. So it is very important to run the linter before you do a PR and fix all the issues.
+> **重要提示**：如果Markdown文件格式不正确，将无法合并。因此，在发起PR之前运行linter并修复所有问题非常重要。
 
-### Use a spell checker
+### 使用拼写检查器
 
-You have plenty of Spell checker extensions, they will reduce the numbers of mistakes. We can recommend you in VS Code, `Spell Right` or `Code Spell Checker` extensions.
+有很多拼写检查器扩展，它们将减少错误的数量。我们可以推荐您在VS Code中使用`Spell Right`或`Code Spell Checker`扩展程序。
 
-### Patterns for enumerations
+### 枚举的模式
 
-It can be a bit frustrating when working on markdown and when you try to work with enumerations. One of the key point to keep in mind is that enumerations in markdown and in generals are made to be grouped. Once you need a lot of text or code blocks in between, enumerations are not really the best. So here are couple of patterns.
+在Markdown中使用枚举时，可能会有点令人沮丧，特别是当您尝试使用枚举并在其中插入大段文本或代码块时。一点要记住的关键是，Markdown和一般情况下的枚举都是用来分组的。一旦您需要在两个枚举之间有大量文本或代码块，枚举就不是最佳选择了。因此，以下是一些模式。
 
 ```markdown
-# This is the one and only main title
+# 这是唯一的主标题
 
-## You can have as many title 2 as you want
+## 您可以拥有尽可能多的二级标题
 
-1. My enumeration starts with 1
-  - I have sub bullets which can be enums as well
-  - And another one
-1. This one will have number 2
-1. And you can guess, this one is 3
+1. 我的枚举从1开始
+  - 我有子项目，它们也可以是枚举
+  - 还有一个
+1. 这个将是编号2
+1. 您可以猜到，这个是3
 
-1. Now, this one is 1 again as there is a career return between both enums
-1. And 2 again
+1. 现在，由于两个枚举之间有空行，所以这个又是1
+1. 然后又是2
 
 ```
 
-If you are trying to get a large block of text with paragraphs and block of code, use the `Step #` pattern like this:
+如果您尝试获得包含段落和代码块的大块文本，请使用`Step #`模式，如下所示：
 
 ```markdown
 
-- Step 1: do something
+- 步骤1：做某事
 
-Here you may have a lot of blabla, some text code block, images, etc.
+这里可能有很多废话，一些文本代码块、图像等。
 
-- Step 2: do the next step
+- 步骤2：执行下一步
 
-Same here, a lot of things here.
+同样，在这里可能会有很多东西。
 
-- Step 3: you can continue this pattern
+- 步骤3：您可以继续这种模式
 
 ```
 
-### Adding an Emoji into markdown file
+### 在Markdown文件中添加表情符号
 
-It can be a great way to bring essential content to the point if you add some Emojis into markdown content. To add them use the next shortcuts depends on your operational system:
+如果在Markdown内容中添加一些表情符号，可以很好地将重要内容简洁地呈现出来。要添加它们，请使用以下操作
 
-- on Mac: CTRL + CMD + Space
-- on Windows: Win + ; (semi-colon) or Win + . (period)
+系统的快捷键：
 
-![Emoji](../../images/markdown-icons.png)
+- 在Mac上：CTRL + CMD + Space
+- 在Windows上：Win + ;（分号）或Win + .（句号）
 
-## Moving files
+![表情符号](../../images/markdown-icons.png)
 
-In general, try **not** to move the files. There are a lot of links in files pointing to each others.
+## 移动文件
 
-In case you want to change files, here is a process to catch broken link:
+通常，尽量**不要**移动文件。文件中有很多相互指向的链接。
 
-- Once you'll do a PR, the the [DockLinkChecker](https://github.com/nanoframework/nanoframework.github.io/blob/538b9fee8631ec30a11805da24c3bc23ef030e4f/azure-pipelines.yml#L236) will run part of the build pipeline.
-- Open the DocFX task result and check the logs, it will contain broken links
-- Correct the broken files
-- Push back the changes
-- If you still have some, they'll still show up!
+如果您想要更改文件，以下是检测破损链接的流程：
 
-## No need to add any TOC
+- 一旦您发起PR，构建流水线的一部分将运行[DockLinkChecker](https://github.com/nanoframework/nanoframework.github.io/blob/538b9fee8631ec30a11805da24c3bc23ef030e4f/azure-pipelines.yml#L236)。
+- 打开DocFX任务结果并检查日志，其中将包含破损链接。
+- 修正破损的文件。
+- 推送更改。
+- 如果仍然有一些问题，它们仍然会显示！
 
-The documentation is built automatically using DocFX. DocFX companion tools will take care of creating the TOC for you. So please do not add it. [TheToDocFxCreation](https://github.com/nanoframework/nanoframework.github.io/blob/538b9fee8631ec30a11805da24c3bc23ef030e4f/azure-pipelines.yml#L228) tool will create it for you.
+## 不需要添加任何TOC
 
-### Tables
+文档将自动使用DocFX构建。DocFX的伴随工具将为您创建TOC。因此，请不要手动添加它。[TheToDocFxCreation](https://github.com/nanoframework/nanoframework.github.io/blob/538b9fee8631ec30a11805da24c3bc23ef030e4f/azure-pipelines.yml#L228)工具将为您创建TOC。
 
-Please make sure you respect as well the rules for tables. You need to have a `|` at the beginning and end of each column. The second line should contains at least 3 dashes, so `---` per column. You can have more and you can use the `:` pattern to align the column as you'd like. The [DockLinkChecker](https://github.com/nanoframework/nanoframework.github.io/blob/538b9fee8631ec30a11805da24c3bc23ef030e4f/azure-pipelines.yml#L236) will check that your tables are properly formed as well during a PR.
+### 表格
+
+请确保也遵守表格的规则。您需要在每列的开头和末尾都有一个`|`。第二行应至少包含3个破折号，因此每列应为`---`。您可以使用冒号模式来对齐列。[DockLinkChecker](https://github.com/nanoframework/nanoframework.github.io/blob/538b9fee8631ec30a11805da24c3bc23ef030e4f/azure-pipelines.yml#L236)将在PR期间检查您的表格是否正确形成。
 
 ## Markdownlint
 
-To help developers and anyone who needs to create Markdown, we propose to use [Markedownlint](https://github.com/DavidAnson/markdownlint) which is easy and the most used linter for Markdown documents. [Markdownlint-cli](https://github.com/igorshubovych/markdownlint-cli) is an easy to use cli based out of Markdownlint.
+为帮助开发人员和任何需要创建Markdown的人，我们建议使用[Markedownlint](https://github.com/DavidAnson/markdownlint)，它是Markdown文档的最常用的linter，也非常易用。[Markdownlint-cli](https://github.com/igorshubovych/markdownlint-cli)是一个易于使用的基于CLI的Markdownlint。
 
-### Rules
+### 规则
 
-A comprehensive list of rules are available [here](https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md). We will use a quite strict approach except for the line length rule MD013 which we won't apply and html tags.
+可在[此处](https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md)找到一份全面的规则列表。我们将采用相当严格的方法，除了我们不会应用行长度规则MD013以外，还有HTML标签。
 
-Please avoid using html tags at all. As we do integrate few external images sources which are hard to align properly, we are not applying this rule. But we will be vigilant in PR to make sure there is none checked in which is not critical.
+请尽量避免使用HTML标签。由于我们集成了一些难以正确对齐的外部图像源，因此我们不会应用此规则。但是，我们将在PR中仔细检查以确保没有非关键的HTML标签被检入。
 
-A configuration file is present in the root directory of the project for your convenience. The file is `.markdownlint.json` and contain:
+配置文件位于项目根目录中，方便您使用。该文件是`.markdownlint.json`，内容如下：
 
 ```json
 {
@@ -138,18 +140,18 @@ A configuration file is present in the root directory of the project for your co
 }
 ```
 
-Then simply run the following command from the root folder:
+然后，只需从根文件夹运行以下命令：
 
 ```bash
 markdownlint -f path_to_your_file.md
 ```
 
-Note that the -f parameter will fix all basics errors and save you some time.
+请注意，-f参数将修复所有基本错误，为您节省一些时间。
 
-### Using VS Code extensions
+### 使用VS Code扩展
 
-There are couple of VS Code extensions to help you in this task as well. We can recommend [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) which will catch some of them as well.
+还有一些VS Code扩展可帮助您完成此任务。我们可以推荐[Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)，它将捕获其中的一些问题。
 
-## Azure DevOps pipeline
+## Azure DevOps流水线
 
-Markdownlinter is also part of the Azure DevOps code quality pipeline which will automatically run upon PRs. If there is any issue, it will fail and gives you all the issues. You will have to fix them for a merge. See the tips and tricks as well!
+Markdownlint还包含在Azure DevOps代码质量流水线中，将自动在PR时运行。如果存在任何问题，它将失败并为您提供所有问题。您必须为合并修复这些问题。另请参阅技巧和窍门！
